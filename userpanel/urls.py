@@ -19,9 +19,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+import musician
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', include('musician.urls')),
 ]
 
 DEVELOPMENT = config('DEVELOPMENT', default=False, cast=bool)
