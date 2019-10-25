@@ -1,0 +1,40 @@
+{% extends "musician/base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<h2>Welcome back {{ user.username }}</h2>
+<h3>Last time you logged in was {{ user.last_login }}</h3>
+
+<div class="row">
+  {% for i in "1234"|make_list %}
+  <div class="col-3 border">
+    Resource usage block
+  </div>
+  {% endfor %}
+</div>
+
+
+<h1>Domains and websites</h1>
+<p>Little description of what to be expected...</p>
+
+{% for i in "123"|make_list %}
+<div class="row border mt-4">
+  <div class="col-12 bg-light">
+    <h3>domain.com</h3>
+  </div>
+  {% for service in "123"|make_list %}
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">{% cycle 'Mail' 'Mailing list' 'Databases' %}</h5>
+    </div>
+    <img class="card-img-bottom" src="..." alt="Card image cap">
+    <div class="card-body">
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+        content.</p>
+    </div>
+  </div>
+  {% endfor card %}
+</div>
+{% endfor %}
+{% endblock %}
