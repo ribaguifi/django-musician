@@ -11,7 +11,7 @@
   <meta name="robots" content="NONE,NOARCHIVE" />
   {% endblock %}
 
-  <title>{% block title %}{% if name %}{{ name }} – {% endif %}ICO monitoring{% endblock %}</title>
+  <title>{% block title %}{% if name %}{{ name }} – {% endif %}Django musician{% endblock %}</title>
 
   {% block style %}
   {% block bootstrap_theme %}
@@ -30,71 +30,33 @@
 {% block body %}
 
 <body class="{% block bodyclass %}{% endblock %}">
-
-  {% block navbar %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">ICO monitoring</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdownMenuLink" role="button"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Projects
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            {% for project in projects %}
-            <a class="dropdown-item" href="{% url 'project_detail' project.slug %}">{{ project.name }}</a>
-            {% endfor %}
-          </div>
-        </li>
-      </ul>
-    </div>
-    <ul class="nav navbar-nav pull-right">
-      {% block userlinks %}
-      {% if user.is_authenticated %}
-      <li class="nav-item dropdown">
-        <a href="{% url 'logout' %}" class="nav-link dropdown-toggle" data-toggle="dropdown">
-          {{ user.username }}
-        </a>
-        <b class="caret"></b>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li class="nav-item dropdown">
-            <a class="dropdown-item" href="{% url 'logout' %}">{% trans 'Log out' %}</a>
-          </li>
-        </ul>
-      </li>
-      {% else %}
-      <li><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
-      {% endif %}
-      {% endblock %}
-    </ul>
-  </nav>
-  {% endblock %}
-
   <div class="wrapper">
     <nav id="sidebar" class="border-right pt-4">
       {% block sidebar %}
-      {% if actual_project %}
-      <div class="sidebar-header mb-3">
-        <span class="rounded-circle" style="padding: 8px 8px 8px 12px; margin-right: 10px; background-color: #fcaf3e">
-          {{actual_project.name|first|capfirst }}
-        </span>
-        {{ actual_project.name }} ({{ actual_project.location.name }})
-      </div>
+      {# <!-- branding --> #}
+      <h3>Pangea logotipo</h3>
+      <h4>{{ version }}</h4>
       <div class="dropdown-divider"></div>
-
-      <ul class="list-unstyled components">
-        <li><a href="{% url 'project_detail' actual_project.slug %}">{% trans 'Project Details' %}</a></li>
-        <li><a href="{% url 'monitoringsite_list' actual_project.slug %}">{% trans 'Monitoring Sites' %}</a></li>
-        <li><a href="{% url 'project_users_list' actual_project.slug %}">{% trans 'Users' %}</a></li>
+      {# <!-- services menu --> #}
+      <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Domains & websites</a>
+          </li>
       </ul>
-      {% else %}
-          <!-- TODO (slamora) create another menu? -->
-      {% endif %}
+      {# <!-- user profile menu --> #}
+      <div class="dropdown-divider mt-5"></div>
+      <ul class="nav flex-column">
+          <li class="nav-item">
+              <a href="#profile" class="nav-link">{{ user.username }} <img alt="user-profile-picture" src="{% static "musician/img/default-profile-picture.png" %}" /></a>
+          </li>
+          <div class="dropdown-divider"></div>
+          <li class="nav-item">
+            <a class="nav-link" href="#logout">{% trans 'Log out' %}</a>
+          </li>
+        </ul>
+    
+    </ul>
+
       {% endblock sidebar %}
     </nav><!-- ./sidebar -->
     <div id="content" class="container-fluid pt-4">
