@@ -3,13 +3,16 @@ import os
 from setuptools import find_packages, setup
 
 
+# Dynamically calculate the version
+version = __import__('musician').get_version()
+
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 
 setup(
     name="django-musician",
-    version="0.1",
+    version=version,
     url='https://gitlab.pangea.org/slamora/django-musician.git',
     author='Santiago Lamora',
     author_email='santiago@ribaguifi.com',
