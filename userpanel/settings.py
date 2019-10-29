@@ -135,3 +135,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = config('STATIC_ROOT')
+
+# Backend API configuration
+
+API_BASE_URL = config('API_BASE_URL')
