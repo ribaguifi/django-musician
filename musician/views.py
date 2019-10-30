@@ -15,6 +15,18 @@ from .mixins import CustomContextMixin, UserTokenRequiredMixin
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
     template_name = "musician/dashboard.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # TODO retrieve all data needed from orchestra
+        raw_domains = self.orchestra.retrieve_domains()
+
+        context.update({
+            'domains': raw_domains
+        })
+
+        return context
+
 
 class LoginView(FormView):
     template_name = 'auth/login.html'
