@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic.base import TemplateView
+from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import FormView
 
 from . import api, get_version
+from .auth import login as auth_login, logout as auth_logout
 from .forms import LoginForm
 from .mixins import CustomContextMixin
 
@@ -18,3 +20,32 @@ class LoginView(FormView):
     form_class = LoginForm
     success_url = reverse_lazy('musician:dashboard')
     extra_context = {'version': get_version()}
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def form_valid(self, form):
+        """Security check complete. Log the user in."""
+        auth_login(self.request, form.username, form.token)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class LogoutView(RedirectView):
+    """
+    Log out the user.
+    """
+    permanent = False
+    pattern_name = 'musician:login'
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Logs out the user.
+        """
+        auth_logout(self.request)
+        return super().get_redirect_url(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """Logout may be done via POST."""
+        return self.get(request, *args, **kwargs)

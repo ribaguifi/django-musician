@@ -13,6 +13,6 @@ app_name = 'musician'
 
 urlpatterns = [
     path('auth/login/', views.LoginView.as_view(), name='login'),
-    # path('auth/logout/', views.LogoutView.as_view(), name='logout'),
+    path('auth/logout/', views.LogoutView.as_view(), name='logout'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 ]
