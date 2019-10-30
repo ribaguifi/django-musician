@@ -28,6 +28,22 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         return context
 
 
+class MailView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+    template_name = "musician/mail.html"
+
+
+class MailingListsView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+    template_name = "musician/mailinglists.html"
+
+
+class DatabasesView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+    template_name = "musician/databases.html"
+
+
+class SaasView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+    template_name = "musician/saas.html"
+
+
 class LoginView(FormView):
     template_name = 'auth/login.html'
     form_class = LoginForm
