@@ -10,6 +10,7 @@ TOKEN_PATH = '/api-token-auth/'
 API_PATHS = {
     # auth
     'token-auth': '/api-token-auth/',
+    'my-account': 'accounts/',
 
     # services
     'domain-list': 'domains/',
@@ -44,7 +45,7 @@ class Orchestra(object):
 
         return response.json().get("token", None)
 
-    def request(self, verb, resource):
+    def request(self, verb, resource, raise_exception=True):
         assert verb in ["HEAD", "GET", "POST", "PATCH", "PUT", "DELETE"]
         url = self.build_absolute_uri(resource)
 
@@ -52,7 +53,8 @@ class Orchestra(object):
         response = verb(url, headers={"Authorization": "Token {}".format(
             self.auth_token)}, allow_redirects=False)
 
-        response.raise_for_status()
+        if raise_exception:
+            response.raise_for_status()
 
         status = response.status_code
         output = response.json()
@@ -62,3 +64,20 @@ class Orchestra(object):
     def retrieve_domains(self):
         status, output = self.request("GET", 'domain-list')
         return output
+
+    def retreve_profile(self):
+        _, output = self.request("GET", 'my-account')
+        return output
+
+    def verify_credentials(self):
+        """
+        Returns:
+          A user profile info if the
+          credentials are valid, None otherwise.
+        """
+        status, output = self.request("GET", 'my-account', raise_exception=False)
+
+        if status < 400:
+            return output
+
+        return None
