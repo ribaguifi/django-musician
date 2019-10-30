@@ -114,6 +114,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = '/auth/login/'
+
+# Sessions
+# https://docs.djangoproject.com/en/2.2/topics/http/sessions/#configuring-sessions
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+
+# SESSION_COOKIE_SECURE = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -135,3 +143,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = config('STATIC_ROOT')
+
+# Backend API configuration
+
+API_BASE_URL = config('API_BASE_URL')

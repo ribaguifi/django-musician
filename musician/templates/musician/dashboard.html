@@ -18,10 +18,10 @@
 <h1>Domains and websites</h1>
 <p>Little description of what to be expected...</p>
 
-{% for i in "123"|make_list %}
+{% for domain in domains %}
 <div class="row border mt-4">
   <div class="col-12 bg-light">
-    <h3>domain.com</h3>
+    <h3>{{ domain.name }}</h3>
   </div>
   {% for service in "123"|make_list %}
   <div class="card" style="width: 18rem;">
