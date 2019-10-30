@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -6,12 +6,13 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import FormView
 
 from . import api, get_version
-from .auth import login as auth_login, logout as auth_logout
+from .auth import login as auth_login
+from .auth import logout as auth_logout
 from .forms import LoginForm
-from .mixins import CustomContextMixin
+from .mixins import CustomContextMixin, UserTokenRequiredMixin
 
 
-class DashboardView(CustomContextMixin, TemplateView):  ## TODO LoginRequiredMixin
+class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
     template_name = "musician/dashboard.html"
 
 
