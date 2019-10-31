@@ -16,7 +16,7 @@ urlpatterns = [
     path('auth/logout/', views.LogoutView.as_view(), name='logout'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('mails/', views.MailView.as_view(), name='mails'),
-    path('maling-lists/', views.MailingListsView.as_view(), name='mailing-lists'),
+    path('mailing-lists/', views.MailingListsView.as_view(), name='mailing-lists'),
     path('databases/', views.DatabasesView.as_view(), name='databases'),
     path('software-as-a-service/', views.SaasView.as_view(), name='saas'),
 ]
