@@ -1,15 +1,23 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic.base import ContextMixin
 
-from . import get_version
+from . import api, get_version
 from .auth import SESSION_KEY_TOKEN
 
 
 class CustomContextMixin(ContextMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # TODO generate menu items
+        # generate services menu items
+        services_menu = [
+            {'pattern_name': 'musician:dashboard', 'title': 'Domains & websites'},
+            {'pattern_name': 'musician:mails', 'title': 'Mails'},
+            {'pattern_name': 'musician:mailing-lists', 'title': 'Mailing lists'},
+            {'pattern_name': 'musician:databases', 'title': 'Databases'},
+            {'pattern_name': 'musician:saas', 'title': 'SaaS'},
+        ]
         context.update({
+            'services_menu': services_menu,
             'version': get_version(),
         })
 

@@ -38,11 +38,13 @@
       <h4>{{ version }}</h4>
       <div class="dropdown-divider"></div>
       {# <!-- services menu --> #}
+      {% for item in services_menu %}
       <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="#">Domains & websites</a>
+            <a class="nav-link active" href="{% url item.pattern_name %}">{{ item.title }}</a>
           </li>
       </ul>
+      {% endfor %}
       {# <!-- user profile menu --> #}
       <div class="dropdown-divider mt-5"></div>
       <ul class="nav flex-column">
