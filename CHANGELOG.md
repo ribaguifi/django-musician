@@ -6,5 +6,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## master
 - Login & logout methods using backend as auth method
-- Base template
-- Services sidebar menu
+- Base template with services sidebar menu
+- [added] Mailing lists view.
