@@ -34,8 +34,30 @@ class MailView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
     template_name = "musician/mail.html"
 
 
-class MailingListsView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+class MailingListsView(CustomContextMixin, UserTokenRequiredMixin, ListView):
     template_name = "musician/mailinglists.html"
+    paginate_by = 20
+    paginate_by_kwarg = 'per_page'
+
+    def get_queryset(self):
+        return self.orchestra.retrieve_service_list('mailinglist')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'page_param': self.page_kwarg,
+            'per_page_values': [5, 10, 20, 50],
+            'per_page_param': self.paginate_by_kwarg,
+        })
+        return context
+
+    def get_paginate_by(self, queryset):
+        per_page = self.request.GET.get(self.paginate_by_kwarg) or self.paginate_by
+        try:
+            paginate_by = int(per_page)
+        except ValueError:
+            paginate_by = self.paginate_by
+        return paginate_by
 
 
 class DatabasesView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
