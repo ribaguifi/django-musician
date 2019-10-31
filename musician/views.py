@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.http import is_safe_url
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 
 from . import api, get_version
 from .auth import login as auth_login
@@ -20,7 +21,7 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         # TODO retrieve all data needed from orchestra
-        raw_domains = self.orchestra.retrieve_domains()
+        raw_domains = self.orchestra.retrieve_service_list('domain')
 
         context.update({
             'domains': raw_domains

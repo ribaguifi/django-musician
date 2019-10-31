@@ -14,6 +14,7 @@ API_PATHS = {
 
     # services
     'domain-list': 'domains/',
+    'mailinglist-list': 'lists/',
     # ... TODO (@slamora) complete list of backend URLs
 }
 
@@ -61,8 +62,11 @@ class Orchestra(object):
 
         return status, output
 
-    def retrieve_domains(self):
-        status, output = self.request("GET", 'domain-list')
+    def retrieve_service_list(self, service_name):
+        pattern_name = '{}-list'.format(service_name)
+        if pattern_name not in API_PATHS:
+            raise ValueError("Unknown service {}".format(service_name))
+        _, output = self.request("GET", pattern_name)
         return output
 
     def retreve_profile(self):
