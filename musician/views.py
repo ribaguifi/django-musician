@@ -1,4 +1,6 @@
 
+from django.core.exceptions import ImproperlyConfigured
+from itertools import groupby
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -12,6 +14,7 @@ from .auth import login as auth_login
 from .auth import logout as auth_logout
 from .forms import LoginForm
 from .mixins import CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin
+from .models import MailService
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -32,11 +35,51 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
 class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
     """Base list view to all services"""
-    pass
+    service = None
+    template_name = "musician/service_list.html"  # TODO move to ServiceListView
+
+    def get_queryset(self):
+        if self.service_class is None or self.service_class.name is None:
+            raise ImproperlyConfigured(
+                "ServiceListView requires a definiton of 'service'")
+
+        return self.orchestra.retrieve_service_list(self.service_class.name)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'service': self.service_class,
+        })
+        return context
 
 
-class MailView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
-    template_name = "musician/mail.html"
+class MailView(ServiceListView):
+    service_class = MailService
+
+    def get_queryset(self):
+        def retrieve_mailbox(value):
+            mailboxes = value.get('mailboxes')
+
+            if len(mailboxes) == 0:
+                return ''
+
+            return mailboxes[0]['id']
+
+        # group addresses with the same mailbox
+        raw_data = self.orchestra.retrieve_service_list(
+            self.service_class.name)
+        addresses = []
+        for key, group in groupby(raw_data, retrieve_mailbox):
+            aliases = []
+            data = {}
+            for thing in group:
+                aliases.append(thing.pop('name'))
+                data = thing
+
+            data['names'] = aliases
+            addresses.append(MailService(data))
+
+        return addresses
 
 
 class MailingListsView(ServiceListView):

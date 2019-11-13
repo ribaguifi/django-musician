@@ -14,6 +14,8 @@ API_PATHS = {
 
     # services
     'domain-list': 'domains/',
+    'address-list': 'addresses/',
+    'mailbox-list': 'mailboxes/',
     'mailinglist-list': 'lists/',
     # ... TODO (@slamora) complete list of backend URLs
 }
