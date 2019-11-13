@@ -17,6 +17,11 @@ class Service:
         return getattr(self, key, self.data.get(key))
 
 
+class DatabaseService(Service):
+    api_name = 'database'
+    fields = ('name', 'type', 'users')
+
+
 class MailService(Service):
     api_name = 'address'
     verbose_name = 'Mail'

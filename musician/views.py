@@ -88,8 +88,8 @@ class MailingListsView(ServiceListView):
     service_class = MailinglistService
 
 
-class DatabasesView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
-    template_name = "musician/databases.html"
+class DatabasesView(ServiceListView):
+    service_class = DatabaseService
 
 
 class SaasView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):

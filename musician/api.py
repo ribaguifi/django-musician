@@ -13,6 +13,7 @@ API_PATHS = {
     'my-account': 'accounts/',
 
     # services
+    'database-list': 'databases/',
     'domain-list': 'domains/',
     'address-list': 'addresses/',
     'mailbox-list': 'mailboxes/',
