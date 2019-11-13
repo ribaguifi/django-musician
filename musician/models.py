@@ -1,10 +1,10 @@
-class MailService:
-    name = 'address'
-    verbose_name = 'Mail'
-    fields = ('mail_address', 'aliases', 'type', 'type_detail')
+from django.utils.html import format_html
 
-    FORWARD = 'forward'
-    MAILBOX = 'mailbox'
+
+class Service:
+    name = None
+    verbose_name = None
+    fields = ()
 
     def __init__(self, data={}):
         if self.verbose_name is None:
@@ -15,6 +15,15 @@ class MailService:
     def get(self, key):
         # retrieve attr of the object and if undefined get raw data
         return getattr(self, key, self.data.get(key))
+
+
+class MailService(Service):
+    name = 'address'
+    verbose_name = 'Mail'
+    fields = ('mail_address', 'aliases', 'type', 'type_detail')
+
+    FORWARD = 'forward'
+    MAILBOX = 'mailbox'
 
     @property
     def aliases(self):
@@ -38,3 +47,23 @@ class MailService:
             return self.data['forward']
         # TODO(@slamora) retrieve mailbox usage
         return {'usage': 0, 'total': 213}
+
+
+class MailinglistService(Service):
+    name = 'mailinglist'
+    verbose_name = 'Mailing list'
+    fields = ('name', 'status', 'address_name', 'admin_email', 'configure')
+
+    @property
+    def status(self):
+        # TODO(@slamora): where retrieve if the list is active?
+        return 'active'
+
+    @property
+    def address_name(self):
+        return "{}@{}".format(self.data['address_name'], self.data['address_domain']['name'])
+
+    @property
+    def configure(self):
+        # TODO(@slamora): build mailtran absolute URL
+        return format_html('<a href="#TODO">Mailtrain</a>')

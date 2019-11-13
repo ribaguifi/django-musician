@@ -14,7 +14,7 @@ from .auth import login as auth_login
 from .auth import logout as auth_logout
 from .forms import LoginForm
 from .mixins import CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin
-from .models import MailService
+from .models import MailService, MailinglistService
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -43,7 +43,8 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
             raise ImproperlyConfigured(
                 "ServiceListView requires a definiton of 'service'")
 
-        return self.orchestra.retrieve_service_list(self.service_class.name)
+        json_qs = self.orchestra.retrieve_service_list(self.service_class.name)
+        return [self.service_class(data) for data in json_qs]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -77,16 +78,13 @@ class MailView(ServiceListView):
                 data = thing
 
             data['names'] = aliases
-            addresses.append(MailService(data))
+            addresses.append(self.service_class(data))
 
         return addresses
 
 
 class MailingListsView(ServiceListView):
-    template_name = "musician/mailinglists.html"
-
-    def get_queryset(self):
-        return self.orchestra.retrieve_service_list('mailinglist')
+    service_class = MailinglistService
 
 
 class DatabasesView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
