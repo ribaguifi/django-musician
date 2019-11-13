@@ -2,13 +2,13 @@ from django.utils.html import format_html
 
 
 class Service:
-    name = None
+    api_name = None
     verbose_name = None
     fields = ()
 
     def __init__(self, data={}):
         if self.verbose_name is None:
-            self.verbose_name = self.name
+            self.verbose_name = self.api_name
 
         self.data = data
 
@@ -18,7 +18,7 @@ class Service:
 
 
 class MailService(Service):
-    name = 'address'
+    api_name = 'address'
     verbose_name = 'Mail'
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
 
@@ -50,7 +50,7 @@ class MailService(Service):
 
 
 class MailinglistService(Service):
-    name = 'mailinglist'
+    api_name = 'mailinglist'
     verbose_name = 'Mailing list'
     fields = ('name', 'status', 'address_name', 'admin_email', 'configure')
 

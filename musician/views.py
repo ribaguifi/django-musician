@@ -1,6 +1,7 @@
 
-from django.core.exceptions import ImproperlyConfigured
 from itertools import groupby
+
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -13,8 +14,8 @@ from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
 from .forms import LoginForm
-from .mixins import CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin
-from .models import MailService, MailinglistService
+from .mixins import (CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin)
+from .models import DatabaseService, MailinglistService, MailService
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -35,15 +36,15 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
 class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
     """Base list view to all services"""
-    service = None
+    service_class = None
     template_name = "musician/service_list.html"  # TODO move to ServiceListView
 
     def get_queryset(self):
-        if self.service_class is None or self.service_class.name is None:
+        if self.service_class is None or self.service_class.api_name is None:
             raise ImproperlyConfigured(
                 "ServiceListView requires a definiton of 'service'")
 
-        json_qs = self.orchestra.retrieve_service_list(self.service_class.name)
+        json_qs = self.orchestra.retrieve_service_list(self.service_class.api_name)
         return [self.service_class(data) for data in json_qs]
 
     def get_context_data(self, **kwargs):
@@ -68,7 +69,7 @@ class MailView(ServiceListView):
 
         # group addresses with the same mailbox
         raw_data = self.orchestra.retrieve_service_list(
-            self.service_class.name)
+            self.service_class.api_name)
         addresses = []
         for key, group in groupby(raw_data, retrieve_mailbox):
             aliases = []
