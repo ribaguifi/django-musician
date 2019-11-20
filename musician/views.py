@@ -1,4 +1,5 @@
 
+from django.views.generic.detail import DetailView
 from itertools import groupby
 
 from django.core.exceptions import ImproperlyConfigured
@@ -14,8 +15,9 @@ from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
 from .forms import LoginForm
-from .mixins import (CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin)
-from .models import DatabaseService, MailinglistService, MailService
+from .mixins import (CustomContextMixin,
+                     ExtendedPaginationMixin, UserTokenRequiredMixin)
+from .models import DatabaseService, MailinglistService, MailService, UserAccount, PaymentSource
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -34,6 +36,25 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         return context
 
 
+class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+    template_name = "musician/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        json_data = self.orchestra.retreve_profile()
+        try:
+            pay_source = self.orchestra.retrieve_service_list(
+                PaymentSource.api_name)[0]
+        except IndexError:
+            pay_source = {}
+        context.update({
+            'profile': UserAccount.new_from_json(json_data[0]),
+            'payment': PaymentSource.new_from_json(pay_source)
+        })
+
+        return context
+
+
 class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
     """Base list view to all services"""
     service_class = None
@@ -44,7 +65,8 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
             raise ImproperlyConfigured(
                 "ServiceListView requires a definiton of 'service'")
 
-        json_qs = self.orchestra.retrieve_service_list(self.service_class.api_name)
+        json_qs = self.orchestra.retrieve_service_list(
+            self.service_class.api_name)
         return [self.service_class.new_from_json(data) for data in json_qs]
 
     def get_context_data(self, **kwargs):

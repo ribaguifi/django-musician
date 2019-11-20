@@ -19,6 +19,9 @@ API_PATHS = {
     'mailbox-list': 'mailboxes/',
     'mailinglist-list': 'lists/',
     # ... TODO (@slamora) complete list of backend URLs
+
+    # other
+    'payment-source-list': 'payment-sources/',
 }
 
 

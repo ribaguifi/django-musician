@@ -39,6 +39,46 @@ class OrchestraModel:
         return c
 
 
+class BillingContact(OrchestraModel):
+    param_defaults = {
+        'name': None,
+        'address': None,
+        'city': None,
+        'zipcode': None,
+        'country': None,
+        'vat': None,
+    }
+
+
+class PaymentSource(OrchestraModel):
+    api_name = 'payment-source'
+    param_defaults = {
+        "method": None,
+        "data": [],
+        "is_active": False,
+    }
+
+
+class UserAccount(OrchestraModel):
+    api_name = 'accounts'
+    param_defaults = {
+        'username': None,
+        'type': None,
+        'language': None,
+        'short_name': None,
+        'full_name': None,
+        'billing': {},
+    }
+
+    @classmethod
+    def new_from_json(cls, data, **kwargs):
+        billing = None
+
+        if 'billcontact' in data:
+            billing = BillingContact.new_from_json(data['billcontact'])
+        return super().new_from_json(data=data, billing=billing)
+
+
 class DatabaseUser(OrchestraModel):
     api_name = 'databaseusers'
     fields = ('username',)
