@@ -57,6 +57,7 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
 
 class MailView(ServiceListView):
     service_class = MailService
+    template_name = "musician/mail.html"
 
     def get_queryset(self):
         def retrieve_mailbox(value):
@@ -79,7 +80,7 @@ class MailView(ServiceListView):
                 data = thing
 
             data['names'] = aliases
-            addresses.append(self.service_class(data))
+            addresses.append(self.service_class.new_from_json(data))
 
         return addresses
 
