@@ -34,6 +34,8 @@ class OrchestraModel:
 
         c = cls(**json_data)
         c._json = data
+        # TODO(@slamora) remove/replace by private variable to ovoid name collisions
+        c.data = data
         return c
 
 
@@ -99,6 +101,10 @@ class MailinglistService(OrchestraModel):
     api_name = 'mailinglist'
     verbose_name = 'Mailing list'
     fields = ('name', 'status', 'address_name', 'admin_email', 'configure')
+    param_defaults = {
+        'name': None,
+        'admin_email': None,
+    }
 
     @property
     def status(self):
