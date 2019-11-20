@@ -1,28 +1,69 @@
 from django.utils.html import format_html
 
 
-class Service:
+class OrchestraModel:
+    """ Base class from which all orchestra models will inherit. """
     api_name = None
     verbose_name = None
     fields = ()
+    param_defaults = {}
 
-    def __init__(self, data={}):
+    def __init__(self, **kwargs):
         if self.verbose_name is None:
             self.verbose_name = self.api_name
 
-        self.data = data
+        for (param, default) in self.param_defaults.items():
+            setattr(self, param, kwargs.get(param, default))
 
-    def get(self, key):
-        # retrieve attr of the object and if undefined get raw data
-        return getattr(self, key, self.data.get(key))
+    # def get(self, key):
+    #     # retrieve attr of the object and if undefined get raw data
+    #     return getattr(self, key, self.data.get(key))
+
+    @classmethod
+    def new_from_json(cls, data, **kwargs):
+        """ Create a new instance based on a JSON dict. Any kwargs should be
+        supplied by the inherited, calling class.
+        Args:
+            data: A JSON dict, as converted from the JSON in the orchestra API.
+        """
+
+        json_data = data.copy()
+        if kwargs:
+            for key, val in kwargs.items():
+                json_data[key] = val
+
+        c = cls(**json_data)
+        c._json = data
+        return c
 
 
-class DatabaseService(Service):
+class DatabaseUser(OrchestraModel):
+    api_name = 'databaseusers'
+    fields = ('username',)
+    param_defaults = {
+        'username': None,
+    }
+
+
+class DatabaseService(OrchestraModel):
     api_name = 'database'
     fields = ('name', 'type', 'users')
+    param_defaults = {
+        "id": None,
+        "name": None,
+        "type": None,
+        "users": None,
+    }
+
+    @classmethod
+    def new_from_json(cls, data, **kwargs):
+        users = None
+        if 'users' in data:
+            users = [DatabaseUser.new_from_json(user_data) for user_data in data['users']]
+        return super().new_from_json(data=data, users=users)
 
 
-class MailService(Service):
+class MailService(OrchestraModel):
     api_name = 'address'
     verbose_name = 'Mail'
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
@@ -54,7 +95,7 @@ class MailService(Service):
         return {'usage': 0, 'total': 213}
 
 
-class MailinglistService(Service):
+class MailinglistService(OrchestraModel):
     api_name = 'mailinglist'
     verbose_name = 'Mailing list'
     fields = ('name', 'status', 'address_name', 'admin_email', 'configure')

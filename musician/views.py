@@ -45,7 +45,7 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
                 "ServiceListView requires a definiton of 'service'")
 
         json_qs = self.orchestra.retrieve_service_list(self.service_class.api_name)
-        return [self.service_class(data) for data in json_qs]
+        return [self.service_class.new_from_json(data) for data in json_qs]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -89,6 +89,7 @@ class MailingListsView(ServiceListView):
 
 
 class DatabasesView(ServiceListView):
+    template_name = "musician/databases.html"
     service_class = DatabaseService
 
 
