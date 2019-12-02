@@ -42,3 +42,60 @@ a:hover {
     color: #fff;
     background: #6d7fcc;
 }*/
+
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+  
+    display: flex;
+    align-items: center;
+  }
+
+/** bootstrap override **/
+.btn-primary {
+    color: #fff;
+    background-color: #8DB823;
+    border-color: #8DB823;
+}
+
+.btn-primary:hover,
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #acc862;
+    border-color: #ccde98;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+}
+
+/** login **/
+#body-login .jumbotron {
+    background: #282532;/**#50466E;**/
+}
+
+#login-content {
+    background:white;
+    padding: 2rem;
+}
+
+#login-content input[type="text"].form-control,
+#login-content input[type="password"].form-control {
+    border-radius: 0;
+    border: 0;
+    border-bottom: 2px solid #8E8E8E;
+}
+
+#login-content .form-actions-no-box {
+    margin-top: 6rem;
+}
+
+#login-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+#login-footer a {
+    color: #FEFBF2;
+}
