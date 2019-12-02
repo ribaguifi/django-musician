@@ -3,7 +3,50 @@
 
 {% block content %}
 
-<h1>Section title</h1>
-<p>Little description of what to be expected...</p>
+<h1>{{ service.verbose_name }}</h1>
+<p>{{ service.description }}</p>
 
+{% for database in object_list %}
+  <div class="card">
+    <div class="card-header row">
+      <div class="col-md-8">
+        <strong>{{ database.name }}</strong>
+      </div>
+      <div class="col-md">
+        Type: <strong>{{ database.type }}</strong>
+      </div>
+      <div class="col-md text-right">
+          associated to: <strong>{{ database.domain|default:"-" }}</strong>
+        <div class="card-collapse-button d-inline-block nav-item dropdown">
+          <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+          </button>
+        </div>
+      </div>
+    </div><!-- /card-header-->
+    <div class="card-body row">
+      <div class="col-md-4">
+        <h4>Database users</h4>
+        <ul>
+        {% for user in resource.users %}
+          <li>{{ user.username }}</li>
+        {% empty %}
+          <li>No users for this database.</li>
+        {% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-2 border-left border-right">
+          <h4>Database usage</h4>
+          <div class="progress">
+              <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+          </div>
+      </div>
+      <div class="col-md-6 text-right">
+        <a class="btn btn-secondary" href="#open-phpmyadmin">Open database manager</a>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+  {% include "musician/components/paginator.html" %}
 {% endblock %}

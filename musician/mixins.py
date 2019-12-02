@@ -24,6 +24,27 @@ class CustomContextMixin(ContextMixin):
         return context
 
 
+class ExtendedPaginationMixin:
+    paginate_by = 20
+    paginate_by_kwarg = 'per_page'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'per_page_values': [5, 10, 20, 50],
+            'per_page_param': self.paginate_by_kwarg,
+        })
+        return context
+
+    def get_paginate_by(self, queryset):
+        per_page = self.request.GET.get(self.paginate_by_kwarg) or self.paginate_by
+        try:
+            paginate_by = int(per_page)
+        except ValueError:
+            paginate_by = self.paginate_by
+        return paginate_by
+
+
 class UserTokenRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         """Check that the user has an authorized token."""

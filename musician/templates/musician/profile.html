@@ -1,0 +1,51 @@
+{% extends "musician/base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<h1>Profile</h1>
+<p>Little description of what to be expected...</p>
+
+<div class="card">
+  <h5 class="card-header text-right">User information</h5>
+  <div class="card-body row">
+    <div class="col-md-4">
+      <div class="m-auto border border-secondary rounded-circle rounded-lg" style="width:125px; height:125px;">
+        {# <!-- <img class="" src="#" alt="User profile image"  /> -->#}
+      </div>
+    </div>
+    <div class="col-md-8">
+      <p class="card-text">{{ profile.username }}</p>
+      <p class="card-text">{{ profile.type }}</p>
+      <p class="card-text">Preferred language: {{ profile.language }}</p>
+    </div>
+  </div>
+</div>
+
+{% with profile.billing as contact %}
+<div class="card mt-4">
+    <h5 class="card-header text-right">Billing information</h5>
+  <div class="card-body">
+    <div class="form-group">{{ contact.name }}</div>
+    <div class="form-group">{{ contact.address }}</div>
+    <div class="form-group">
+      {{ contact.zipcode }}
+      {{ contact.city }}
+      {{ contact.country }}
+    </div>
+    <div class="form-group">
+      {{ contact.vat }}
+    </div>
+    <!-- payment method -->
+    <div class="form-group">
+      payment method: {{ payment.method }}
+    </div>
+    <div class="form-group">
+      {# TODO(@slamora) format payment method details #}
+      {{ payment.data.data }}
+    </div>
+
+  </div>
+</div>
+{% endwith %}
+{% endblock %}

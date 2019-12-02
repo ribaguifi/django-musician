@@ -1,4 +1,8 @@
 
+from django.views.generic.detail import DetailView
+from itertools import groupby
+
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -11,7 +15,9 @@ from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
 from .forms import LoginForm
-from .mixins import CustomContextMixin, UserTokenRequiredMixin
+from .mixins import (CustomContextMixin,
+                     ExtendedPaginationMixin, UserTokenRequiredMixin)
+from .models import DatabaseService, MailinglistService, MailService, UserAccount, PaymentSource
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -30,38 +36,84 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         return context
 
 
-class MailView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
-    template_name = "musician/mail.html"
+class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+    template_name = "musician/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        json_data = self.orchestra.retreve_profile()
+        try:
+            pay_source = self.orchestra.retrieve_service_list(
+                PaymentSource.api_name)[0]
+        except IndexError:
+            pay_source = {}
+        context.update({
+            'profile': UserAccount.new_from_json(json_data[0]),
+            'payment': PaymentSource.new_from_json(pay_source)
+        })
+
+        return context
 
 
-class MailingListsView(CustomContextMixin, UserTokenRequiredMixin, ListView):
-    template_name = "musician/mailinglists.html"
-    paginate_by = 20
-    paginate_by_kwarg = 'per_page'
+class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
+    """Base list view to all services"""
+    service_class = None
+    template_name = "musician/service_list.html"  # TODO move to ServiceListView
 
     def get_queryset(self):
-        return self.orchestra.retrieve_service_list('mailinglist')
+        if self.service_class is None or self.service_class.api_name is None:
+            raise ImproperlyConfigured(
+                "ServiceListView requires a definiton of 'service'")
+
+        json_qs = self.orchestra.retrieve_service_list(
+            self.service_class.api_name)
+        return [self.service_class.new_from_json(data) for data in json_qs]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'page_param': self.page_kwarg,
-            'per_page_values': [5, 10, 20, 50],
-            'per_page_param': self.paginate_by_kwarg,
+            'service': self.service_class,
         })
         return context
 
-    def get_paginate_by(self, queryset):
-        per_page = self.request.GET.get(self.paginate_by_kwarg) or self.paginate_by
-        try:
-            paginate_by = int(per_page)
-        except ValueError:
-            paginate_by = self.paginate_by
-        return paginate_by
+
+class MailView(ServiceListView):
+    service_class = MailService
+    template_name = "musician/mail.html"
+
+    def get_queryset(self):
+        def retrieve_mailbox(value):
+            mailboxes = value.get('mailboxes')
+
+            if len(mailboxes) == 0:
+                return ''
+
+            return mailboxes[0]['id']
+
+        # group addresses with the same mailbox
+        raw_data = self.orchestra.retrieve_service_list(
+            self.service_class.api_name)
+        addresses = []
+        for key, group in groupby(raw_data, retrieve_mailbox):
+            aliases = []
+            data = {}
+            for thing in group:
+                aliases.append(thing.pop('name'))
+                data = thing
+
+            data['names'] = aliases
+            addresses.append(self.service_class.new_from_json(data))
+
+        return addresses
 
 
-class DatabasesView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+class MailingListsView(ServiceListView):
+    service_class = MailinglistService
+
+
+class DatabasesView(ServiceListView):
     template_name = "musician/databases.html"
+    service_class = DatabaseService
 
 
 class SaasView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):

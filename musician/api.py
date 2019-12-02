@@ -13,9 +13,15 @@ API_PATHS = {
     'my-account': 'accounts/',
 
     # services
+    'database-list': 'databases/',
     'domain-list': 'domains/',
+    'address-list': 'addresses/',
+    'mailbox-list': 'mailboxes/',
     'mailinglist-list': 'lists/',
     # ... TODO (@slamora) complete list of backend URLs
+
+    # other
+    'payment-source-list': 'payment-sources/',
 }
 
 
