@@ -33,15 +33,6 @@ a:hover {
     font-size: 1.1em;
     display: block;
 }
-#sidebar ul li a:hover {
-    color: #777;
-    background: #efefef;
-}
-
-/*#sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
-}*/
 
 .vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
@@ -50,26 +41,6 @@ a:hover {
     display: flex;
     align-items: center;
   }
-
-/** bootstrap override **/
-.btn-primary {
-    color: #fff;
-    background-color: #8DB823;
-    border-color: #8DB823;
-}
-
-.btn-primary:hover,
-.btn-primary:not(:disabled):not(.disabled).active,
-.btn-primary:not(:disabled):not(.disabled):active,
-.show>.btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #acc862;
-    border-color: #ccde98;
-}
-
-.btn-primary.focus, .btn-primary:focus {
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-}
 
 /** login **/
 #body-login .jumbotron {
