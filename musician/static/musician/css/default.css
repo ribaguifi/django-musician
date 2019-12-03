@@ -76,3 +76,52 @@ a:hover {
 #login-footer a {
     color: #FEFBF2;
 }
+
+#content {
+    background: #ECECEB;
+    color: #343434;
+}
+
+/** services **/
+h1.service-name {
+    
+    font: Bold 26px/34px Roboto;
+    margin-top: 3rem;
+}
+
+.service-description {
+    
+    font: 16px/21px Roboto;
+}
+.service-list {
+    margin-top: 2rem;
+}
+/** TODO update theme instead of overriding **/
+.service-list thead.thead-dark th {
+    background: rgba(80, 70, 110, 0.25);
+    color: #50466E;
+    border-color: transparent;
+}
+/** /TODO **/
+
+.service-list thead.thead-dark th:first-of-type {
+    border-top-left-radius: .25rem;
+}
+
+.service-list thead.thead-dark th:last-of-type {
+    border-top-right-radius: .25rem;
+}
+
+.service-list tbody {
+    background: white;
+    color: #343434;
+}
+
+.service-list tfoot {
+    background: white;
+    color: #343434;
+}
+
+.service-list tfoot tr td {
+    padding-top: 3rem;
+}

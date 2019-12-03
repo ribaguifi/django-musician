@@ -1,4 +1,5 @@
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 
 class OrchestraModel:
@@ -107,7 +108,8 @@ class DatabaseService(OrchestraModel):
 
 class MailService(OrchestraModel):
     api_name = 'address'
-    verbose_name = 'Mail'
+    verbose_name = _('Mail addresses')
+    description = _('Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.')
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
 
     FORWARD = 'forward'
