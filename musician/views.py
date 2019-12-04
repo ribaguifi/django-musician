@@ -109,6 +109,7 @@ class MailView(ServiceListView):
 
 class MailingListsView(ServiceListView):
     service_class = MailinglistService
+    template_name = "musician/mailinglists.html"
 
 
 class DatabasesView(ServiceListView):

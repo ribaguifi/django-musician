@@ -146,7 +146,8 @@ class MailService(OrchestraModel):
 
 class MailinglistService(OrchestraModel):
     api_name = 'mailinglist'
-    verbose_name = 'Mailing list'
+    verbose_name = _('Mailing list')
+    description = _('Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.')
     fields = ('name', 'status', 'address_name', 'admin_email', 'configure')
     param_defaults = {
         'name': None,
