@@ -26,7 +26,20 @@
             <td>{{ obj.mail_address }}</td>
             <td>{{ obj.aliases|join:" , " }}</td>
             <td>{{ obj.type|capfirst }}</td>
-            <td>{{ obj.type_detail }}</td>
+            <td>
+                {% if obj.type == 'mailbox' %}
+                {% with obj.type_detail as detail %}
+                <div class="text-center">
+                    {{ detail.usage }} of {{ detail.total }}{{ detail.unit }}
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-secondary w-{{ detail.percent }}" role="progressbar" aria-valuenow="{{ detail.usage }}" aria-valuemin="0" aria-valuemax="{{ detail.total }}"></div>
+                </div>
+                {% endwith %}
+                {% else %}
+                {{ obj.type_detail }}
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>

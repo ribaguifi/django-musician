@@ -136,7 +136,12 @@ class MailService(OrchestraModel):
         if self.type == self.FORWARD:
             return self.data['forward']
         # TODO(@slamora) retrieve mailbox usage
-        return {'usage': 0, 'total': 213}
+        return {
+            'usage': 250,
+            'total': 500,
+            'unit': 'MB',
+            'percent': 50,
+        }
 
 
 class MailinglistService(OrchestraModel):
