@@ -98,7 +98,8 @@ h1.service-name {
     table-layout: fixed;
 }
 /** TODO update theme instead of overriding **/
-.service-list thead.thead-dark th {
+.service-list thead.thead-dark th,
+.service-card .card-header {
     background: rgba(80, 70, 110, 0.25);
     color: #50466E;
     border-color: transparent;
@@ -137,4 +138,33 @@ h1.service-name {
 
 .service-list tfoot tr td {
     padding-top: 3rem;
+}
+
+.service-card {
+    margin-bottom: 3rem;
+}
+
+.service-card .card-body h4 {
+    color: #50466E;
+    font-weight: bold;
+}
+
+.service-card .card-body {
+    color: #787878;
+
+}
+
+.service-card .card-body i.fas {
+    color:#9C9AA7;
+}
+
+.service-manager-link {
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+}
+
+.service-card .service-manager-link a,
+.service-card .service-manager-link a i.fas {
+    color: white;
 }

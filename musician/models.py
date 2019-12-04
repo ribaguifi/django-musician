@@ -90,12 +90,14 @@ class DatabaseUser(OrchestraModel):
 
 class DatabaseService(OrchestraModel):
     api_name = 'database'
+    verbose_name = _('Databases')
     fields = ('name', 'type', 'users')
     param_defaults = {
         "id": None,
         "name": None,
         "type": None,
         "users": None,
+        "usage": {},
     }
 
     @classmethod
@@ -103,7 +105,16 @@ class DatabaseService(OrchestraModel):
         users = None
         if 'users' in data:
             users = [DatabaseUser.new_from_json(user_data) for user_data in data['users']]
-        return super().new_from_json(data=data, users=users)
+
+        # TODO(@slamora) retrieve database usage
+        usage = {
+            'usage': 250,
+            'total': 500,
+            'unit': 'MB',
+            'percent': 50,
+        }
+
+        return super().new_from_json(data=data, users=users, usage=usage)
 
 
 class MailService(OrchestraModel):
