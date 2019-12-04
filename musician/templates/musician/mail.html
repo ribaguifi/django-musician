@@ -6,6 +6,12 @@
 <h1 class="service-name">{{ service.verbose_name }}</h1>
 <p class="service-description">{{ service.description }}</p>
 <table class="table service-list">
+    <colgroup>
+        <col span="1" style="width: 25%;">
+        <col span="1" style="width: 50%;">
+        <col span="1" style="width: 5%;">
+        <col span="1" style="width: 20%;">
+    </colgroup>
     <thead class="thead-dark">
         <tr>
             <th scope="col">{% trans "Mail address" %}</th>

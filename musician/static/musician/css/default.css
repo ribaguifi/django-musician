@@ -93,8 +93,9 @@ h1.service-name {
     
     font: 16px/21px Roboto;
 }
-.service-list {
+.table.service-list {
     margin-top: 2rem;
+    table-layout: fixed;
 }
 /** TODO update theme instead of overriding **/
 .service-list thead.thead-dark th {
@@ -103,6 +104,10 @@ h1.service-name {
     border-color: transparent;
 }
 /** /TODO **/
+.table.service-list td,
+.table.service-list th {
+    vertical-align: middle;
+}
 
 .service-list thead.thead-dark th:first-of-type {
     border-top-left-radius: .25rem;
@@ -110,6 +115,14 @@ h1.service-name {
 
 .service-list thead.thead-dark th:last-of-type {
     border-top-right-radius: .25rem;
+}
+
+.service-list tfoot td:first-of-type {
+    border-bottom-left-radius: .25rem;
+}
+
+.service-list tfoot td:last-of-type {
+    border-bottom-right-radius: .25rem;
 }
 
 .service-list tbody {
