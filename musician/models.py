@@ -178,3 +178,15 @@ class MailinglistService(OrchestraModel):
     def configure(self):
         # TODO(@slamora): build mailtran absolute URL
         return format_html('<a href="#TODO">Mailtrain</a>')
+
+
+class SaasService(OrchestraModel):
+    api_name = 'saas'
+    verbose_name = _('Software as a Service (SaaS)')
+    description = _('Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.')
+    param_defaults = {
+        'name': None,
+        'service': None,
+        'is_active': True,
+        'data': {},
+    }
