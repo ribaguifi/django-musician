@@ -3,7 +3,41 @@
 
 {% block content %}
 
-<h1>Section title</h1>
-<p>Little description of what to be expected...</p>
+<h1 class="service-name">{{ service.verbose_name }}</h1>
+<p class="service-description">{{ service.description }}</p>
+
+{% for saas in object_list %}
+  <div class="card service-card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-8">
+          <strong>{{ saas.name }}</strong>
+        </div>
+        <div class="col-md text-right">
+            {% trans "Installed on" %}: <strong>{{ saas.domain|default:"-" }}</strong>
+        </div>
+      </div>
+    </div><!-- /card-header-->
+    <div class="card-body row">
+        <div class="col-md-4">
+          <h4>{{ saas.service|capfirst }}</h4>
+          <p class="text-center service-brand"><i class="fab fa-{{ saas.service }} fa-10x"></i></p>
+        </div>
+        <div class="col-md-3 border-left border-right">
+            <h4>{% trans "Service info" %}</h4>
+            <p>{% trans "Active" %}: {{ saas.is_active|yesno }}</p>
+            {# TODO (@slamora): implement saas details #}
+            <pre>
+                {{ saas.data }}
+            </pre>
+        </div>
+        <div class="col-md-5 text-right">
+          <div class="service-manager-link">
+            <a class="btn btn-primary" href="#open-service">{% trans "Open service admin panel" %} <i class="fas fa-external-link-alt"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endfor %}
 
 {% endblock %}

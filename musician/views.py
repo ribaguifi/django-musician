@@ -1,5 +1,4 @@
 
-from django.views.generic.detail import DetailView
 from itertools import groupby
 
 from django.core.exceptions import ImproperlyConfigured
@@ -8,6 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import is_safe_url
 from django.views.generic.base import RedirectView, TemplateView
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
@@ -15,9 +15,10 @@ from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
 from .forms import LoginForm
-from .mixins import (CustomContextMixin,
-                     ExtendedPaginationMixin, UserTokenRequiredMixin)
-from .models import DatabaseService, MailinglistService, MailService, UserAccount, PaymentSource
+from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
+                     UserTokenRequiredMixin)
+from .models import (DatabaseService, MailinglistService, MailService,
+                     PaymentSource, SaasService, UserAccount)
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -135,7 +136,8 @@ class DatabasesView(ServiceListView):
     service_class = DatabaseService
 
 
-class SaasView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
+class SaasView(ServiceListView):
+    service_class = SaasService
     template_name = "musician/saas.html"
 
 

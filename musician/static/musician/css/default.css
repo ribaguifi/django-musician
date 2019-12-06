@@ -168,3 +168,7 @@ h1.service-name {
 .service-card .service-manager-link a i.fas {
     color: white;
 }
+
+.service-card .card-body .service-brand i.fab {
+    color: #9C9AA7;
+}
