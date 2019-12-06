@@ -36,6 +36,24 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         return context
 
 
+class BillingView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
+    template_name = "musician/billing.html"
+
+    def get_queryset(self):
+        # TODO (@slamora) retrieve user bills
+        from django.utils import timezone
+        return [
+            {
+                'number': 24,
+                'date': timezone.now(),
+                'type': 'subscription',
+                'total_amount': '25,00 €',
+                'status': 'paid',
+                'pdf_url': 'https://example.org/bill.pdf'
+            },
+        ]
+
+
 class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
     template_name = "musician/profile.html"
 
