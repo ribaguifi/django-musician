@@ -55,16 +55,22 @@
       {% endfor %}
       {# <!-- user profile menu --> #}
       <div class="dropdown-divider mt-5"></div>
-      <ul class="nav flex-column">
-          <li class="nav-item">
-              <a href="#profile" class="nav-link text-light">
-                  <img id="user-avatar" class="float-right" width="64" height="64" src="{% static "musician/images/default-profile-picture.png" %}" alt="user-profile-picture"/>
-                <strong>{{ user.username|default:"Username" }}</strong><br/>
-                <i class="fas fa-cog"></i> Settings
 
-              </a>
-          </li>
-          <div class="dropdown-divider"></div>
+      <div class="dropdown dropright">
+        <button type="button" class="btn btn-primary nav-link text-light w-100" data-toggle="dropdown">
+          <img id="user-avatar" class="float-right" width="64" height="64" src="{% static "musician/images/default-profile-picture.png" %}" alt="user-profile-picture"/>
+            <strong>{{ user.username|default:"Username" }}</strong><br/>
+            <i class="fas fa-cog"></i> Settings
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{% url 'musician:profile' %}"><i class="fas fa-user-circle"></i> {% trans 'Profile' %}</a>
+          <a class="dropdown-item" href="{% url 'musician:billing' %}"><i class="fas fa-receipt"></i> {% trans 'Billing' %}</a>
+        </div>
+      </div>
+
+      <div class="dropdown-divider"></div>
+
+          <ul class="nav flex-column">
           <li class="nav-item text-right">
             <a class="nav-link text-light" href="{% url 'musician:logout' %}">
               {% trans 'Log out' %}
