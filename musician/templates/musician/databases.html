@@ -3,45 +3,45 @@
 
 {% block content %}
 
-<h1>{{ service.verbose_name }}</h1>
-<p>{{ service.description }}</p>
+<h1 class="service-name">{{ service.verbose_name }}</h1>
+<p class="service-description">{{ service.description }}</p>
 
 {% for database in object_list %}
-  <div class="card">
-    <div class="card-header row">
-      <div class="col-md-8">
-        <strong>{{ database.name }}</strong>
-      </div>
-      <div class="col-md">
-        Type: <strong>{{ database.type }}</strong>
-      </div>
-      <div class="col-md text-right">
-          associated to: <strong>{{ database.domain|default:"-" }}</strong>
-        <div class="card-collapse-button d-inline-block nav-item dropdown">
-          <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-          </button>
+  <div class="card service-card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-8">
+          <strong>{{ database.name }}</strong>
+        </div>
+        <div class="col-md">
+          {% trans "Type" %}: <strong>{{ database.type }}</strong>
+        </div>
+        <div class="col-md text-right">
+            {% trans "associated to" %}: <strong>{{ database.domain|default:"-" }}</strong>
         </div>
       </div>
     </div><!-- /card-header-->
     <div class="card-body row">
       <div class="col-md-4">
         <h4>Database users</h4>
-        <ul>
-        {% for user in resource.users %}
-          <li>{{ user.username }}</li>
+        <ul class="list-unstyled pl-2">
+        {% for user in database.users %}
+          {# TODO(@slamora) render in two columns #}
+          <li><span class="d-inline-block w-25">{{ user.username }}</span> <i class="fas fa-user-edit"></i></li>
         {% empty %}
-          <li>No users for this database.</li>
+          <li>{% trans "No users for this database." %}</li>
         {% endfor %}
         </ul>
       </div>
-      <div class="col-md-2 border-left border-right">
+      <div class="col-md-3 border-left border-right">
           <h4>Database usage</h4>
-          <div class="progress">
-              <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-          </div>
+          <p class="text-center"><i class="fas fa-database fa-3x"></i></p>
+          {% include "musician/components/usage_progress_bar.html" with detail=database.usage %}
       </div>
-      <div class="col-md-6 text-right">
-        <a class="btn btn-secondary" href="#open-phpmyadmin">Open database manager</a>
+      <div class="col-md-5 text-right">
+        <div class="service-manager-link">
+          <a class="btn btn-primary" href="#open-phpmyadmin">{% trans "Open database manager" %} <i class="fas fa-external-link-alt"></i></a>
+        </div>
       </div>
     </div>
   </div>

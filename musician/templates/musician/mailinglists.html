@@ -3,10 +3,17 @@
 
 {% block content %}
 
-<h1>Mailing lists</h1>
-<p>Little description of what to be expected...</p>
+<h1 class="service-name">{{ service.verbose_name }}</h1>
+<p class="service-description">{{ service.description }}</p>
 
-<table class="table table-hover">
+<table class="table service-list">
+    <colgroup>
+      <col span="1" style="width: 13%;">
+      <col span="1" style="width: 12%;">
+      <col span="1" style="width: 50%;">
+      <col span="1" style="width: 15%;">
+      <col span="1" style="width: 10%;">
+  </colgroup>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Name</th>
@@ -20,8 +27,8 @@
     {% for resource in object_list %}
     <tr>
       <th scope="row">{{ resource.name }}</th>
-      <td>{{ resource.status }}</td>
-      <td>{{ resource.address_name}}@{{ resource.address_domain.name }}</td>
+      <td class="text-primary font-weight-bold">{{ resource.status|capfirst }}</td>
+      <td>{{ resource.address_name}}</td>
       <td>{{ resource.admin_email }}</td>
       <td><a href="#TODO-{{ resource.manager_url }}" target="_blank" rel="noopener noreferrer">Mailtrain</a></td>
     </tr>

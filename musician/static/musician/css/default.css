@@ -33,15 +33,12 @@ a:hover {
     font-size: 1.1em;
     display: block;
 }
-#sidebar ul li a:hover {
-    color: #777;
-    background: #efefef;
-}
 
-/*#sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
-}*/
+#sidebar #user-avatar {
+    border: 2px solid white;
+    border-radius: 100%;
+    padding: 1px;
+}
 
 .vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
@@ -50,26 +47,6 @@ a:hover {
     display: flex;
     align-items: center;
   }
-
-/** bootstrap override **/
-.btn-primary {
-    color: #fff;
-    background-color: #8DB823;
-    border-color: #8DB823;
-}
-
-.btn-primary:hover,
-.btn-primary:not(:disabled):not(.disabled).active,
-.btn-primary:not(:disabled):not(.disabled):active,
-.show>.btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #acc862;
-    border-color: #ccde98;
-}
-
-.btn-primary.focus, .btn-primary:focus {
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-}
 
 /** login **/
 #body-login .jumbotron {
@@ -98,4 +75,100 @@ a:hover {
 }
 #login-footer a {
     color: #FEFBF2;
+}
+
+#content {
+    background: #ECECEB;
+    color: #343434;
+}
+
+/** services **/
+h1.service-name {
+    
+    font: Bold 26px/34px Roboto;
+    margin-top: 3rem;
+}
+
+.service-description {
+    
+    font: 16px/21px Roboto;
+}
+.table.service-list {
+    margin-top: 2rem;
+    table-layout: fixed;
+}
+/** TODO update theme instead of overriding **/
+.service-list thead.thead-dark th,
+.service-card .card-header {
+    background: rgba(80, 70, 110, 0.25);
+    color: #50466E;
+    border-color: transparent;
+}
+/** /TODO **/
+.table.service-list td,
+.table.service-list th {
+    vertical-align: middle;
+}
+
+.service-list thead.thead-dark th:first-of-type {
+    border-top-left-radius: .25rem;
+}
+
+.service-list thead.thead-dark th:last-of-type {
+    border-top-right-radius: .25rem;
+}
+
+.service-list tfoot td:first-of-type {
+    border-bottom-left-radius: .25rem;
+}
+
+.service-list tfoot td:last-of-type {
+    border-bottom-right-radius: .25rem;
+}
+
+.service-list tbody {
+    background: white;
+    color: #343434;
+}
+
+.service-list tfoot {
+    background: white;
+    color: #343434;
+}
+
+.service-list tfoot tr td {
+    padding-top: 3rem;
+}
+
+.service-card {
+    margin-bottom: 3rem;
+}
+
+.service-card .card-body h4 {
+    color: #50466E;
+    font-weight: bold;
+}
+
+.service-card .card-body {
+    color: #787878;
+
+}
+
+.service-card .card-body i.fas {
+    color:#9C9AA7;
+}
+
+.service-manager-link {
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+}
+
+.service-card .service-manager-link a,
+.service-card .service-manager-link a i.fas {
+    color: white;
+}
+
+.service-card .card-body .service-brand i.fab {
+    color: #9C9AA7;
 }

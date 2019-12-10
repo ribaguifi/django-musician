@@ -16,8 +16,12 @@
   {% block style %}
   {% block bootstrap_theme %}
   <link rel="stylesheet" type="text/css" href="{% static "musician/css/bootstrap.min.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "musician/css/theme.min.css" %}" />
   {% endblock %}
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
+
+  <link rel="stylesheet" href="{% static "musician/fontawesome/css/all.min.css" %}" />
   <link rel="stylesheet" type="text/css" href="{% static "musician/css/default.css" %}" />
   {% if code_style %}<style>
     {{ code_style }}
@@ -31,29 +35,47 @@
 
 <body class="{% block bodyclass %}{% endblock %}">
   <div class="wrapper">
-    <nav id="sidebar" class="border-right pt-4">
+    <nav id="sidebar" class="bg-primary border-right pt-4">
       {% block sidebar %}
       {# <!-- branding --> #}
-      <h3>Pangea logotipo</h3>
-      <h4>{{ version }}</h4>
+      <img class="img-fluid" src="{% static 'musician/images/logo-pangea-monocrome-white.png' %}"
+        alt="Pangea.org - Internet etic i solidari" />
+      <span class="text-light d-block text-right">{{ version }}</span>
       <div class="dropdown-divider"></div>
       {# <!-- services menu --> #}
       {% for item in services_menu %}
       <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="{% url item.pattern_name %}">{{ item.title }}</a>
+            <a class="nav-link text-light active" href="{% url item.pattern_name %}">
+              <i class="fas fa-{{ item.icon }}"></i>
+              {{ item.title }}
+            </a>
           </li>
       </ul>
       {% endfor %}
       {# <!-- user profile menu --> #}
       <div class="dropdown-divider mt-5"></div>
-      <ul class="nav flex-column">
-          <li class="nav-item">
-              <a href="#profile" class="nav-link">{{ user.username }} <img alt="user-profile-picture" src="{% static "musician/img/default-profile-picture.png" %}" /></a>
-          </li>
-          <div class="dropdown-divider"></div>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'musician:logout' %}">{% trans 'Log out' %}</a>
+
+      <div class="dropdown dropright">
+        <button type="button" class="btn btn-primary nav-link text-light w-100" data-toggle="dropdown">
+          <img id="user-avatar" class="float-right" width="64" height="64" src="{% static "musician/images/default-profile-picture.png" %}" alt="user-profile-picture"/>
+            <strong>{{ user.username|default:"Username" }}</strong><br/>
+            <i class="fas fa-cog"></i> Settings
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{% url 'musician:profile' %}"><i class="fas fa-user-circle"></i> {% trans 'Profile' %}</a>
+          <a class="dropdown-item" href="{% url 'musician:billing' %}"><i class="fas fa-receipt"></i> {% trans 'Billing' %}</a>
+        </div>
+      </div>
+
+      <div class="dropdown-divider"></div>
+
+          <ul class="nav flex-column">
+          <li class="nav-item text-right">
+            <a class="nav-link text-light" href="{% url 'musician:logout' %}">
+              {% trans 'Log out' %}
+              <i class="fas fa-power-off"></i>
+            </a>
           </li>
         </ul>
     

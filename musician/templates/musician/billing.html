@@ -1,0 +1,44 @@
+{% extends "musician/base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<h1 class="service-name">{% trans "Billing" %}</h1>
+<p class="service-description">Little description of what to be expected...</p>
+
+<table class="table service-list">
+  <colgroup>
+    <col span="1" style="width: 15%;">
+    <col span="1" style="width: 15%;">
+    <col span="1" style="width: 40%;">
+    <col span="1" style="width: 10%;">
+    <col span="1" style="width: 10%;">
+    <col span="1" style="width: 10%;">
+</colgroup>
+<thead class="thead-dark">
+  <tr>
+    <th scope="col">Number</th>
+    <th scope="col">Bill date</th>
+    <th scope="col">Type</th>
+    <th scope="col">Total</th>
+    <th scope="col">Status</th>
+    <th scope="col">Download PDF</th>
+  </tr>
+</thead>
+<tbody>
+  {% for bill in object_list %}
+  <tr>
+    <th scope="row">{{ bill.number }}</th>
+    <td>{{ bill.date|date:"SHORT_DATE_FORMAT" }}</td>
+    <td>{{ bill.type }}</td>
+    <td>{{ bill.total_amount }}</td>
+    <td class="font-weight-bold">{{ bill.status }}</td>
+    <td><a class="text-dark" href="{{ bill.pdf_url }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf"></i></a></td>
+  </tr>
+  {% endfor %}
+</tbody>
+{# TODO: define proper colspan #}
+{% include "musician/components/table_paginator.html" %}
+</table>
+
+{% endblock %}
