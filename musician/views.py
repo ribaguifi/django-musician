@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import is_safe_url
+from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
@@ -30,8 +31,37 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         # TODO retrieve all data needed from orchestra
         raw_domains = self.orchestra.retrieve_service_list('domain')
 
+        # TODO(@slamora) update when backend provides resource usage data
+        resource_usage = {
+            'disk': {
+                'verbose_name': _('Disk usage'),
+                'usage': 534,
+                'total': 1024,
+                'unit': 'MB',
+                'percent': 50,
+            },
+            'traffic': {
+                'verbose_name': _('Traffic'),
+                'usage': 300,
+                'total': 2048,
+                'unit': 'MB/month',
+                'percent': 25,
+            },
+            'mailbox': {
+                'verbose_name': _('Mailbox usage'),
+                'usage': 1,
+                'total': 2,
+                'unit': 'accounts',
+                'percent': 50,
+            },
+        }
+        # TODO(@slamora) update when backend supports notifications
+        notifications = []
+
         context.update({
-            'domains': raw_domains
+            'domains': raw_domains,
+            'resource_usage': resource_usage,
+            'notifications': notifications,
         })
 
         return context
