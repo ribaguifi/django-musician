@@ -1,0 +1,126 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-10 10:53+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: models.py:93
+msgid "Databases"
+msgstr ""
+
+#: models.py:122
+msgid "Mail addresses"
+msgstr ""
+
+#: models.py:123 models.py:161 models.py:186
+msgid ""
+"Litle description of what to be expected in this section to aid the user. "
+"Even a link to more help if there is one available."
+msgstr ""
+
+#: models.py:160
+msgid "Mailing list"
+msgstr ""
+
+#: models.py:185
+msgid "Software as a Service (SaaS)"
+msgstr ""
+
+#: templates/auth/login.html:59
+msgid "Log in"
+msgstr ""
+
+#: templates/auth/login.html:67
+msgid "Forgot your password? Click here to recover"
+msgstr "¿Has olvidado tu contraseña? Haz clic aquí para recuperarla"
+
+#: templates/auth/login.html:77
+msgid "Forgot your password?"
+msgstr "¿Has olvidado tu contraseña?"
+
+#: templates/auth/login.html:83
+#, python-format
+msgid ""
+"Send an email to <a href=\"mailto:%(support_email)s\">%(support_email)s</a> "
+"including your username and we will provide instructions."
+msgstr ""
+"Envía un correo a <a href=\"mailto:%(support_email)s\">%(support_email)s</a> "
+"indicando tu nombre de usuaria/o y te explicaremos qué hacer."
+
+#: templates/musician/base.html:66
+msgid "Profile"
+msgstr ""
+
+#: templates/musician/base.html:67 templates/musician/billing.html:6
+msgid "Billing"
+msgstr ""
+
+#: templates/musician/base.html:76
+msgid "Log out"
+msgstr ""
+
+#: templates/musician/components/table_paginator.html:15
+msgid "Previous"
+msgstr ""
+
+#: templates/musician/components/table_paginator.html:29
+msgid "Next"
+msgstr ""
+
+#: templates/musician/databases.html:17 templates/musician/mail.html:19
+msgid "Type"
+msgstr ""
+
+#: templates/musician/databases.html:20
+msgid "associated to"
+msgstr ""
+
+#: templates/musician/databases.html:32
+msgid "No users for this database."
+msgstr ""
+
+#: templates/musician/databases.html:43
+msgid "Open database manager"
+msgstr ""
+
+#: templates/musician/mail.html:17
+msgid "Mail address"
+msgstr ""
+
+#: templates/musician/mail.html:18
+msgid "Aliases"
+msgstr ""
+
+#: templates/musician/mail.html:20
+msgid "Type details"
+msgstr ""
+
+#: templates/musician/saas.html:17
+msgid "Installed on"
+msgstr ""
+
+#: templates/musician/saas.html:27
+msgid "Service info"
+msgstr ""
+
+#: templates/musician/saas.html:28
+msgid "Active"
+msgstr ""
+
+#: templates/musician/saas.html:36
+msgid "Open service admin panel"
+msgstr ""
