@@ -4,6 +4,9 @@ import urllib.parse
 from django.conf import settings
 from django.urls.exceptions import NoReverseMatch
 
+from .models import UserAccount
+
+
 DOMAINS_PATH = 'domains/'
 TOKEN_PATH = '/api-token-auth/'
 
@@ -75,9 +78,12 @@ class Orchestra(object):
         _, output = self.request("GET", pattern_name)
         return output
 
-    def retreve_profile(self):
-        _, output = self.request("GET", 'my-account')
-        return output
+    def retrieve_profile(self):
+        status, output = self.request("GET", 'my-account')
+        if status >= 400:
+            raise PermissionError("Cannot retrieve profile of an anonymous user.")
+        return UserAccount.new_from_json(output[0])
+
 
     def verify_credentials(self):
         """

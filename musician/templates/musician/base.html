@@ -59,7 +59,7 @@
       <div class="dropdown dropright">
         <button type="button" class="btn btn-primary nav-link text-light w-100" data-toggle="dropdown">
           <img id="user-avatar" class="float-right" width="64" height="64" src="{% static "musician/images/default-profile-picture.png" %}" alt="user-profile-picture"/>
-            <strong>{{ user.username|default:"Username" }}</strong><br/>
+            <strong>{{ profile.username }}</strong><br/>
             <i class="fas fa-cog"></i> Settings
         </button>
         <div class="dropdown-menu">

@@ -60,14 +60,12 @@ class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        json_data = self.orchestra.retreve_profile()
         try:
             pay_source = self.orchestra.retrieve_service_list(
                 PaymentSource.api_name)[0]
         except IndexError:
             pay_source = {}
         context.update({
-            'profile': UserAccount.new_from_json(json_data[0]),
             'payment': PaymentSource.new_from_json(pay_source)
         })
 
