@@ -55,6 +55,15 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
                 'percent': 50,
             },
         }
+
+        for domain in raw_domains:
+            domain['usage'] = {
+                'usage': 300,
+                'total': 650,
+                'unit': 'MB',
+                'percent': 50,
+            }
+
         # TODO(@slamora) update when backend supports notifications
         notifications = []
 

@@ -32,22 +32,56 @@
 <p class="service-description">Little description of what to be expected...</p>
 
 {% for domain in domains %}
-<div class="row border mt-4">
-  <div class="col-12 bg-light">
-    <h3>{{ domain.name }}</h3>
-  </div>
-  {% for service in "123"|make_list %}
-  <div class="card" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">{% cycle 'Mail' 'Mailing list' 'Databases' %}</h5>
+<div class="card service-card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md">
+        <strong>{{ domain.name }}</strong>
+      </div>
+      <div class="col-md-8">
+        {% trans "view configuration" %} <strong class="fas fa-tools"></strong>
+      </div>
+      <div class="col-md text-right">
+          {% trans "Expiration date" %}: <strong>{{ domain.expiration_date|date:"SHORT_DATE_FORMAT" }}</strong>
+      </div>
     </div>
-    <img class="card-img-bottom" src="..." alt="Card image cap">
-    <div class="card-body">
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-        content.</p>
-    </div>
+  </div><!-- /card-header-->
+  <div class="card-body row text-center">
+      <div class="col-md-2 border-right">
+          <h4>{% trans "Mail" %}</h4>
+          <p class="card-text"><i class="fas fa-envelope fa-3x"></i></p>
+          <p class="card-text text-dark">
+            3 mail addresses created<br/>
+            <span class="text-warning">1 mail address left</span>
+          </p>
+      </div>
+      <div class="col-md-2 border-right">
+          <h4>{% trans "Mail list" %}</h4>
+          <p class="card-text"><i class="fas fa-mail-bulk fa-3x"></i></p>
+      </div>
+      <div class="col-md-2 border-right">
+          <h4>{% trans "Databases" %}</h4>
+          <p class="card-text"><i class="fas fa-database fa-3x"></i></p>
+          <p class="card-text text-dark">
+            1 database created<br/>
+            20 MB of 45MB
+          </p>
+      </div>
+      <div class="col-md-2 border-right">
+          <h4>{% trans "Software as a Service" %}</h4>
+          <p class="card-text"><i class="fas fa-fire fa-3x"></i></p>
+          <p class="card-text text-dark">Nothing installed</p>
+      </div>
+      <div class="col-md-4">
+          <h4>{% trans "Disk usage" %}</h4>
+          <p class="card-text"><i class="fas fa-hdd fa-3x"></i></p>
+          <div class="w-75 m-auto">
+          {% include "musician/components/usage_progress_bar.html" with detail=domain.usage %}
+          </div>
+      </div>
   </div>
-  {% endfor card %}
 </div>
+
 {% endfor %}
+
 {% endblock %}
