@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import is_safe_url
+from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
@@ -19,6 +20,7 @@ from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
 from .models import (DatabaseService, MailinglistService, MailService,
                      PaymentSource, SaasService, UserAccount)
+from .settings import ALLOWED_RESOURCES
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -26,12 +28,56 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        domains = self.orchestra.retrieve_domain_list()
 
-        # TODO retrieve all data needed from orchestra
-        raw_domains = self.orchestra.retrieve_service_list('domain')
+        # TODO(@slamora) update when backend provides resource usage data
+        resource_usage = {
+            'disk': {
+                'verbose_name': _('Disk usage'),
+                'usage': 534,
+                'total': 1024,
+                'unit': 'MB',
+                'percent': 50,
+            },
+            'traffic': {
+                'verbose_name': _('Traffic'),
+                'usage': 300,
+                'total': 2048,
+                'unit': 'MB/month',
+                'percent': 25,
+            },
+            'mailbox': {
+                'verbose_name': _('Mailbox usage'),
+                'usage': 1,
+                'total': 2,
+                'unit': 'accounts',
+                'percent': 50,
+            },
+        }
+
+        # TODO(@slamora) update when backend supports notifications
+        notifications = []
+
+        # show resource usage based on plan definition
+        # TODO(@slamora): validate concept of limits with Pangea
+        profile_type = context['profile'].type
+        for domain in domains:
+            address_left = ALLOWED_RESOURCES[profile_type]['mailbox'] - len(domain.mails)
+            alert = None
+            if address_left == 1:
+                alert = 'warning'
+            elif address_left < 1:
+                alert = 'danger'
+
+            domain.address_left = {
+                'count': address_left,
+                'alert': alert,
+            }
 
         context.update({
-            'domains': raw_domains
+            'domains': domains,
+            'resource_usage': resource_usage,
+            'notifications': notifications,
         })
 
         return context
@@ -60,14 +106,12 @@ class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        json_data = self.orchestra.retreve_profile()
         try:
             pay_source = self.orchestra.retrieve_service_list(
                 PaymentSource.api_name)[0]
         except IndexError:
             pay_source = {}
         context.update({
-            'profile': UserAccount.new_from_json(json_data[0]),
             'payment': PaymentSource.new_from_json(pay_source)
         })
 
