@@ -27,9 +27,7 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # TODO retrieve all data needed from orchestra
-        raw_domains = self.orchestra.retrieve_service_list('domain')
+        domains = self.orchestra.retrieve_domain_list()
 
         # TODO(@slamora) update when backend provides resource usage data
         resource_usage = {
@@ -56,19 +54,11 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
             },
         }
 
-        for domain in raw_domains:
-            domain['usage'] = {
-                'usage': 300,
-                'total': 650,
-                'unit': 'MB',
-                'percent': 50,
-            }
-
         # TODO(@slamora) update when backend supports notifications
         notifications = []
 
         context.update({
-            'domains': raw_domains,
+            'domains': domains,
             'resource_usage': resource_usage,
             'notifications': notifications,
         })

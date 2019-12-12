@@ -54,7 +54,7 @@
           <h4>{% trans "Mail" %}</h4>
           <p class="card-text"><i class="fas fa-envelope fa-3x"></i></p>
           <p class="card-text text-dark">
-            3 mail addresses created<br/>
+            {{ domain.mails|length }} {% trans "mail addresses created" %}<br/>
             <span class="text-warning">1 mail address left</span>
           </p>
       </div>
@@ -66,8 +66,13 @@
           <h4>{% trans "Databases" %}</h4>
           <p class="card-text"><i class="fas fa-database fa-3x"></i></p>
           <p class="card-text text-dark">
-            1 database created<br/>
+            0 {% trans "databases created" %}
+            {% comment %}
+            <!-- TODO databases related to a domain and resource usage
+            {{ domain.databases|length }} {% trans "databases created" %}<br/>
             20 MB of 45MB
+            -->
+            {% endcomment %}
           </p>
       </div>
       <div class="col-md-2 border-right">
