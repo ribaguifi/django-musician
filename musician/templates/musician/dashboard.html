@@ -39,7 +39,10 @@
         <strong>{{ domain.name }}</strong>
       </div>
       <div class="col-md-8">
-        {% trans "view configuration" %} <strong class="fas fa-tools"></strong>
+        <button type="button" class="btn text-secondary" data-toggle="modal" data-target="#configDetailsModal"
+          data-domain="{{ domain.name }}" data-username="john" data-password="s3cre3t" data-root="/domainname/">
+            {% trans "view configuration" %} <strong class="fas fa-tools"></strong>
+        </button>
       </div>
       <div class="col-md text-right">
           {% trans "Expiration date" %}: <strong>{{ domain.expiration_date|date:"SHORT_DATE_FORMAT" }}</strong>
@@ -84,4 +87,44 @@
 
 {% endfor %}
 
+<!-- configuration details modal -->
+<div class="modal fade" id="configDetailsModal" tabindex="-1" role="dialog" aria-labelledby="configDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-secondary" id="configDetailsModalLabel">Configuration details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6 class="pl-4 mb-4">{% trans "FTP access:" %}</h6>
+          <div class="">
+            <p>
+              <label>{% trans "Username" %}:</label> <span id="config-username" class="font-weight-bold">username</span><br/>
+              <label>{% trans "Password:" %}</label> <span id="config-password" class="font-weight-bold">password</span>
+            </p>
+            <p class="border-top pt-3"><label>Root directory:</label> <span id="config-root" class="font-weight-bold">root directory</span></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">{% trans "View DNS records" %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block extrascript %}
+<script>
+$('#configDetailsModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget); // Button that triggered the modal
+  var modal = $(this);
+
+  // Extract info from data-* attributes
+  modal.find('.modal-title').text(button.data('domain'));
+  modal.find('.modal-body #config-username').text(button.data('username'));
+  modal.find('.modal-body #config-password').text(button.data('password'));
+  modal.find('.modal-body #config-root').text(button.data('root'));
+})
+</script>
 {% endblock %}
