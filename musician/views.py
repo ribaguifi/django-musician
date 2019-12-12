@@ -20,6 +20,7 @@ from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
 from .models import (DatabaseService, MailinglistService, MailService,
                      PaymentSource, SaasService, UserAccount)
+from .settings import ALLOWED_RESOURCES
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -56,6 +57,22 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
         # TODO(@slamora) update when backend supports notifications
         notifications = []
+
+        # show resource usage based on plan definition
+        # TODO(@slamora): validate concept of limits with Pangea
+        profile_type = context['profile'].type
+        for domain in domains:
+            address_left = ALLOWED_RESOURCES[profile_type]['mailbox'] - len(domain.mails)
+            alert = None
+            if address_left == 1:
+                alert = 'warning'
+            elif address_left < 1:
+                alert = 'danger'
+
+            domain.address_left = {
+                'count': address_left,
+                'alert': alert,
+            }
 
         context.update({
             'domains': domains,
