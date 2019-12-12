@@ -4,7 +4,7 @@ import urllib.parse
 from django.conf import settings
 from django.urls.exceptions import NoReverseMatch
 
-from .models import UserAccount
+from .models import Domain, DatabaseService, MailService, SaasService, UserAccount
 
 
 DOMAINS_PATH = 'domains/'
@@ -55,9 +55,11 @@ class Orchestra(object):
 
         return response.json().get("token", None)
 
-    def request(self, verb, resource, raise_exception=True):
+    def request(self, verb, resource, querystring=None, raise_exception=True):
         assert verb in ["HEAD", "GET", "POST", "PATCH", "PUT", "DELETE"]
         url = self.build_absolute_uri(resource)
+        if querystring is not None:
+            url = "{}?{}".format(url, querystring)
 
         verb = getattr(self.session, verb.lower())
         response = verb(url, headers={"Authorization": "Token {}".format(
@@ -71,11 +73,11 @@ class Orchestra(object):
 
         return status, output
 
-    def retrieve_service_list(self, service_name):
+    def retrieve_service_list(self, service_name, querystring=None):
         pattern_name = '{}-list'.format(service_name)
         if pattern_name not in API_PATHS:
             raise ValueError("Unknown service {}".format(service_name))
-        _, output = self.request("GET", pattern_name)
+        _, output = self.request("GET", pattern_name, querystring=querystring)
         return output
 
     def retrieve_profile(self):
@@ -84,6 +86,32 @@ class Orchestra(object):
             raise PermissionError("Cannot retrieve profile of an anonymous user.")
         return UserAccount.new_from_json(output[0])
 
+    def retrieve_domain_list(self):
+        output = self.retrieve_service_list(Domain.api_name)
+        domains = []
+        for domain_json in output:
+            # filter querystring
+            querystring = "domain={}".format(domain_json['id'])
+
+            # retrieve services associated to a domain
+            domain_json['mails'] = self.retrieve_service_list(
+                MailService.api_name, querystring)
+            # TODO(@slamora): databases and sass are not related to a domain, so cannot be filtered
+            # domain_json['databases'] = self.retrieve_service_list(DatabaseService.api_name, querystring)
+            # domain_json['saas'] = self.retrieve_service_list(SaasService.api_name, querystring)
+
+            # TODO(@slamora): update when backend provides resource disk usage data
+            domain_json['usage'] = {
+                'usage': 300,
+                'total': 650,
+                'unit': 'MB',
+                'percent': 50,
+            }
+
+            # append to list a Domain object
+            domains.append(Domain.new_from_json(domain_json))
+
+        return domains
 
     def verify_credentials(self):
         """

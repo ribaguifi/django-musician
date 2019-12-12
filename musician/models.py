@@ -39,6 +39,12 @@ class OrchestraModel:
         c.data = data
         return c
 
+    def __repr__(self):
+        return '<%s: %s>' % (self.__class__.__name__, self)
+
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.id)
+
 
 class BillingContact(OrchestraModel):
     param_defaults = {
@@ -115,6 +121,37 @@ class DatabaseService(OrchestraModel):
         }
 
         return super().new_from_json(data=data, users=users, usage=usage)
+
+
+class Domain(OrchestraModel):
+    api_name = 'domain'
+    param_defaults = {
+        "id": None,
+        "name": None,
+        "records": [],
+        "mails": [],
+        "usage": {},
+    }
+
+    @classmethod
+    def new_from_json(cls, data, **kwargs):
+        records = cls.param_defaults.get("records")
+        if 'records' in data:
+            records = [DomainRecord.new_from_json(record_data) for record_data in data['records']]
+
+        return super().new_from_json(data=data, records=records)
+
+    def __str__(self):
+        return self.name
+
+
+class DomainRecord(OrchestraModel):
+    param_defaults = {
+        "type": None,
+        "value": None,
+    }
+    def __str__(self):
+        return '<%s: %s>' % (self.type, self.value)
 
 
 class MailService(OrchestraModel):
