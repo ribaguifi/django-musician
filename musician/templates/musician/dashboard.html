@@ -57,10 +57,12 @@
             {{ domain.mails|length }} {% trans "mail addresses created" %}<br/>
             <span class="text-warning">1 mail address left</span>
           </p>
+          <a class="stretched-link" href="{% url 'musician:mails' %}?domain={{ domain.id }}"></a>
       </div>
       <div class="col-md-2 border-right">
           <h4>{% trans "Mail list" %}</h4>
           <p class="card-text"><i class="fas fa-mail-bulk fa-3x"></i></p>
+          <a class="stretched-link" href="{% url 'musician:mailing-lists' %}?domain={{ domain.id }}"></a>
       </div>
       <div class="col-md-2 border-right">
           <h4>{% trans "Databases" %}</h4>
@@ -74,11 +76,13 @@
             -->
             {% endcomment %}
           </p>
+          <a class="stretched-link" href="{% url 'musician:databases' %}?domain={{ domain.id }}"></a>
       </div>
       <div class="col-md-2 border-right">
           <h4>{% trans "Software as a Service" %}</h4>
           <p class="card-text"><i class="fas fa-fire fa-3x"></i></p>
           <p class="card-text text-dark">Nothing installed</p>
+          <a class="stretched-link" href="{% url 'musician:saas' %}?domain={{ domain.id }}"></a>
       </div>
       <div class="col-md-4">
           <h4>{% trans "Disk usage" %}</h4>
