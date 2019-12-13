@@ -148,8 +148,9 @@ class MailView(ServiceListView):
         def retrieve_mailbox(value):
             mailboxes = value.get('mailboxes')
 
+            # forwarded address should not grouped
             if len(mailboxes) == 0:
-                return ''
+                return value.get('name')
 
             return mailboxes[0]['id']
 
