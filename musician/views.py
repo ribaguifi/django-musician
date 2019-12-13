@@ -186,6 +186,26 @@ class SaasView(ServiceListView):
     template_name = "musician/saas.html"
 
 
+class DomainDetailView(CustomContextMixin, UserTokenRequiredMixin, DetailView):
+    template_name = "musician/domain_detail.html"
+
+    def get_queryset(self):
+        return []  # self.orchestra.retrieve_domain_list()
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        # TODO try to retrieve object capturing exception
+        try:
+            domain = self.orchestra.retrieve_domain(pk)
+        except:
+            raise
+
+        return domain
+
+
 class LoginView(FormView):
     template_name = 'auth/login.html'
     form_class = LoginForm
