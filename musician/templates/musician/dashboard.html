@@ -40,7 +40,8 @@
       </div>
       <div class="col-md-8">
         <button type="button" class="btn text-secondary" data-toggle="modal" data-target="#configDetailsModal"
-          data-domain="{{ domain.name }}" data-username="john" data-password="s3cre3t" data-root="/domainname/">
+          data-domain="{{ domain.name }}" data-username="john" data-password="s3cre3t" data-root="/domainname/"
+          data-url="{% url 'musician:domain-detail' domain.id %}">
             {% trans "view configuration" %} <strong class="fas fa-tools"></strong>
         </button>
       </div>
@@ -120,7 +121,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">{% trans "View DNS records" %}</button>
+          <a href="#domain-detail" class="btn btn-primary">{% trans "View DNS records" %}</a>
         </div>
       </div>
     </div>
@@ -137,6 +138,7 @@ $('#configDetailsModal').on('show.bs.modal', function (event) {
   modal.find('.modal-body #config-username').text(button.data('username'));
   modal.find('.modal-body #config-password').text(button.data('password'));
   modal.find('.modal-body #config-root').text(button.data('root'));
+  modal.find('.modal-footer .btn').attr('href', button.data('url'));
 })
 </script>
 {% endblock %}
