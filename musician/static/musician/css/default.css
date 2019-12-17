@@ -247,6 +247,13 @@ h1.service-name {
     font-weight: 900;
 }
 
+.card.card-profile .card-header {
+    background: white;
+    border-bottom: none;
+    font-size: large;
+    text-transform: uppercase;
+}
+
 #configDetailsModal .modal-header {
     border-bottom: 0;
     text-align: center;

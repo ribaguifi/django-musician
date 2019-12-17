@@ -3,48 +3,56 @@
 
 {% block content %}
 
-<h1>Profile</h1>
-<p>Little description of what to be expected...</p>
+<h1 class="service-name">Profile</h1>
+<p class="service-description">Little description of what to be expected...</p>
 
-<div class="card">
-  <h5 class="card-header text-right">User information</h5>
-  <div class="card-body row">
-    <div class="col-md-4">
-      <div class="m-auto border border-secondary rounded-circle rounded-lg" style="width:125px; height:125px;">
-        {# <!-- <img class="" src="#" alt="User profile image"  /> -->#}
+<div class="card-deck">
+  <div class="card card-profile">
+    <h5 class="card-header">User information</h5>
+    <div class="card-body row">
+      <div class="col-md">
+        <div class="border-primary rounded-circle d-inline-block p-1" style="background-color: white; border: 5px solid grey">
+          <img id="user-avatar" width="160" height="160" src="/static/musician/images/default-profile-picture-primary-color.png" alt="user-profile-picture">
+        </div>
       </div>
-    </div>
-    <div class="col-md-8">
-      <p class="card-text">{{ profile.username }}</p>
-      <p class="card-text">{{ profile.type }}</p>
-      <p class="card-text">Preferred language: {{ profile.language }}</p>
+      <div class="col-md-9">
+        <p class="card-text">{{ profile.username }}</p>
+        <p class="card-text">{{ profile.type }}</p>
+        <p class="card-text">Preferred language: {{ profile.language }}</p>
+      </div>
+      {% comment %}
+      <!-- disabled until set_password is implemented -->
+      <div class="col-md-12 text-right">
+        <a class="btn btn-primary pl-5 pr-5" href="#">Set new password</a>
+      </div>
+      {% endcomment %}
     </div>
   </div>
-</div>
 
-{% with profile.billing as contact %}
-<div class="card mt-4">
-    <h5 class="card-header text-right">Billing information</h5>
-  <div class="card-body">
-    <div class="form-group">{{ contact.name }}</div>
-    <div class="form-group">{{ contact.address }}</div>
-    <div class="form-group">
-      {{ contact.zipcode }}
-      {{ contact.city }}
-      {{ contact.country }}
-    </div>
-    <div class="form-group">
-      {{ contact.vat }}
-    </div>
-    <!-- payment method -->
-    <div class="form-group">
-      payment method: {{ payment.method }}
-    </div>
-    <div class="form-group">
-      {# TODO(@slamora) format payment method details #}
-      {{ payment.data.data }}
-    </div>
+  {% with profile.billing as contact %}
+  <div class="card card-profile">
+      <h5 class="card-header">Billing information</h5>
+    <div class="card-body">
+      <div class="form-group">{{ contact.name }}</div>
+      <div class="form-group">{{ contact.address }}</div>
+      <div class="form-group">
+        {{ contact.zipcode }}
+        {{ contact.city }}
+        {{ contact.country }}
+      </div>
+      <div class="form-group">
+        {{ contact.vat }}
+      </div>
+      <!-- payment method -->
+      <div class="form-group">
+        payment method: {{ payment.method }}
+      </div>
+      <div class="form-group">
+        {# TODO(@slamora) format payment method details #}
+        {{ payment.data.data }}
+      </div>
 
+    </div>
   </div>
 </div>
 {% endwith %}
