@@ -127,9 +127,16 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
             raise ImproperlyConfigured(
                 "ServiceListView requires a definiton of 'service'")
 
+        queryfilter = self.get_queryfilter()
         json_qs = self.orchestra.retrieve_service_list(
-            self.service_class.api_name)
+            self.service_class.api_name,
+            querystring=queryfilter,
+        )
         return [self.service_class.new_from_json(data) for data in json_qs]
+
+    def get_queryfilter(self):
+        """Does nothing by default. Should be implemented on subclasses"""
+        return ''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -195,6 +202,26 @@ class MailView(ServiceListView):
 class MailingListsView(ServiceListView):
     service_class = MailinglistService
     template_name = "musician/mailinglists.html"
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        domain_id = self.request.GET.get('domain')
+        if domain_id:
+            context.update({
+                'active_domain': self.orchestra.retrieve_domain(domain_id)
+            })
+        return context
+
+    def get_queryfilter(self):
+        """Retrieve query params (if any) to filter queryset"""
+        # TODO(@slamora): this is not working because backend API
+        #   doesn't support filtering by domain
+        domain_id = self.request.GET.get('domain')
+        if domain_id:
+            return "domain={}".format(domain_id)
+
+        return ''
 
 
 class DatabasesView(ServiceListView):
