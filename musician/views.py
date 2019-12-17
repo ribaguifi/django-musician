@@ -153,9 +153,14 @@ class MailView(ServiceListView):
 
             return mailboxes[0]['id']
 
-        # group addresses with the same mailbox
+        # retrieve mails applying filters (if any)
+        queryfilter = self.get_queryfilter()
         raw_data = self.orchestra.retrieve_service_list(
-            self.service_class.api_name)
+            self.service_class.api_name,
+            querystring=queryfilter,
+        )
+
+        # group addresses with the same mailbox
         addresses = []
         for key, group in groupby(raw_data, retrieve_mailbox):
             aliases = []
@@ -168,6 +173,14 @@ class MailView(ServiceListView):
             addresses.append(self.service_class.new_from_json(data))
 
         return addresses
+
+    def get_queryfilter(self):
+        """Retrieve query params (if any) to filter queryset"""
+        domain_id = self.request.GET.get('domain')
+        if domain_id is None:
+            return ''
+
+        return "domain={}".format(domain_id)
 
 
 class MailingListsView(ServiceListView):
