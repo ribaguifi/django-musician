@@ -7,7 +7,7 @@ class OrchestraModel:
     api_name = None
     verbose_name = None
     fields = ()
-    param_defaults = {}
+    id = None
 
     def __init__(self, **kwargs):
         if self.verbose_name is None:
