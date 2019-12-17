@@ -177,10 +177,19 @@ class MailView(ServiceListView):
     def get_queryfilter(self):
         """Retrieve query params (if any) to filter queryset"""
         domain_id = self.request.GET.get('domain')
-        if domain_id is None:
-            return ''
+        if domain_id:
+            return "domain={}".format(domain_id)
 
-        return "domain={}".format(domain_id)
+        return ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        domain_id = self.request.GET.get('domain')
+        if domain_id:
+            context.update({
+                'active_domain': self.orchestra.retrieve_domain(domain_id)
+            })
+        return context
 
 
 class MailingListsView(ServiceListView):

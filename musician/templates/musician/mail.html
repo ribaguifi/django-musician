@@ -2,8 +2,11 @@
 {% load i18n %}
 
 {% block content %}
+{% if active_domain %}
+<a class="btn-arrow-left" href="{% url 'musician:mails' %}">{% trans "Go to global" %}</a>
+{% endif %}
 
-<h1 class="service-name">{{ service.verbose_name }}</h1>
+<h1 class="service-name">{{ service.verbose_name }}{% if active_domain %} <span class="font-weight-light">{% trans "for" %} {{ active_domain.name }}</span>{% endif %}</h1>
 <p class="service-description">{{ service.description }}</p>
 <table class="table service-list">
     <colgroup>
