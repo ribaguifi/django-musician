@@ -48,8 +48,12 @@
         payment method: {{ payment.method }}
       </div>
       <div class="form-group">
-        {# TODO(@slamora) format payment method details #}
-        {{ payment.data.data }}
+        {% if payment.method == 'SEPADirectDebit' %}
+        IBAN {{ payment.data.iban }}
+        {% else %}
+        {# <!-- "TODO handle Credit Card" --> #}
+        Details: {{ payment.data }}
+        {% endif %}
       </div>
 
     </div>

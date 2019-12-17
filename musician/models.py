@@ -1,5 +1,11 @@
+import ast
+import logging
+
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestraModel:
@@ -16,9 +22,6 @@ class OrchestraModel:
         for (param, default) in self.param_defaults.items():
             setattr(self, param, kwargs.get(param, default))
 
-    # def get(self, key):
-    #     # retrieve attr of the object and if undefined get raw data
-    #     return getattr(self, key, self.data.get(key))
 
     @classmethod
     def new_from_json(cls, data, **kwargs):
@@ -35,8 +38,7 @@ class OrchestraModel:
 
         c = cls(**json_data)
         c._json = data
-        # TODO(@slamora) remove/replace by private variable to ovoid name collisions
-        c.data = data
+
         return c
 
     def __repr__(self):
@@ -64,6 +66,15 @@ class PaymentSource(OrchestraModel):
         "data": [],
         "is_active": False,
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # payment details are passed as a plain string
+        # try to convert to a python structure
+        try:
+            self.data = ast.literal_eval(self.data)
+        except (ValueError, SyntaxError) as e:
+            logger.error(e)
 
 
 class UserAccount(OrchestraModel):
