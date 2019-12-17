@@ -170,9 +170,14 @@ class MailService(OrchestraModel):
     verbose_name = _('Mail addresses')
     description = _('Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.')
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
+    param_defaults = {}
 
     FORWARD = 'forward'
     MAILBOX = 'mailbox'
+
+    def __init__(self, **kwargs):
+        self.data = kwargs
+        super().__init__(**kwargs)
 
     @property
     def aliases(self):
@@ -212,6 +217,10 @@ class MailinglistService(OrchestraModel):
         'name': None,
         'admin_email': None,
     }
+
+    def __init__(self, **kwargs):
+        self.data = kwargs
+        super().__init__(**kwargs)
 
     @property
     def status(self):
