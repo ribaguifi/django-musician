@@ -48,6 +48,25 @@ class OrchestraModel:
         return '%s object (%s)' % (self.__class__.__name__, self.id)
 
 
+class Bill(OrchestraModel):
+    api_name = 'bill'
+    param_defaults = {
+        "number": "1",
+        "type": "INVOICE",
+        "total": 0.0,
+        "is_sent": False,
+        "created_on": "",
+        "due_on": "",
+        "comments": "",
+    }
+
+    def pdf_url(self):
+        # TODO (@slamora) create a view that exposes & downloads backend PDF
+        import urllib.parse
+        bill_url = self._json.get('url')
+        return urllib.parse.urljoin(bill_url, 'document/')
+
+
 class BillingContact(OrchestraModel):
     param_defaults = {
         'name': None,

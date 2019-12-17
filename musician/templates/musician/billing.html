@@ -1,5 +1,5 @@
 {% extends "musician/base.html" %}
-{% load i18n %}
+{% load i18n l10n %}
 
 {% block content %}
 
@@ -13,7 +13,6 @@
     <col span="1" style="width: 40%;">
     <col span="1" style="width: 10%;">
     <col span="1" style="width: 10%;">
-    <col span="1" style="width: 10%;">
 </colgroup>
 <thead class="thead-dark">
   <tr>
@@ -21,7 +20,6 @@
     <th scope="col">Bill date</th>
     <th scope="col">Type</th>
     <th scope="col">Total</th>
-    <th scope="col">Status</th>
     <th scope="col">Download PDF</th>
   </tr>
 </thead>
@@ -29,10 +27,9 @@
   {% for bill in object_list %}
   <tr>
     <th scope="row">{{ bill.number }}</th>
-    <td>{{ bill.date|date:"SHORT_DATE_FORMAT" }}</td>
+    <td>{{ bill.created_on }}</td>
     <td>{{ bill.type }}</td>
-    <td>{{ bill.total_amount }}</td>
-    <td class="font-weight-bold">{{ bill.status }}</td>
+    <td>{{ bill.total|floatformat:2|localize }}€</td>
     <td><a class="text-dark" href="{{ bill.pdf_url }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf"></i></a></td>
   </tr>
   {% endfor %}

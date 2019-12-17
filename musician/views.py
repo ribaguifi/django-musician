@@ -17,7 +17,7 @@ from .auth import logout as auth_logout
 from .forms import LoginForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
-from .models import (DatabaseService, MailinglistService, MailService,
+from .models import (Bill, DatabaseService, MailinglistService, MailService,
                      PaymentSource, SaasService, UserAccount)
 from .settings import ALLOWED_RESOURCES
 
@@ -82,24 +82,6 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         return context
 
 
-class BillingView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
-    template_name = "musician/billing.html"
-
-    def get_queryset(self):
-        # TODO (@slamora) retrieve user bills
-        from django.utils import timezone
-        return [
-            {
-                'number': 24,
-                'date': timezone.now(),
-                'type': 'subscription',
-                'total_amount': '25,00 €',
-                'status': 'paid',
-                'pdf_url': 'https://example.org/bill.pdf'
-            },
-        ]
-
-
 class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
     template_name = "musician/profile.html"
 
@@ -144,6 +126,11 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
             'service': self.service_class,
         })
         return context
+
+
+class BillingView(ServiceListView):
+    service_class = Bill
+    template_name = "musician/billing.html"
 
 
 class MailView(ServiceListView):

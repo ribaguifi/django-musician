@@ -27,6 +27,7 @@ API_PATHS = {
     'saas-list': 'saas/',
 
     # other
+    'bill-list': 'bills/',
     'payment-source-list': 'payment-sources/',
 }
 
