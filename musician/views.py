@@ -1,4 +1,3 @@
-
 from itertools import groupby
 
 from django.core.exceptions import ImproperlyConfigured
@@ -190,18 +189,17 @@ class DomainDetailView(CustomContextMixin, UserTokenRequiredMixin, DetailView):
     template_name = "musician/domain_detail.html"
 
     def get_queryset(self):
-        return []  # self.orchestra.retrieve_domain_list()
+        # Return an empty list to avoid a request to retrieve all the
+        # user domains. We will get a 404 if the domain doesn't exists
+        # while invoking `get_object`
+        return []
 
     def get_object(self, queryset=None):
         if queryset is None:
             queryset = self.get_queryset()
 
         pk = self.kwargs.get(self.pk_url_kwarg)
-        # TODO try to retrieve object capturing exception
-        try:
-            domain = self.orchestra.retrieve_domain(pk)
-        except:
-            raise
+        domain = self.orchestra.retrieve_domain(pk)
 
         return domain
 

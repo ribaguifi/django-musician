@@ -2,7 +2,9 @@ import requests
 import urllib.parse
 
 from django.conf import settings
+from django.http import Http404
 from django.urls.exceptions import NoReverseMatch
+from django.utils.translation import gettext_lazy as _
 
 from .models import Domain, DatabaseService, MailService, SaasService, UserAccount
 
@@ -95,7 +97,9 @@ class Orchestra(object):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})
 
         url = urllib.parse.urljoin(self.base_url, path)
-        status, domain_json = self.request("GET", url=url)
+        status, domain_json = self.request("GET", url=url, raise_exception=False)
+        if status == 404:
+            raise Http404(_("No domain found matching the query"))
         return Domain.new_from_json(domain_json)
 
     def retrieve_domain_list(self):
