@@ -15,6 +15,7 @@ urlpatterns = [
     path('auth/login/', views.LoginView.as_view(), name='login'),
     path('auth/logout/', views.LogoutView.as_view(), name='logout'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+    path('domains/<int:pk>/', views.DomainDetailView.as_view(), name='domain-detail'),
     path('billing/', views.BillingView.as_view(), name='billing'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('mails/', views.MailView.as_view(), name='mails'),

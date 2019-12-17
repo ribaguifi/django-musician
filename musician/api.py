@@ -2,7 +2,9 @@ import requests
 import urllib.parse
 
 from django.conf import settings
+from django.http import Http404
 from django.urls.exceptions import NoReverseMatch
+from django.utils.translation import gettext_lazy as _
 
 from .models import Domain, DatabaseService, MailService, SaasService, UserAccount
 
@@ -18,6 +20,7 @@ API_PATHS = {
     # services
     'database-list': 'databases/',
     'domain-list': 'domains/',
+    'domain-detail': 'domains/{pk}/',
     'address-list': 'addresses/',
     'mailbox-list': 'mailboxes/',
     'mailinglist-list': 'lists/',
@@ -55,9 +58,13 @@ class Orchestra(object):
 
         return response.json().get("token", None)
 
-    def request(self, verb, resource, querystring=None, raise_exception=True):
+    def request(self, verb, resource=None, querystring=None, url=None, raise_exception=True):
         assert verb in ["HEAD", "GET", "POST", "PATCH", "PUT", "DELETE"]
-        url = self.build_absolute_uri(resource)
+        if resource is not None:
+            url = self.build_absolute_uri(resource)
+        elif url is None:
+            raise AttributeError("Provide `resource` or `url` params")
+
         if querystring is not None:
             url = "{}?{}".format(url, querystring)
 
@@ -85,6 +92,15 @@ class Orchestra(object):
         if status >= 400:
             raise PermissionError("Cannot retrieve profile of an anonymous user.")
         return UserAccount.new_from_json(output[0])
+
+    def retrieve_domain(self, pk):
+        path = API_PATHS.get('domain-detail').format_map({'pk': pk})
+
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, domain_json = self.request("GET", url=url, raise_exception=False)
+        if status == 404:
+            raise Http404(_("No domain found matching the query"))
+        return Domain.new_from_json(domain_json)
 
     def retrieve_domain_list(self):
         output = self.retrieve_service_list(Domain.api_name)
