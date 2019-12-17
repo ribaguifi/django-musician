@@ -7,6 +7,32 @@ a:hover {
     color: rgba(0,0,0,.7);
 }
 
+.btn-arrow-left{
+    color: #eee;
+    background: #D3D0DA;
+    position: relative;
+    padding: 8px 20px 8px 30px;
+    margin-left: 1em; /** equal value than arrow.left **/
+}
+
+.btn-arrow-left::after,
+.btn-arrow-left::before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -1em;
+
+    margin-top: -19px;
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    border-right: 1em solid;
+}
+
+.btn-arrow-left::after{
+    border-right-color: #D3D0DA;
+    z-index: 2;
+}
+
 .wrapper {
     display: flex;
     width: 100%;

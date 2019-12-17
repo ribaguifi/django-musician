@@ -2,6 +2,8 @@
 {% load i18n %}
 
 {% block content %}
+<a id="vert_menu" class="btn-arrow-left" href="{% url 'musician:dashboard' %}">{% trans "Go back" %}</a>
+
 <h1 class="service-name">{% trans "DNS settings for" %} <span class="font-weight-light">{{ object.name }}</span></h1>
 <p class="service-description">Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.</p>
 
