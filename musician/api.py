@@ -28,6 +28,7 @@ API_PATHS = {
 
     # other
     'bill-list': 'bills/',
+    'bill-document': 'bills/{pk}/document/',
     'payment-source-list': 'payment-sources/',
 }
 
@@ -59,7 +60,7 @@ class Orchestra(object):
 
         return response.json().get("token", None)
 
-    def request(self, verb, resource=None, querystring=None, url=None, raise_exception=True):
+    def request(self, verb, resource=None, url=None, render_as="json", querystring=None, raise_exception=True):
         assert verb in ["HEAD", "GET", "POST", "PATCH", "PUT", "DELETE"]
         if resource is not None:
             url = self.build_absolute_uri(resource)
@@ -77,7 +78,10 @@ class Orchestra(object):
             response.raise_for_status()
 
         status = response.status_code
-        output = response.json()
+        if render_as == "json":
+            output = response.json()
+        else:
+            output = response.content
 
         return status, output
 
@@ -93,6 +97,15 @@ class Orchestra(object):
         if status >= 400:
             raise PermissionError("Cannot retrieve profile of an anonymous user.")
         return UserAccount.new_from_json(output[0])
+
+    def retrieve_bill_document(self, pk):
+        path = API_PATHS.get('bill-document').format_map({'pk': pk})
+
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, bill_pdf = self.request("GET", render_as="html", url=url, raise_exception=False)
+        if status == 404:
+            raise Http404(_("No domain found matching the query"))
+        return bill_pdf
 
     def retrieve_domain(self, pk):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})

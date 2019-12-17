@@ -1,11 +1,12 @@
 from itertools import groupby
 
 from django.core.exceptions import ImproperlyConfigured
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import is_safe_url
 from django.utils.translation import gettext_lazy as _
+from django.views import View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
@@ -131,6 +132,14 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
 class BillingView(ServiceListView):
     service_class = Bill
     template_name = "musician/billing.html"
+
+
+class BillDownloadView(CustomContextMixin, UserTokenRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        bill = self.orchestra.retrieve_bill_document(pk)
+
+        return HttpResponse(bill)
 
 
 class MailView(ServiceListView):
