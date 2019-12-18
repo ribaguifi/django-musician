@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-18 11:34+0100\n"
+"POT-Creation-Date: 2019-12-18 11:37+0100\n"
 "PO-Revision-Date: 2019-12-18 10:50+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -90,6 +90,10 @@ msgid ""
 msgstr ""
 "Envia un correu a <a href=\"mailto:%(support_email)s\">%(support_email)s</a> "
 "indicant el teu nom d’usuari/a i t’explicarem què fer."
+
+#: templates/musician/base.html:63
+msgid "Settings"
+msgstr ""
 
 #: templates/musician/base.html:66 templates/musician/profile.html:6
 msgid "Profile"
