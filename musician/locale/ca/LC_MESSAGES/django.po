@@ -3,41 +3,71 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-10 10:53+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2019-12-18 11:34+0100\n"
+"PO-Revision-Date: 2019-12-18 10:50+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: models.py:93
+#: api.py:107 api.py:116
+msgid "No domain found matching the query"
+msgstr ""
+
+#: mixins.py:14
+msgid "Domains & websites"
+msgstr ""
+
+#: mixins.py:15
+msgid "Mails"
+msgstr ""
+
+#: mixins.py:16
+msgid "Mailing lists"
+msgstr ""
+
+#: mixins.py:17 models.py:124 templates/musician/dashboard.html:72
 msgid "Databases"
 msgstr ""
 
-#: models.py:122
-msgid "Mail addresses"
+#: mixins.py:18
+msgid "SaaS"
 msgstr ""
 
-#: models.py:123 models.py:161 models.py:186
-msgid ""
-"Litle description of what to be expected in this section to aid the user. "
-"Even a link to more help if there is one available."
-msgstr ""
-
-#: models.py:160
-msgid "Mailing list"
+#: models.py:125
+msgid "Description details for databases page."
 msgstr ""
 
 #: models.py:185
+msgid "Mail addresses"
+msgstr ""
+
+#: models.py:186
+msgid "Description details for mail addresses page."
+msgstr ""
+
+#: models.py:228
+msgid "Mailing list"
+msgstr ""
+
+#: models.py:229
+msgid "Description details for mailinglist page."
+msgstr ""
+
+#: models.py:257
 msgid "Software as a Service (SaaS)"
+msgstr ""
+
+#: models.py:258
+msgid "Description details for SaaS page."
 msgstr ""
 
 #: templates/auth/login.html:59
@@ -61,7 +91,7 @@ msgstr ""
 "Envia un correu a <a href=\"mailto:%(support_email)s\">%(support_email)s</a> "
 "indicant el teu nom d’usuari/a i t’explicarem què fer."
 
-#: templates/musician/base.html:66
+#: templates/musician/base.html:66 templates/musician/profile.html:6
 msgid "Profile"
 msgstr ""
 
@@ -73,6 +103,10 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
+#: templates/musician/billing.html:7
+msgid "Billing page description."
+msgstr ""
+
 #: templates/musician/components/table_paginator.html:15
 msgid "Previous"
 msgstr ""
@@ -81,7 +115,97 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: templates/musician/databases.html:17 templates/musician/mail.html:19
+#: templates/musician/dashboard.html:6
+msgid "Welcome back"
+msgstr ""
+
+#: templates/musician/dashboard.html:7
+#, python-format
+msgid "Last time you logged in was: %(last_login)s"
+msgstr ""
+
+#: templates/musician/dashboard.html:20
+msgid "Notifications"
+msgstr ""
+
+#: templates/musician/dashboard.html:24
+msgid "There is no notifications at this time."
+msgstr ""
+
+#: templates/musician/dashboard.html:31
+msgid "Your domains and websites"
+msgstr ""
+
+#: templates/musician/dashboard.html:32
+msgid "Dashboard page description."
+msgstr ""
+
+#: templates/musician/dashboard.html:45
+msgid "view configuration"
+msgstr ""
+
+#: templates/musician/dashboard.html:49
+msgid "Expiration date"
+msgstr ""
+
+#: templates/musician/dashboard.html:55
+msgid "Mail"
+msgstr ""
+
+#: templates/musician/dashboard.html:58
+msgid "mail addresses created"
+msgstr ""
+
+#: templates/musician/dashboard.html:61
+msgid "mail address left"
+msgstr ""
+
+#: templates/musician/dashboard.html:67
+msgid "Mail list"
+msgstr ""
+
+#: templates/musician/dashboard.html:75
+msgid "databases created"
+msgstr ""
+
+#: templates/musician/dashboard.html:87
+msgid "Software as a Service"
+msgstr ""
+
+#: templates/musician/dashboard.html:89
+msgid "Nothing installed"
+msgstr ""
+
+#: templates/musician/dashboard.html:93 views.py:36
+msgid "Disk usage"
+msgstr ""
+
+#: templates/musician/dashboard.html:109
+msgid "Configuration details"
+msgstr ""
+
+#: templates/musician/dashboard.html:115
+msgid "FTP access:"
+msgstr ""
+
+#: templates/musician/dashboard.html:118
+msgid "Username"
+msgstr ""
+
+#: templates/musician/dashboard.html:119
+msgid "Password:"
+msgstr ""
+
+#: templates/musician/dashboard.html:121
+msgid "Root directory:"
+msgstr ""
+
+#: templates/musician/dashboard.html:125
+msgid "View DNS records"
+msgstr ""
+
+#: templates/musician/databases.html:17
+#: templates/musician/domain_detail.html:17 templates/musician/mail.html:22
 msgid "Type"
 msgstr ""
 
@@ -97,16 +221,44 @@ msgstr ""
 msgid "Open database manager"
 msgstr ""
 
-#: templates/musician/mail.html:17
-msgid "Mail address"
+#: templates/musician/domain_detail.html:5
+msgid "Go back"
 msgstr ""
 
-#: templates/musician/mail.html:18
-msgid "Aliases"
+#: templates/musician/domain_detail.html:7
+msgid "DNS settings for"
+msgstr ""
+
+#: templates/musician/domain_detail.html:8
+msgid "DNS settings page description."
+msgstr ""
+
+#: templates/musician/domain_detail.html:18
+msgid "Value"
+msgstr ""
+
+#: templates/musician/mail.html:6 templates/musician/mailinglists.html:6
+msgid "Go to global"
+msgstr ""
+
+#: templates/musician/mail.html:9 templates/musician/mailinglists.html:9
+msgid "for"
 msgstr ""
 
 #: templates/musician/mail.html:20
+msgid "Mail address"
+msgstr ""
+
+#: templates/musician/mail.html:21
+msgid "Aliases"
+msgstr ""
+
+#: templates/musician/mail.html:23
 msgid "Type details"
+msgstr ""
+
+#: templates/musician/profile.html:7
+msgid "Little description on profile page."
 msgstr ""
 
 #: templates/musician/saas.html:17
@@ -123,4 +275,12 @@ msgstr ""
 
 #: templates/musician/saas.html:36
 msgid "Open service admin panel"
+msgstr ""
+
+#: views.py:43
+msgid "Traffic"
+msgstr ""
+
+#: views.py:50
+msgid "Mailbox usage"
 msgstr ""
