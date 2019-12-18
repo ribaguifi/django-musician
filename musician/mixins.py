@@ -46,6 +46,11 @@ class ExtendedPaginationMixin:
 
 
 class UserTokenRequiredMixin(UserPassesTestMixin):
+    """
+    Checks that the request has a token that authenticates him/her.
+    If the user is logged adds context variable 'profile' with its information.
+    """
+
     def test_func(self):
         """Check that the user has an authorized token."""
         token = self.request.session.get(SESSION_KEY_TOKEN, None)
@@ -60,3 +65,10 @@ class UserTokenRequiredMixin(UserPassesTestMixin):
             return False
 
         return True
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'profile': self.orchestra.retrieve_profile(),
+        })
+        return context

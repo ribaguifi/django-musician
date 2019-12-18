@@ -1,5 +1,11 @@
+import ast
+import logging
+
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestraModel:
@@ -7,7 +13,7 @@ class OrchestraModel:
     api_name = None
     verbose_name = None
     fields = ()
-    param_defaults = {}
+    id = None
 
     def __init__(self, **kwargs):
         if self.verbose_name is None:
@@ -16,9 +22,6 @@ class OrchestraModel:
         for (param, default) in self.param_defaults.items():
             setattr(self, param, kwargs.get(param, default))
 
-    # def get(self, key):
-    #     # retrieve attr of the object and if undefined get raw data
-    #     return getattr(self, key, self.data.get(key))
 
     @classmethod
     def new_from_json(cls, data, **kwargs):
@@ -35,9 +38,28 @@ class OrchestraModel:
 
         c = cls(**json_data)
         c._json = data
-        # TODO(@slamora) remove/replace by private variable to ovoid name collisions
-        c.data = data
+
         return c
+
+    def __repr__(self):
+        return '<%s: %s>' % (self.__class__.__name__, self)
+
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.id)
+
+
+class Bill(OrchestraModel):
+    api_name = 'bill'
+    param_defaults = {
+        "id": None,
+        "number": "1",
+        "type": "INVOICE",
+        "total": 0.0,
+        "is_sent": False,
+        "created_on": "",
+        "due_on": "",
+        "comments": "",
+    }
 
 
 class BillingContact(OrchestraModel):
@@ -58,6 +80,15 @@ class PaymentSource(OrchestraModel):
         "data": [],
         "is_active": False,
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # payment details are passed as a plain string
+        # try to convert to a python structure
+        try:
+            self.data = ast.literal_eval(self.data)
+        except (ValueError, SyntaxError) as e:
+            logger.error(e)
 
 
 class UserAccount(OrchestraModel):
@@ -117,14 +148,50 @@ class DatabaseService(OrchestraModel):
         return super().new_from_json(data=data, users=users, usage=usage)
 
 
+class Domain(OrchestraModel):
+    api_name = 'domain'
+    param_defaults = {
+        "id": None,
+        "name": None,
+        "records": [],
+        "mails": [],
+        "usage": {},
+    }
+
+    @classmethod
+    def new_from_json(cls, data, **kwargs):
+        records = cls.param_defaults.get("records")
+        if 'records' in data:
+            records = [DomainRecord.new_from_json(record_data) for record_data in data['records']]
+
+        return super().new_from_json(data=data, records=records)
+
+    def __str__(self):
+        return self.name
+
+
+class DomainRecord(OrchestraModel):
+    param_defaults = {
+        "type": None,
+        "value": None,
+    }
+    def __str__(self):
+        return '<%s: %s>' % (self.type, self.value)
+
+
 class MailService(OrchestraModel):
     api_name = 'address'
     verbose_name = _('Mail addresses')
     description = _('Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.')
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
+    param_defaults = {}
 
     FORWARD = 'forward'
     MAILBOX = 'mailbox'
+
+    def __init__(self, **kwargs):
+        self.data = kwargs
+        super().__init__(**kwargs)
 
     @property
     def aliases(self):
@@ -164,6 +231,10 @@ class MailinglistService(OrchestraModel):
         'name': None,
         'admin_email': None,
     }
+
+    def __init__(self, **kwargs):
+        self.data = kwargs
+        super().__init__(**kwargs)
 
     @property
     def status(self):

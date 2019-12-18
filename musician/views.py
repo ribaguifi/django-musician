@@ -1,11 +1,12 @@
-
 from itertools import groupby
 
 from django.core.exceptions import ImproperlyConfigured
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import is_safe_url
+from django.utils.translation import gettext_lazy as _
+from django.views import View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
@@ -17,8 +18,9 @@ from .auth import logout as auth_logout
 from .forms import LoginForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
-from .models import (DatabaseService, MailinglistService, MailService,
+from .models import (Bill, DatabaseService, MailinglistService, MailService,
                      PaymentSource, SaasService, UserAccount)
+from .settings import ALLOWED_RESOURCES
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -26,33 +28,59 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        domains = self.orchestra.retrieve_domain_list()
 
-        # TODO retrieve all data needed from orchestra
-        raw_domains = self.orchestra.retrieve_service_list('domain')
+        # TODO(@slamora) update when backend provides resource usage data
+        resource_usage = {
+            'disk': {
+                'verbose_name': _('Disk usage'),
+                'usage': 534,
+                'total': 1024,
+                'unit': 'MB',
+                'percent': 50,
+            },
+            'traffic': {
+                'verbose_name': _('Traffic'),
+                'usage': 300,
+                'total': 2048,
+                'unit': 'MB/month',
+                'percent': 25,
+            },
+            'mailbox': {
+                'verbose_name': _('Mailbox usage'),
+                'usage': 1,
+                'total': 2,
+                'unit': 'accounts',
+                'percent': 50,
+            },
+        }
+
+        # TODO(@slamora) update when backend supports notifications
+        notifications = []
+
+        # show resource usage based on plan definition
+        # TODO(@slamora): validate concept of limits with Pangea
+        profile_type = context['profile'].type
+        for domain in domains:
+            address_left = ALLOWED_RESOURCES[profile_type]['mailbox'] - len(domain.mails)
+            alert = None
+            if address_left == 1:
+                alert = 'warning'
+            elif address_left < 1:
+                alert = 'danger'
+
+            domain.address_left = {
+                'count': address_left,
+                'alert': alert,
+            }
 
         context.update({
-            'domains': raw_domains
+            'domains': domains,
+            'resource_usage': resource_usage,
+            'notifications': notifications,
         })
 
         return context
-
-
-class BillingView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
-    template_name = "musician/billing.html"
-
-    def get_queryset(self):
-        # TODO (@slamora) retrieve user bills
-        from django.utils import timezone
-        return [
-            {
-                'number': 24,
-                'date': timezone.now(),
-                'type': 'subscription',
-                'total_amount': '25,00 €',
-                'status': 'paid',
-                'pdf_url': 'https://example.org/bill.pdf'
-            },
-        ]
 
 
 class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -60,14 +88,12 @@ class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        json_data = self.orchestra.retreve_profile()
         try:
             pay_source = self.orchestra.retrieve_service_list(
                 PaymentSource.api_name)[0]
         except IndexError:
             pay_source = {}
         context.update({
-            'profile': UserAccount.new_from_json(json_data[0]),
             'payment': PaymentSource.new_from_json(pay_source)
         })
 
@@ -84,9 +110,16 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
             raise ImproperlyConfigured(
                 "ServiceListView requires a definiton of 'service'")
 
+        queryfilter = self.get_queryfilter()
         json_qs = self.orchestra.retrieve_service_list(
-            self.service_class.api_name)
+            self.service_class.api_name,
+            querystring=queryfilter,
+        )
         return [self.service_class.new_from_json(data) for data in json_qs]
+
+    def get_queryfilter(self):
+        """Does nothing by default. Should be implemented on subclasses"""
+        return ''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,6 +127,19 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
             'service': self.service_class,
         })
         return context
+
+
+class BillingView(ServiceListView):
+    service_class = Bill
+    template_name = "musician/billing.html"
+
+
+class BillDownloadView(CustomContextMixin, UserTokenRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        bill = self.orchestra.retrieve_bill_document(pk)
+
+        return HttpResponse(bill)
 
 
 class MailView(ServiceListView):
@@ -104,14 +150,20 @@ class MailView(ServiceListView):
         def retrieve_mailbox(value):
             mailboxes = value.get('mailboxes')
 
+            # forwarded address should not grouped
             if len(mailboxes) == 0:
-                return ''
+                return value.get('name')
 
             return mailboxes[0]['id']
 
-        # group addresses with the same mailbox
+        # retrieve mails applying filters (if any)
+        queryfilter = self.get_queryfilter()
         raw_data = self.orchestra.retrieve_service_list(
-            self.service_class.api_name)
+            self.service_class.api_name,
+            querystring=queryfilter,
+        )
+
+        # group addresses with the same mailbox
         addresses = []
         for key, group in groupby(raw_data, retrieve_mailbox):
             aliases = []
@@ -125,10 +177,47 @@ class MailView(ServiceListView):
 
         return addresses
 
+    def get_queryfilter(self):
+        """Retrieve query params (if any) to filter queryset"""
+        domain_id = self.request.GET.get('domain')
+        if domain_id:
+            return "domain={}".format(domain_id)
+
+        return ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        domain_id = self.request.GET.get('domain')
+        if domain_id:
+            context.update({
+                'active_domain': self.orchestra.retrieve_domain(domain_id)
+            })
+        return context
+
 
 class MailingListsView(ServiceListView):
     service_class = MailinglistService
     template_name = "musician/mailinglists.html"
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        domain_id = self.request.GET.get('domain')
+        if domain_id:
+            context.update({
+                'active_domain': self.orchestra.retrieve_domain(domain_id)
+            })
+        return context
+
+    def get_queryfilter(self):
+        """Retrieve query params (if any) to filter queryset"""
+        # TODO(@slamora): this is not working because backend API
+        #   doesn't support filtering by domain
+        domain_id = self.request.GET.get('domain')
+        if domain_id:
+            return "domain={}".format(domain_id)
+
+        return ''
 
 
 class DatabasesView(ServiceListView):
@@ -139,6 +228,25 @@ class DatabasesView(ServiceListView):
 class SaasView(ServiceListView):
     service_class = SaasService
     template_name = "musician/saas.html"
+
+
+class DomainDetailView(CustomContextMixin, UserTokenRequiredMixin, DetailView):
+    template_name = "musician/domain_detail.html"
+
+    def get_queryset(self):
+        # Return an empty list to avoid a request to retrieve all the
+        # user domains. We will get a 404 if the domain doesn't exists
+        # while invoking `get_object`
+        return []
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        domain = self.orchestra.retrieve_domain(pk)
+
+        return domain
 
 
 class LoginView(FormView):
