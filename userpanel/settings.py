@@ -129,9 +129,10 @@ SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# Fallback language
+LANGUAGE_CODE = 'ca'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 
