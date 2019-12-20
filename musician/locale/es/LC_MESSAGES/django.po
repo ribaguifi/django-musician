@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-18 11:37+0100\n"
-"PO-Revision-Date: 2019-12-20 10:38+0100\n"
+"PO-Revision-Date: 2019-12-20 11:09+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -39,9 +39,8 @@ msgid "Databases"
 msgstr "Bases de dades"
 
 #: mixins.py:18
-#, fuzzy
 msgid "SaaS"
-msgstr "SaaS (Software as a Service)"
+msgstr "SaaS"
 
 #: models.py:125
 msgid "Description details for databases page."
@@ -61,7 +60,7 @@ msgstr "Llista de correu"
 
 #: models.py:229
 msgid "Description details for mailinglist page."
-msgstr "Detalls descriptius de la pàgina de llistes de correu"
+msgstr "Detalls descriptius de la pàgina de llistes de correu."
 
 #: models.py:257
 msgid "Software as a Service (SaaS)"
@@ -105,7 +104,6 @@ msgid "Billing"
 msgstr "Factures"
 
 #: templates/musician/base.html:76
-#, fuzzy
 msgid "Log out"
 msgstr "Surt"
 
@@ -128,9 +126,9 @@ msgid "Welcome back"
 msgstr "Què bé tornar-te a veure!"
 
 #: templates/musician/dashboard.html:7
-#, fuzzy, python-format
+#, python-format
 msgid "Last time you logged in was: %(last_login)s"
-msgstr "El darrer cop que vas accedir va ser el dia:"
+msgstr "El darrer cop que vas accedir va ser el dia: %(last_login)s"
 
 #: templates/musician/dashboard.html:20
 msgid "Notifications"
@@ -138,16 +136,15 @@ msgstr "Notificacions"
 
 #: templates/musician/dashboard.html:24
 msgid "There is no notifications at this time."
-msgstr "No tens cap notificació"
+msgstr "No tens cap notificació."
 
 #: templates/musician/dashboard.html:31
 msgid "Your domains and websites"
 msgstr "Els teus dominis i llocs web"
 
 #: templates/musician/dashboard.html:32
-#, fuzzy
 msgid "Dashboard page description."
-msgstr "Descripció del teu panell d’usuari"
+msgstr "Descripció del teu panell d’usuari."
 
 #: templates/musician/dashboard.html:45
 msgid "view configuration"
@@ -186,7 +183,6 @@ msgid "Nothing installed"
 msgstr "No tens res instal·lat"
 
 #: templates/musician/dashboard.html:93 views.py:36
-#, fuzzy
 msgid "Disk usage"
 msgstr "Ús del disc"
 
