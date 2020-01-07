@@ -104,7 +104,8 @@ a:hover {
 }
 
 #content {
-    background: #ECECEB;
+    background: #ECECEB no-repeat url("../images/logo-pangea-light-gray-bg.svg");
+    background-position: right 5% top 10%;
     color: #343434;
 }
 
