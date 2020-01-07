@@ -76,7 +76,7 @@ a:hover {
 
 /** login **/
 #body-login .jumbotron {
-    background: #282532;/**#50466E;**/
+    background: #282532 no-repeat url("../images/logo-pangea-lilla-bg.svg") right;
 }
 
 #login-content {
