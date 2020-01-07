@@ -11,7 +11,7 @@
   <meta name="robots" content="NONE,NOARCHIVE" />
   {% endblock %}
 
-  <title>{% block title %}{% if name %}{{ name }} – {% endif %}Django musician{% endblock %}</title>
+  <title>{% block title %}{% if title %}{{ title }} – {% endif %}Django musician{% endblock %}</title>
 
   {% block style %}
   {% block bootstrap_theme %}
@@ -23,9 +23,6 @@
 
   <link rel="stylesheet" href="{% static "musician/fontawesome/css/all.min.css" %}" />
   <link rel="stylesheet" type="text/css" href="{% static "musician/css/default.css" %}" />
-  {% if code_style %}<style>
-    {{ code_style }}
-  </style>{% endif %}
   {% endblock %}
 
   {% endblock %}

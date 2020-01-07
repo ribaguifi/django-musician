@@ -25,6 +25,10 @@ from .settings import ALLOWED_RESOURCES
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
     template_name = "musician/dashboard.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Dashboard'),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,6 +89,10 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
 class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
     template_name = "musician/profile.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('User profile'),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -103,7 +111,7 @@ class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
     """Base list view to all services"""
     service_class = None
-    template_name = "musician/service_list.html"  # TODO move to ServiceListView
+    template_name = "musician/service_list.html"
 
     def get_queryset(self):
         if self.service_class is None or self.service_class.api_name is None:
@@ -132,9 +140,18 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
 class BillingView(ServiceListView):
     service_class = Bill
     template_name = "musician/billing.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Billing'),
+    }
 
 
 class BillDownloadView(CustomContextMixin, UserTokenRequiredMixin, View):
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Download bill'),
+    }
+
     def get(self, request, *args, **kwargs):
         pk = self.kwargs.get('pk')
         bill = self.orchestra.retrieve_bill_document(pk)
@@ -145,6 +162,10 @@ class BillDownloadView(CustomContextMixin, UserTokenRequiredMixin, View):
 class MailView(ServiceListView):
     service_class = MailService
     template_name = "musician/mail.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Mail addresses'),
+    }
 
     def get_queryset(self):
         def retrieve_mailbox(value):
@@ -198,6 +219,10 @@ class MailView(ServiceListView):
 class MailingListsView(ServiceListView):
     service_class = MailinglistService
     template_name = "musician/mailinglists.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Mailing lists'),
+    }
 
 
     def get_context_data(self, **kwargs):
@@ -223,15 +248,27 @@ class MailingListsView(ServiceListView):
 class DatabasesView(ServiceListView):
     template_name = "musician/databases.html"
     service_class = DatabaseService
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Databases'),
+    }
 
 
 class SaasView(ServiceListView):
     service_class = SaasService
     template_name = "musician/saas.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Software as a Service'),
+    }
 
 
 class DomainDetailView(CustomContextMixin, UserTokenRequiredMixin, DetailView):
     template_name = "musician/domain_detail.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Domain details'),
+    }
 
     def get_queryset(self):
         # Return an empty list to avoid a request to retrieve all the
@@ -254,7 +291,11 @@ class LoginView(FormView):
     form_class = LoginForm
     success_url = reverse_lazy('musician:dashboard')
     redirect_field_name = 'next'
-    extra_context = {'version': get_version()}
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Login'),
+        'version': get_version(),
+    }
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
