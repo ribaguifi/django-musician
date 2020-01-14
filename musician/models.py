@@ -1,6 +1,7 @@
 import ast
 import logging
 
+from django.utils.dateparse import parse_datetime
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
@@ -100,6 +101,7 @@ class UserAccount(OrchestraModel):
         'short_name': None,
         'full_name': None,
         'billing': {},
+        'last_login': None,
     }
 
     @classmethod
@@ -108,7 +110,10 @@ class UserAccount(OrchestraModel):
 
         if 'billcontact' in data:
             billing = BillingContact.new_from_json(data['billcontact'])
-        return super().new_from_json(data=data, billing=billing)
+
+        if 'last_login' in data:
+            last_login = parse_datetime(data['last_login'])
+        return super().new_from_json(data=data, billing=billing, last_login=last_login)
 
 
 class DatabaseUser(OrchestraModel):
@@ -229,17 +234,13 @@ class MailinglistService(OrchestraModel):
     fields = ('name', 'status', 'address_name', 'admin_email', 'configure')
     param_defaults = {
         'name': None,
+        'is_active': True,
         'admin_email': None,
     }
 
     def __init__(self, **kwargs):
         self.data = kwargs
         super().__init__(**kwargs)
-
-    @property
-    def status(self):
-        # TODO(@slamora): where retrieve if the list is active?
-        return 'active'
 
     @property
     def address_name(self):

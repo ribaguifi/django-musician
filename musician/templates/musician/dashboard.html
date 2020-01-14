@@ -4,7 +4,7 @@
 {% block content %}
 
 <h2>{% trans "Welcome back" %} <strong>{{ profile.username }}</strong></h2>
-<p>{% blocktrans with last_login=profile.last_login|default:"N/A" %}Last time you logged in was: {{ last_login }}{% endblocktrans %}</p>
+<p>{% blocktrans with last_login=profile.last_login|date:"SHORT_DATE_FORMAT" %}Last time you logged in was: {{ last_login }}{% endblocktrans %}</p>
 
 <div class="card-deck">
   {% for resource, usage in resource_usage.items %}
@@ -46,7 +46,9 @@
         </button>
       </div>
       <div class="col-md text-right">
+        {% comment "@slamora: orchestra doesn't have this information [won't fix] See issue #2" %}
           {% trans "Expiration date" %}: <strong>{{ domain.expiration_date|date:"SHORT_DATE_FORMAT" }}</strong>
+        {% endcomment %}
       </div>
     </div>
   </div><!-- /card-header-->
