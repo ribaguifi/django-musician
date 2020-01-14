@@ -17,7 +17,9 @@
           {% trans "Type" %}: <strong>{{ database.type }}</strong>
         </div>
         <div class="col-md text-right">
+          {% comment "@slamora: orchestra doesn't provide this information [won't fix] See issue #3" %}
             {% trans "associated to" %}: <strong>{{ database.domain|default:"-" }}</strong>
+          {% endcomment %}
         </div>
       </div>
     </div><!-- /card-header-->
