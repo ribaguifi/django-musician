@@ -107,6 +107,7 @@ class UserAccount(OrchestraModel):
     @classmethod
     def new_from_json(cls, data, **kwargs):
         billing = None
+        last_login = None
 
         if 'billcontact' in data:
             billing = BillingContact.new_from_json(data['billcontact'])
