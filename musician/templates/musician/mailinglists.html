@@ -30,7 +30,11 @@
     {% for resource in object_list %}
     <tr>
       <th scope="row">{{ resource.name }}</th>
-      <td class="text-primary font-weight-bold">{{ resource.status|capfirst }}</td>
+      {% if resource.is_active %}
+      <td class="text-primary font-weight-bold">{% trans "Active" %}</td>
+      {% else %}
+      <td class="text-danger font-weight-bold">{% trans "Inactive" %}</td>
+      {% endif %}
       <td>{{ resource.address_name}}</td>
       <td>{{ resource.admin_email }}</td>
       <td><a href="#TODO-{{ resource.manager_url }}" target="_blank" rel="noopener noreferrer">Mailtrain</a></td>

@@ -229,17 +229,13 @@ class MailinglistService(OrchestraModel):
     fields = ('name', 'status', 'address_name', 'admin_email', 'configure')
     param_defaults = {
         'name': None,
+        'is_active': True,
         'admin_email': None,
     }
 
     def __init__(self, **kwargs):
         self.data = kwargs
         super().__init__(**kwargs)
-
-    @property
-    def status(self):
-        # TODO(@slamora): where retrieve if the list is active?
-        return 'active'
 
     @property
     def address_name(self):
