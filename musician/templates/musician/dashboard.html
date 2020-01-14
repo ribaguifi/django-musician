@@ -46,7 +46,9 @@
         </button>
       </div>
       <div class="col-md text-right">
+        {% comment "@slamora: orchestra doesn't have this information [won't fix] See issue #2" %}
           {% trans "Expiration date" %}: <strong>{{ domain.expiration_date|date:"SHORT_DATE_FORMAT" }}</strong>
+        {% endcomment %}
       </div>
     </div>
   </div><!-- /card-header-->
