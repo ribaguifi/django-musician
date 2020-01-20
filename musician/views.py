@@ -66,16 +66,16 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         # TODO(@slamora): validate concept of limits with Pangea
         profile_type = context['profile'].type
         for domain in domains:
-            address_left = ALLOWED_RESOURCES[profile_type]['mailbox'] - len(domain.mails)
-            alert = None
-            if address_left == 1:
-                alert = 'warning'
-            elif address_left < 1:
-                alert = 'danger'
+            addresses_left = ALLOWED_RESOURCES[profile_type]['mailbox'] - len(domain.mails)
+            alert_level = None
+            if addresses_left == 1:
+                alert_level = 'warning'
+            elif addresses_left < 1:
+                alert_level = 'danger'
 
-            domain.address_left = {
-                'count': address_left,
-                'alert': alert,
+            domain.addresses_left = {
+                'count': addresses_left,
+                'alert_level': alert_level,
             }
 
         context.update({

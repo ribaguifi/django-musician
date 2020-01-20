@@ -62,9 +62,9 @@
           <p class="card-text"><i class="fas fa-envelope fa-3x"></i></p>
           <p class="card-text text-dark">
             {{ domain.mails|length }} {% trans "mail addresses created" %}
-            {% if domain.address_left.alert %}
+            {% if domain.address_left.alert_level %}
             <br/>
-            <span class="text-{{ domain.address_left.alert }}">{{ domain.address_left.count }} mail address left</span>
+            <span class="text-{{ domain.address_left.alert_level }}">{{ domain.address_left.count }} mail address left</span>
             {% endif %}
           </p>
           <a class="stretched-link" href="{% url 'musician:mails' %}?domain={{ domain.id }}"></a>
