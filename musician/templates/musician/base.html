@@ -38,19 +38,19 @@
         <img class="img-fluid" src="{% static 'musician/images/logo-pangea-monocrome-white.png' %}"
           alt="Pangea.org - Internet etic i solidari" />
       </div>
-      <span class="text-light d-block text-right">{{ version }}</span>
+
       <div class="dropdown-divider"></div>
       {# <!-- services menu --> #}
-      {% for item in services_menu %}
       <ul id="sidebar-services" class="nav flex-column">
+        {% for item in services_menu %}
           <li class="nav-item">
             <a class="nav-link text-light active" href="{% url item.pattern_name %}">
               <i class="fas fa-{{ item.icon }}"></i>
               {{ item.title }}
             </a>
           </li>
+        {% endfor %}
       </ul>
-      {% endfor %}
 
       {# <!-- user profile menu --> #}
       <div id="user-profile-menu" class="mt-5 pt-1 dropdown dropright">
@@ -76,6 +76,9 @@
         </ul>
       </div>
 
+      <div class="mt-4 pr-3 pb-2 text-light d-block text-right">
+        <small>Panel Version {{ version }}</small>
+      </div>
       {% endblock sidebar %}
     </nav><!-- ./sidebar -->
     <div id="content" class="container-fluid pt-4">
