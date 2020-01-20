@@ -162,6 +162,7 @@ class Domain(OrchestraModel):
         "records": [],
         "mails": [],
         "usage": {},
+        "websites": [],
     }
 
     @classmethod
