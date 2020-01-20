@@ -79,25 +79,12 @@
           <a class="stretched-link" href="{% url 'musician:mailing-lists' %}?domain={{ domain.id }}"></a>
       </div>
       <div class="col-md-2 border-right">
-          <h4>{% trans "Databases" %}</h4>
-          <p class="card-text"><i class="fas fa-database fa-3x"></i></p>
-          <p class="card-text text-dark">
-            0 {% trans "databases created" %}
-            {% comment %}
-            <!-- TODO databases related to a domain and resource usage
-            {{ domain.databases|length }} {% trans "databases created" %}<br/>
-            20 MB of 45MB
-            -->
-            {% endcomment %}
-          </p>
-          <a class="stretched-link" href="{% url 'musician:databases' %}?domain={{ domain.id }}"></a>
-      </div>
-      <div class="col-md-2 border-right">
           <h4>{% trans "Software as a Service" %}</h4>
           <p class="card-text"><i class="fas fa-fire fa-3x"></i></p>
           <p class="card-text text-dark">Nothing installed</p>
           <a class="stretched-link" href="{% url 'musician:saas' %}?domain={{ domain.id }}"></a>
       </div>
+      <div class="col-md-1"></div>
       <div class="col-md-4">
           <h4>{% trans "Disk usage" %}</h4>
           <p class="card-text"><i class="fas fa-hdd fa-3x"></i></p>
@@ -105,6 +92,7 @@
           {% include "musician/components/usage_progress_bar.html" with detail=domain.usage %}
           </div>
       </div>
+      <div class="col-md-1"></div>
   </div>
 </div>
 
