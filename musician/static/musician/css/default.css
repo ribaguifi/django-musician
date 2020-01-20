@@ -40,13 +40,26 @@ a:hover {
 }
 
 #sidebar {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 280px;
+    max-width: 280px;
     min-height: 100vh;
 }
 
 #sidebar.active {
     margin-left: -250px;
+}
+
+#sidebar .sidebar-branding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+#sidebar #sidebar-services {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+#sidebar #user-profile-menu {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 #sidebar ul.components {
@@ -107,6 +120,7 @@ a:hover {
     background: #ECECEB no-repeat url("../images/logo-pangea-light-gray-bg.svg");
     background-position: right 5% top 10%;
     color: #343434;
+    padding-left: 2rem;
 }
 
 /** services **/

@@ -34,14 +34,15 @@
   <div class="wrapper">
     <nav id="sidebar" class="bg-primary border-right pt-4">
       {% block sidebar %}
-      {# <!-- branding --> #}
-      <img class="img-fluid" src="{% static 'musician/images/logo-pangea-monocrome-white.png' %}"
-        alt="Pangea.org - Internet etic i solidari" />
+      <div class="sidebar-branding">
+        <img class="img-fluid" src="{% static 'musician/images/logo-pangea-monocrome-white.png' %}"
+          alt="Pangea.org - Internet etic i solidari" />
+      </div>
       <span class="text-light d-block text-right">{{ version }}</span>
       <div class="dropdown-divider"></div>
       {# <!-- services menu --> #}
       {% for item in services_menu %}
-      <ul class="nav flex-column">
+      <ul id="sidebar-services" class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link text-light active" href="{% url item.pattern_name %}">
               <i class="fas fa-{{ item.icon }}"></i>
@@ -50,11 +51,10 @@
           </li>
       </ul>
       {% endfor %}
-      {# <!-- user profile menu --> #}
-      <div class="dropdown-divider mt-5"></div>
 
-      <div class="dropdown dropright">
-        <button type="button" class="btn btn-primary nav-link text-light w-100" data-toggle="dropdown">
+      {# <!-- user profile menu --> #}
+      <div id="user-profile-menu" class="mt-5 pt-1 dropdown dropright">
+        <button type="button" class="btn nav-link text-light w-100" data-toggle="dropdown">
           <img id="user-avatar" class="float-right" width="64" height="64" src="{% static "musician/images/default-profile-picture.png" %}" alt="user-profile-picture"/>
             <strong>{{ profile.username }}</strong><br/>
             <i class="fas fa-cog"></i> Settings
@@ -65,9 +65,8 @@
         </div>
       </div>
 
-      <div class="dropdown-divider"></div>
-
-          <ul class="nav flex-column">
+      <div class="sidebar-logout">
+        <ul class="nav flex-column">
           <li class="nav-item text-right">
             <a class="nav-link text-light" href="{% url 'musician:logout' %}">
               {% trans 'Log out' %}
@@ -75,8 +74,7 @@
             </a>
           </li>
         </ul>
-    
-    </ul>
+      </div>
 
       {% endblock sidebar %}
     </nav><!-- ./sidebar -->
