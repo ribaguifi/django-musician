@@ -263,3 +263,23 @@ class SaasService(OrchestraModel):
         'is_active': True,
         'data': {},
     }
+
+
+class WebSite(OrchestraModel):
+    api_name = 'website'
+    param_defaults = {
+        "id": None,
+        "name": None,
+        "protocol": None,
+        "is_active": True,
+        "domains": [],
+        "contents": [],
+    }
+
+    @classmethod
+    def new_from_json(cls, data, **kwargs):
+        domains = cls.param_defaults.get("domains")
+        if 'domains' in data:
+            domains = [Domain.new_from_json(domain_data) for domain_data in data['domains']]
+
+        return super().new_from_json(data=data, domains=domains)
