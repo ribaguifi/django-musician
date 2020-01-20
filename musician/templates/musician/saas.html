@@ -38,6 +38,18 @@
         </div>
       </div>
     </div>
+    {% empty %}
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card service-card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body text-center">
+            <p class="mb-4"><i class="fas fa-fire fa-5x"></i></p>
+            {# Translators: saas page when there isn't any saas. #}
+            <h5 class="card-title text-dark">{% trans "Ooops! Looks like there is nothing here!" %}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endfor %}
 
 {% endblock %}
