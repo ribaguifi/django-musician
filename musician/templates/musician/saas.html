@@ -13,9 +13,11 @@
         <div class="col-md-8">
           <strong>{{ saas.name }}</strong>
         </div>
+        {% comment "Hidden until API provides this information" %}
         <div class="col-md text-right">
             {% trans "Installed on" %}: <strong>{{ saas.domain|default:"-" }}</strong>
         </div>
+        {% endcomment %}
       </div>
     </div><!-- /card-header-->
     <div class="card-body row">
