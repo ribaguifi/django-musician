@@ -6,7 +6,7 @@ from django.http import Http404
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
-from .models import Domain, DatabaseService, MailService, SaasService, UserAccount
+from .models import Domain, DatabaseService, MailService, SaasService, UserAccount, WebSite
 
 
 DOMAINS_PATH = 'domains/'
@@ -25,6 +25,7 @@ API_PATHS = {
     'mailbox-list': 'mailboxes/',
     'mailinglist-list': 'lists/',
     'saas-list': 'saas/',
+    'website-list': 'websites/',
 
     # other
     'bill-list': 'bills/',
@@ -118,6 +119,8 @@ class Orchestra(object):
 
     def retrieve_domain_list(self):
         output = self.retrieve_service_list(Domain.api_name)
+        websites = self.retrieve_website_list()
+
         domains = []
         for domain_json in output:
             # filter querystring
@@ -126,6 +129,10 @@ class Orchestra(object):
             # retrieve services associated to a domain
             domain_json['mails'] = self.retrieve_service_list(
                 MailService.api_name, querystring)
+
+            # retrieve websites (as they cannot be filtered by domain on the API we should do it here)
+            domain_json['websites'] = self.filter_websites_by_domain(websites, domain_json['id'])
+
             # TODO(@slamora): databases and sass are not related to a domain, so cannot be filtered
             # domain_json['databases'] = self.retrieve_service_list(DatabaseService.api_name, querystring)
             # domain_json['saas'] = self.retrieve_service_list(SaasService.api_name, querystring)
@@ -142,6 +149,19 @@ class Orchestra(object):
             domains.append(Domain.new_from_json(domain_json))
 
         return domains
+
+    def retrieve_website_list(self):
+        output = self.retrieve_service_list(WebSite.api_name)
+        return [WebSite.new_from_json(website_data) for website_data in output]
+
+    def filter_websites_by_domain(self, websites, domain_id):
+        matching = []
+        for website in websites:
+            web_domains = [web_domain.id for web_domain in website.domains]
+            if domain_id in web_domains:
+                matching.append(website)
+
+        return matching
 
     def verify_credentials(self):
         """

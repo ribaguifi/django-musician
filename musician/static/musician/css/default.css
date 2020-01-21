@@ -40,13 +40,32 @@ a:hover {
 }
 
 #sidebar {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 280px;
+    max-width: 280px;
     min-height: 100vh;
+    
+    display: flex;
+    flex-direction: column;
+}
+#sidebar #sidebar-services {
+    flex-grow: 1;
 }
 
 #sidebar.active {
     margin-left: -250px;
+}
+
+#sidebar .sidebar-branding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+#sidebar #sidebar-services {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+#sidebar #user-profile-menu {
+    background:rgba(254, 251, 242, 0.25);
 }
 
 #sidebar ul.components {
@@ -76,7 +95,7 @@ a:hover {
 
 /** login **/
 #body-login .jumbotron {
-    background: #282532;/**#50466E;**/
+    background: #282532 no-repeat url("../images/logo-pangea-lilla-bg.svg") right;
 }
 
 #login-content {
@@ -104,8 +123,10 @@ a:hover {
 }
 
 #content {
-    background: #ECECEB;
+    background: #ECECEB no-repeat url("../images/logo-pangea-light-gray-bg.svg");
+    background-position: right 5% top 10%;
     color: #343434;
+    padding-left: 2rem;
 }
 
 /** services **/

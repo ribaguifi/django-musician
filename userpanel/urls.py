@@ -18,11 +18,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic.base import RedirectView
 
 import musician
 
 urlpatterns = [
     path('', include('musician.urls')),
+    path('', RedirectView.as_view(pattern_name='musician:dashboard', permanent=False), name='root_index')
 ]
 
 DEVELOPMENT = config('DEVELOPMENT', default=False, cast=bool)

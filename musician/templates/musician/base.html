@@ -11,7 +11,7 @@
   <meta name="robots" content="NONE,NOARCHIVE" />
   {% endblock %}
 
-  <title>{% block title %}{% if name %}{{ name }} – {% endif %}Django musician{% endblock %}</title>
+  <title>{% block title %}{% if title %}{{ title }} – {% endif %}Django musician{% endblock %}</title>
 
   {% block style %}
   {% block bootstrap_theme %}
@@ -23,9 +23,6 @@
 
   <link rel="stylesheet" href="{% static "musician/fontawesome/css/all.min.css" %}" />
   <link rel="stylesheet" type="text/css" href="{% static "musician/css/default.css" %}" />
-  {% if code_style %}<style>
-    {{ code_style }}
-  </style>{% endif %}
   {% endblock %}
 
   {% endblock %}
@@ -37,27 +34,27 @@
   <div class="wrapper">
     <nav id="sidebar" class="bg-primary border-right pt-4">
       {% block sidebar %}
-      {# <!-- branding --> #}
-      <img class="img-fluid" src="{% static 'musician/images/logo-pangea-monocrome-white.png' %}"
-        alt="Pangea.org - Internet etic i solidari" />
-      <span class="text-light d-block text-right">{{ version }}</span>
+      <div class="sidebar-branding">
+        <img class="img-fluid" src="{% static 'musician/images/logo-pangea-monocrome-white.png' %}"
+          alt="Pangea.org - Internet etic i solidari" />
+      </div>
+
       <div class="dropdown-divider"></div>
       {# <!-- services menu --> #}
-      {% for item in services_menu %}
-      <ul class="nav flex-column">
+      <ul id="sidebar-services" class="nav flex-column">
+        {% for item in services_menu %}
           <li class="nav-item">
             <a class="nav-link text-light active" href="{% url item.pattern_name %}">
               <i class="fas fa-{{ item.icon }}"></i>
               {{ item.title }}
             </a>
           </li>
+        {% endfor %}
       </ul>
-      {% endfor %}
-      {# <!-- user profile menu --> #}
-      <div class="dropdown-divider mt-5"></div>
 
-      <div class="dropdown dropright">
-        <button type="button" class="btn btn-primary nav-link text-light w-100" data-toggle="dropdown">
+      {# <!-- user profile menu --> #}
+      <div id="user-profile-menu" class="mt-5 pt-1 dropdown dropright">
+        <button type="button" class="btn nav-link text-light w-100" data-toggle="dropdown">
           <img id="user-avatar" class="float-right" width="64" height="64" src="{% static "musician/images/default-profile-picture.png" %}" alt="user-profile-picture"/>
             <strong>{{ profile.username }}</strong><br/>
             <i class="fas fa-cog"></i> {% trans "Settings" %}
@@ -68,9 +65,8 @@
         </div>
       </div>
 
-      <div class="dropdown-divider"></div>
-
-          <ul class="nav flex-column">
+      <div class="sidebar-logout">
+        <ul class="nav flex-column">
           <li class="nav-item text-right">
             <a class="nav-link text-light" href="{% url 'musician:logout' %}">
               {% trans 'Log out' %}
@@ -78,9 +74,11 @@
             </a>
           </li>
         </ul>
-    
-    </ul>
+      </div>
 
+      <div class="mt-4 pr-3 pb-2 text-light d-block text-right">
+        <small>Panel Version {{ version }}</small>
+      </div>
       {% endblock sidebar %}
     </nav><!-- ./sidebar -->
     <div id="content" class="container-fluid pt-4">
