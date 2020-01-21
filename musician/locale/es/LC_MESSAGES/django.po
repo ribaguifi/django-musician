@@ -7,18 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-18 11:37+0100\n"
+"POT-Creation-Date: 2020-01-21 13:32+0100\n"
 "PO-Revision-Date: 2019-12-20 11:30+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.2.4\n"
-"Last-Translator: \n"
-"Language: es\n"
 
-#: api.py:107 api.py:116
+#: api.py:108 api.py:117
 msgid "No domain found matching the query"
 msgstr "No hay dominios que coincidan con tu búsqueda"
 
@@ -30,11 +30,13 @@ msgstr "Dominios y sitios web"
 msgid "Mails"
 msgstr "Correos"
 
-#: mixins.py:16
+#. Translators: This message appears on the page title
+#: mixins.py:16 views.py:224
 msgid "Mailing lists"
 msgstr "Listas de correo"
 
-#: mixins.py:17 models.py:124 templates/musician/dashboard.html:72
+#. Translators: This message appears on the page title
+#: mixins.py:17 models.py:130 views.py:253
 msgid "Databases"
 msgstr "Bases de datos"
 
@@ -42,34 +44,35 @@ msgstr "Bases de datos"
 msgid "SaaS"
 msgstr "SaaS"
 
-#: models.py:125
+#: models.py:131
 #, fuzzy
 msgid "Description details for databases page."
 msgstr "Detalles descriptivos de la página de bases de datos."
 
-#: models.py:185
+#. Translators: This message appears on the page title
+#: models.py:192 views.py:167
 msgid "Mail addresses"
 msgstr "Direcciones de correo"
 
-#: models.py:186
+#: models.py:193
 #, fuzzy
 msgid "Description details for mail addresses page."
 msgstr "Detalles descriptivos de la página de direcciones de correo."
 
-#: models.py:228
+#: models.py:235
 msgid "Mailing list"
 msgstr "Lista de correo"
 
-#: models.py:229
+#: models.py:236
 #, fuzzy
 msgid "Description details for mailinglist page."
 msgstr "Detalles descriptivos de la página de listas de correo."
 
-#: models.py:257
+#: models.py:260
 msgid "Software as a Service (SaaS)"
 msgstr "Software as a Service (SaaS)"
 
-#: models.py:258
+#: models.py:261
 #, fuzzy
 msgid "Description details for SaaS page."
 msgstr "Detalles descriptivos de la página SaaS."
@@ -95,19 +98,21 @@ msgstr ""
 "Envía un correo a <a href=“mailto:%(support_email)s”>%(support_email)s</a> "
 "indicando tu nombre de usuaria/o y te explicaremos qué hacer."
 
-#: templates/musician/base.html:63
+#: templates/musician/base.html:60
 msgid "Settings"
 msgstr "Configuración"
 
-#: templates/musician/base.html:66 templates/musician/profile.html:6
+#: templates/musician/base.html:63 templates/musician/profile.html:6
 msgid "Profile"
 msgstr "Perfil"
 
-#: templates/musician/base.html:67 templates/musician/billing.html:6
+#. Translators: This message appears on the page title
+#: templates/musician/base.html:64 templates/musician/billing.html:6
+#: views.py:145
 msgid "Billing"
 msgstr "Facturas"
 
-#: templates/musician/base.html:76
+#: templates/musician/base.html:72
 msgid "Log out"
 msgstr "Desconéctate"
 
@@ -127,89 +132,97 @@ msgstr "Siguiente"
 msgid "Welcome back"
 msgstr "¡Hola de nuevo!"
 
-#: templates/musician/dashboard.html:7
+#: templates/musician/dashboard.html:8
 #, python-format
 msgid "Last time you logged in was: %(last_login)s"
 msgstr "La última vez que accediste fue el día: %(last_login)s"
 
-#: templates/musician/dashboard.html:20
+#: templates/musician/dashboard.html:10
+msgid "It's the first time you log into the system, welcome on board!"
+msgstr ""
+
+#: templates/musician/dashboard.html:24
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: templates/musician/dashboard.html:24
+#: templates/musician/dashboard.html:28
 msgid "There is no notifications at this time."
 msgstr "No tienes ninguna notificación."
 
-#: templates/musician/dashboard.html:31
+#: templates/musician/dashboard.html:35
 msgid "Your domains and websites"
 msgstr "Tus dominios y sitios web"
 
-#: templates/musician/dashboard.html:32
+#: templates/musician/dashboard.html:36
 msgid "Dashboard page description."
 msgstr ""
 
-#: templates/musician/dashboard.html:45
+#: templates/musician/dashboard.html:51
 msgid "view configuration"
 msgstr "ver la configuración"
 
-#: templates/musician/dashboard.html:49
+#: templates/musician/dashboard.html:58
 msgid "Expiration date"
 msgstr "Fecha de vencimiento"
 
-#: templates/musician/dashboard.html:55
+#: templates/musician/dashboard.html:65
 msgid "Mail"
 msgstr "Correo"
 
-#: templates/musician/dashboard.html:58
+#: templates/musician/dashboard.html:68
 msgid "mail addresses created"
 msgstr "direcciones de correo creadas"
 
-#: templates/musician/dashboard.html:61
+#: templates/musician/dashboard.html:71
 msgid "mail address left"
 msgstr "direcciones de correo por activar"
 
-#: templates/musician/dashboard.html:67
+#: templates/musician/dashboard.html:77
 msgid "Mail list"
 msgstr "Lista de correo"
 
-#: templates/musician/dashboard.html:75
-msgid "databases created"
-msgstr "bases de datos creadas"
-
-#: templates/musician/dashboard.html:87
+#. Translators: This message appears on the page title
+#: templates/musician/dashboard.html:82 views.py:262
 #, fuzzy
 msgid "Software as a Service"
 msgstr "Software as a Service"
 
-#: templates/musician/dashboard.html:89
+#: templates/musician/dashboard.html:84
 msgid "Nothing installed"
 msgstr "Nada instalado"
 
-#: templates/musician/dashboard.html:93 views.py:36
+#: templates/musician/dashboard.html:89 views.py:40
 msgid "Disk usage"
 msgstr "Uso del disco"
 
-#: templates/musician/dashboard.html:109
+#: templates/musician/dashboard.html:106
 msgid "Configuration details"
 msgstr "Detalles de configuración"
 
-#: templates/musician/dashboard.html:115
+#: templates/musician/dashboard.html:113
 msgid "FTP access:"
 msgstr "Acceso FTP:"
 
-#: templates/musician/dashboard.html:118
-msgid "Username"
-msgstr "Nombre de usuario/a"
+#. Translators: domain configuration detail modal
+#: templates/musician/dashboard.html:115
+msgid "Contact with the support team to get details concerning FTP access."
+msgstr ""
 
-#: templates/musician/dashboard.html:119
-msgid "Password:"
-msgstr "Contraseña:"
+#: templates/musician/dashboard.html:124
+msgid "No website configured."
+msgstr ""
 
-#: templates/musician/dashboard.html:121
+#: templates/musician/dashboard.html:126
 msgid "Root directory:"
 msgstr "Directorio raíz:"
 
-#: templates/musician/dashboard.html:125
+#: templates/musician/dashboard.html:127
+#, fuzzy
+#| msgid "Type"
+msgid "Type:"
+msgstr "Tipo"
+
+#: templates/musician/dashboard.html:132
 msgid "View DNS records"
 msgstr "Ver registros DNS"
 
@@ -218,18 +231,24 @@ msgstr "Ver registros DNS"
 msgid "Type"
 msgstr "Tipo"
 
-#: templates/musician/databases.html:20
+#: templates/musician/databases.html:21
 #, fuzzy
 msgid "associated to"
 msgstr "asociado a"
 
-#: templates/musician/databases.html:32
+#: templates/musician/databases.html:34
 msgid "No users for this database."
 msgstr "No hay usuarias/os de esta base de datos."
 
-#: templates/musician/databases.html:43
+#: templates/musician/databases.html:45
 msgid "Open database manager"
 msgstr "Abre el gestor de bases de datos"
+
+#. Translators: database page when there isn't any database.
+#. Translators: saas page when there isn't any saas.
+#: templates/musician/databases.html:58 templates/musician/saas.html:49
+msgid "Ooops! Looks like there is nothing here!"
+msgstr ""
 
 #: templates/musician/domain_detail.html:5
 msgid "Go back"
@@ -270,31 +289,85 @@ msgstr "Alias"
 msgid "Type details"
 msgstr "Detalles del tipo"
 
+#: templates/musician/mailinglists.html:34
+msgid "Active"
+msgstr "Activo"
+
+#: templates/musician/mailinglists.html:36
+#, fuzzy
+#| msgid "Active"
+msgid "Inactive"
+msgstr "Activo"
+
 #: templates/musician/profile.html:7
 msgid "Little description on profile page."
 msgstr ""
 
-#: templates/musician/saas.html:17
+#: templates/musician/profile.html:60
+msgid "Check your last bills"
+msgstr ""
+
+#: templates/musician/saas.html:18
 msgid "Installed on"
 msgstr "Instalado en"
 
-#: templates/musician/saas.html:27
+#: templates/musician/saas.html:29
 #, fuzzy
 msgid "Service info"
 msgstr "Información del servicio"
 
-#: templates/musician/saas.html:28
-msgid "Active"
+#: templates/musician/saas.html:30
+#, fuzzy
+#| msgid "Active"
+msgid "active"
 msgstr "Activo"
 
-#: templates/musician/saas.html:36
+#: templates/musician/saas.html:37
 msgid "Open service admin panel"
 msgstr "Abre el panel de administración del servicio"
 
-#: views.py:43
+#. Translators: This message appears on the page title
+#: views.py:30
+msgid "Dashboard"
+msgstr ""
+
+#: views.py:47
 msgid "Traffic"
 msgstr "Tráfico"
 
-#: views.py:50
+#: views.py:54
 msgid "Mailbox usage"
 msgstr "Uso de espacio en tu buzón de correo"
+
+#. Translators: This message appears on the page title
+#: views.py:94
+#, fuzzy
+#| msgid "Profile"
+msgid "User profile"
+msgstr "Perfil"
+
+#. Translators: This message appears on the page title
+#: views.py:152
+msgid "Download bill"
+msgstr ""
+
+#. Translators: This message appears on the page title
+#: views.py:270
+#, fuzzy
+#| msgid "Configuration details"
+msgid "Domain details"
+msgstr "Detalles de configuración"
+
+#. Translators: This message appears on the page title
+#: views.py:296
+msgid "Login"
+msgstr ""
+
+#~ msgid "databases created"
+#~ msgstr "bases de datos creadas"
+
+#~ msgid "Username"
+#~ msgstr "Nombre de usuario/a"
+
+#~ msgid "Password:"
+#~ msgstr "Contraseña:"
