@@ -24,12 +24,11 @@
           <p class="text-center service-brand"><i class="fab fa-{{ saas.service }} fa-10x"></i></p>
         </div>
         <div class="col-md-3 border-left border-right">
-            <h4>{% trans "Service info" %}</h4>
-            <p>{% trans "Active" %}: {{ saas.is_active|yesno }}</p>
-            {# TODO (@slamora): implement saas details #}
-            <pre>
-                {{ saas.data }}
-            </pre>
+            <h4 class="mb-3">{% trans "Service info" %}</h4>
+            <label class="w-25">{% trans "active" %}:</label> <strong>{{ saas.is_active|yesno }}</strong><br/>
+            {% for key, value in saas.data.items %}
+            <label class="w-25">{{ key }}:</label> <strong>{{ value }}</strong><br/>
+            {% endfor %}
         </div>
         <div class="col-md-5 text-right">
           <div class="service-manager-link">
