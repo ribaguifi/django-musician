@@ -5,6 +5,8 @@ from django.utils.dateparse import parse_datetime
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from . import settings as musician_settings
+
 
 logger = logging.getLogger(__name__)
 
@@ -249,9 +251,8 @@ class MailinglistService(OrchestraModel):
         return "{}@{}".format(self.data['address_name'], self.data['address_domain']['name'])
 
     @property
-    def configure(self):
-        # TODO(@slamora): build mailtran absolute URL
-        return format_html('<a href="#TODO">Mailtrain</a>')
+    def manager_url(self):
+        return musician_settings.URL_MAILTRAIN
 
 
 class SaasService(OrchestraModel):
