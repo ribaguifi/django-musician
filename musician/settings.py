@@ -22,8 +22,9 @@ DEFAULTS = {
     },
     "URL_DB_PHPMYADMIN": "https://www.phpmyadmin.net/",
     "URL_MAILTRAIN": "https://mailtrain.org/",
-    "URL_SAAS_WORDPRESS": "https://wordpress.org/",
     "URL_SAAS_GITLAB": "https://gitlab.org/",
+    "URL_SAAS_OWNCLOUD": "https://owncloud.org/",
+    "URL_SAAS_WORDPRESS": "https://wordpress.org/",
 }
 
 ALLOWED_RESOURCES = getsetting("ALLOWED_RESOURCES")
@@ -32,6 +33,8 @@ URL_DB_PHPMYADMIN = getsetting("URL_DB_PHPMYADMIN")
 
 URL_MAILTRAIN = getsetting("URL_MAILTRAIN")
 
-URL_SAAS_WORDPRESS = getsetting("URL_SAAS_WORDPRESS")
-
 URL_SAAS_GITLAB = getsetting("URL_SAAS_GITLAB")
+
+URL_SAAS_OWNCLOUD = getsetting("URL_SAAS_OWNCLOUD")
+
+URL_SAAS_WORDPRESS = getsetting("URL_SAAS_WORDPRESS")
