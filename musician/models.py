@@ -109,14 +109,20 @@ class UserAccount(OrchestraModel):
     @classmethod
     def new_from_json(cls, data, **kwargs):
         billing = None
+        language = None
         last_login = None
 
         if 'billcontact' in data:
             billing = BillingContact.new_from_json(data['billcontact'])
 
+        # Django expects that language code is lowercase
+        if 'language' in data:
+            language = data['language'].lower()
+
         if 'last_login' in data:
             last_login = parse_datetime(data['last_login'])
-        return super().new_from_json(data=data, billing=billing, last_login=last_login)
+
+        return super().new_from_json(data=data, billing=billing, language=language, last_login=last_login)
 
 
 class DatabaseUser(OrchestraModel):

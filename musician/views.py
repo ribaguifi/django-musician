@@ -1,9 +1,11 @@
 from itertools import groupby
 
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils import translation
 from django.utils.http import is_safe_url
 from django.utils.translation import gettext_lazy as _
 from django.views import View
@@ -305,7 +307,15 @@ class LoginView(FormView):
     def form_valid(self, form):
         """Security check complete. Log the user in."""
         auth_login(self.request, form.username, form.token)
-        return HttpResponseRedirect(self.get_success_url())
+
+        # set user language as active language
+        user_language = form.user.language
+        translation.activate(user_language)
+
+        response = HttpResponseRedirect(self.get_success_url())
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+
+        return response
 
     def get_success_url(self):
         url = self.get_redirect_url()

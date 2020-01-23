@@ -17,5 +17,6 @@ class LoginForm(AuthenticationForm):
             else:
                 self.username = username
                 self.token = orchestra.auth_token
+                self.user = orchestra.retrieve_profile()
 
         return self.cleaned_data
