@@ -125,7 +125,7 @@ LOGIN_URL = '/auth/login/'
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
-# SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
