@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-21 13:32+0100\n"
+"POT-Creation-Date: 2020-01-23 17:49+0100\n"
 "PO-Revision-Date: 2019-12-20 11:09+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -31,12 +31,12 @@ msgid "Mails"
 msgstr "Correus"
 
 #. Translators: This message appears on the page title
-#: mixins.py:16 views.py:224
+#: mixins.py:16 views.py:226
 msgid "Mailing lists"
 msgstr "Llistes de correu"
 
 #. Translators: This message appears on the page title
-#: mixins.py:17 models.py:130 views.py:253
+#: mixins.py:17 models.py:138 views.py:255
 msgid "Databases"
 msgstr "Bases de dades"
 
@@ -44,32 +44,32 @@ msgstr "Bases de dades"
 msgid "SaaS"
 msgstr "SaaS"
 
-#: models.py:131
+#: models.py:139
 msgid "Description details for databases page."
 msgstr "Detalls descriptius de la pàgina de base de dades."
 
 #. Translators: This message appears on the page title
-#: models.py:192 views.py:167
+#: models.py:200 views.py:169
 msgid "Mail addresses"
 msgstr "Adreces de correu"
 
-#: models.py:193
+#: models.py:201
 msgid "Description details for mail addresses page."
 msgstr "Detalls descriptius de la pàgina d’adreces de correu."
 
-#: models.py:235
+#: models.py:243
 msgid "Mailing list"
 msgstr "Llista de correu"
 
-#: models.py:236
+#: models.py:244
 msgid "Description details for mailinglist page."
 msgstr "Detalls descriptius de la pàgina de llistes de correu."
 
-#: models.py:260
+#: models.py:267
 msgid "Software as a Service (SaaS)"
 msgstr "Software as a Service (SaaS)"
 
-#: models.py:261
+#: models.py:268
 msgid "Description details for SaaS page."
 msgstr "Detalls descriptius de la pàgina de SaaS."
 
@@ -104,7 +104,7 @@ msgstr "Perfil"
 
 #. Translators: This message appears on the page title
 #: templates/musician/base.html:64 templates/musician/billing.html:6
-#: views.py:145
+#: views.py:147
 msgid "Billing"
 msgstr "Factures"
 
@@ -115,6 +115,28 @@ msgstr "Surt"
 #: templates/musician/billing.html:7
 msgid "Billing page description."
 msgstr "Descripció de la pàgina de factures."
+
+#: templates/musician/billing.html:19
+msgid "Number"
+msgstr ""
+
+#: templates/musician/billing.html:20
+msgid "Bill date"
+msgstr ""
+
+#: templates/musician/billing.html:21 templates/musician/databases.html:17
+#: templates/musician/domain_detail.html:17 templates/musician/mail.html:22
+#, fuzzy
+msgid "Type"
+msgstr "Tipus"
+
+#: templates/musician/billing.html:22
+msgid "Total"
+msgstr ""
+
+#: templates/musician/billing.html:23
+msgid "Download PDF"
+msgstr ""
 
 #: templates/musician/components/table_paginator.html:15
 #, fuzzy
@@ -180,7 +202,7 @@ msgid "Mail list"
 msgstr "Llista de correu"
 
 #. Translators: This message appears on the page title
-#: templates/musician/dashboard.html:82 views.py:262
+#: templates/musician/dashboard.html:82 views.py:264
 msgid "Software as a Service"
 msgstr "Software as a Service"
 
@@ -188,7 +210,7 @@ msgstr "Software as a Service"
 msgid "Nothing installed"
 msgstr "No tens res instal·lat"
 
-#: templates/musician/dashboard.html:89 views.py:40
+#: templates/musician/dashboard.html:89 views.py:42
 msgid "Disk usage"
 msgstr "Ús del disc"
 
@@ -221,12 +243,6 @@ msgstr "Tipus"
 #: templates/musician/dashboard.html:132
 msgid "View DNS records"
 msgstr "Veure registres DNS"
-
-#: templates/musician/databases.html:17
-#: templates/musician/domain_detail.html:17 templates/musician/mail.html:22
-#, fuzzy
-msgid "Type"
-msgstr "Tipus"
 
 #: templates/musician/databases.html:21
 #, fuzzy
@@ -301,6 +317,22 @@ msgstr "Actiu"
 msgid "Little description on profile page."
 msgstr "Breu descripció a la pàgina de perfil."
 
+#: templates/musician/profile.html:11
+msgid "User information"
+msgstr ""
+
+#: templates/musician/profile.html:21
+msgid "Preferred language:"
+msgstr ""
+
+#: templates/musician/profile.html:35
+msgid "Billing information"
+msgstr ""
+
+#: templates/musician/profile.html:49
+msgid "payment method:"
+msgstr ""
+
 #: templates/musician/profile.html:60
 msgid "Check your last bills"
 msgstr ""
@@ -324,39 +356,39 @@ msgid "Open service admin panel"
 msgstr "Obre el panell d’administració del servei"
 
 #. Translators: This message appears on the page title
-#: views.py:30
+#: views.py:32
 msgid "Dashboard"
 msgstr ""
 
-#: views.py:47
+#: views.py:49
 msgid "Traffic"
 msgstr "Tràfic"
 
-#: views.py:54
+#: views.py:56
 msgid "Mailbox usage"
 msgstr "Ús d’espai a la bústia de correu"
 
 #. Translators: This message appears on the page title
-#: views.py:94
+#: views.py:96
 #, fuzzy
 #| msgid "Profile"
 msgid "User profile"
 msgstr "Perfil"
 
 #. Translators: This message appears on the page title
-#: views.py:152
+#: views.py:154
 msgid "Download bill"
 msgstr ""
 
 #. Translators: This message appears on the page title
-#: views.py:270
+#: views.py:272
 #, fuzzy
 #| msgid "Configuration details"
 msgid "Domain details"
 msgstr "Detalls de configuració"
 
 #. Translators: This message appears on the page title
-#: views.py:296
+#: views.py:298
 msgid "Login"
 msgstr ""
 
