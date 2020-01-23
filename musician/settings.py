@@ -2,7 +2,8 @@ from django.conf import settings
 
 
 def getsetting(name):
-    return getattr(settings, name, DEFAULTS.get(name))
+    value = getattr(settings, name, None)
+    return value or DEFAULTS.get(name)
 
 
 DEFAULTS = {

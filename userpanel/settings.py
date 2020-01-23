@@ -147,3 +147,15 @@ STATIC_ROOT = config('STATIC_ROOT')
 # Backend API configuration
 
 API_BASE_URL = config('API_BASE_URL')
+
+
+# External services URLs
+URL_DB_PHPMYADMIN = config('URL_DB_PHPMYADMIN', None)
+
+URL_MAILTRAIN = config('URL_MAILTRAIN', None)
+
+URL_SAAS_GITLAB = config('URL_SAAS_GITLAB', None)
+
+URL_SAAS_OWNCLOUD = config('URL_SAAS_OWNCLOUD', None)
+
+URL_SAAS_WORDPRESS = config('URL_SAAS_WORDPRESS', None)
