@@ -5,6 +5,8 @@ from django.utils.dateparse import parse_datetime
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from . import settings as musician_settings
+
 
 logger = logging.getLogger(__name__)
 
@@ -107,14 +109,20 @@ class UserAccount(OrchestraModel):
     @classmethod
     def new_from_json(cls, data, **kwargs):
         billing = None
+        language = None
         last_login = None
 
         if 'billcontact' in data:
             billing = BillingContact.new_from_json(data['billcontact'])
 
+        # Django expects that language code is lowercase
+        if 'language' in data:
+            language = data['language'].lower()
+
         if 'last_login' in data:
             last_login = parse_datetime(data['last_login'])
-        return super().new_from_json(data=data, billing=billing, last_login=last_login)
+
+        return super().new_from_json(data=data, billing=billing, language=language, last_login=last_login)
 
 
 class DatabaseUser(OrchestraModel):
@@ -250,9 +258,8 @@ class MailinglistService(OrchestraModel):
         return "{}@{}".format(self.data['address_name'], self.data['address_domain']['name'])
 
     @property
-    def configure(self):
-        # TODO(@slamora): build mailtran absolute URL
-        return format_html('<a href="#TODO">Mailtrain</a>')
+    def manager_url(self):
+        return musician_settings.URL_MAILTRAIN
 
 
 class SaasService(OrchestraModel):
@@ -265,6 +272,17 @@ class SaasService(OrchestraModel):
         'is_active': True,
         'data': {},
     }
+
+
+    @property
+    def manager_url(self):
+        URLS = {
+            'gitlab': musician_settings.URL_SAAS_GITLAB,
+            'owncloud': musician_settings.URL_SAAS_OWNCLOUD,
+            'wordpress': musician_settings.URL_SAAS_WORDPRESS,
+        }
+
+        return URLS.get(self.service, '#none')
 
 
 class WebSite(OrchestraModel):

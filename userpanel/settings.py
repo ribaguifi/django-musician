@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 from decouple import config, Csv
-from dj_database_url import parse as db_url
 from django.utils.translation import gettext_lazy as _
+from dj_database_url import parse as db_url
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -130,7 +131,13 @@ SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 # Fallback language
-LANGUAGE_CODE = 'ca'
+LANGUAGE_CODE = config('LANGUAGE_CODE', 'en-us')
+
+LANGUAGES = [
+    ('ca', _('Catalan')),
+    ('en', _('English')),
+    ('es', _('Spanish')),
+]
 
 TIME_ZONE = 'Europe/Madrid'
 
@@ -157,3 +164,15 @@ STATIC_ROOT = config('STATIC_ROOT')
 # Backend API configuration
 
 API_BASE_URL = config('API_BASE_URL')
+
+
+# External services URLs
+URL_DB_PHPMYADMIN = config('URL_DB_PHPMYADMIN', None)
+
+URL_MAILTRAIN = config('URL_MAILTRAIN', None)
+
+URL_SAAS_GITLAB = config('URL_SAAS_GITLAB', None)
+
+URL_SAAS_OWNCLOUD = config('URL_SAAS_OWNCLOUD', None)
+
+URL_SAAS_WORDPRESS = config('URL_SAAS_WORDPRESS', None)

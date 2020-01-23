@@ -8,7 +8,7 @@
 
 <div class="card-deck">
   <div class="card card-profile">
-    <h5 class="card-header">User information</h5>
+    <h5 class="card-header">{% trans "User information" %}</h5>
     <div class="card-body row">
       <div class="col-md">
         <div class="border-primary rounded-circle d-inline-block p-1" style="background-color: white; border: 5px solid grey">
@@ -18,12 +18,12 @@
       <div class="col-md-9">
         <p class="card-text">{{ profile.username }}</p>
         <p class="card-text">{{ profile.type }}</p>
-        <p class="card-text">Preferred language: {{ profile.language }}</p>
+        <p class="card-text">{% trans "Preferred language:" %} {{ profile.language|language_name_local }}</p>
       </div>
       {% comment %}
       <!-- disabled until set_password is implemented -->
       <div class="col-md-12 text-right">
-        <a class="btn btn-primary pl-5 pr-5" href="#">Set new password</a>
+        <a class="btn btn-primary pl-5 pr-5" href="#">{% trans "Set new password" %}</a>
       </div>
       {% endcomment %}
     </div>
@@ -31,7 +31,7 @@
 
   {% with profile.billing as contact %}
   <div class="card card-profile">
-      <h5 class="card-header">Billing information</h5>
+      <h5 class="card-header">{% trans "Billing information" %}</h5>
     <div class="card-body">
       <div class="form-group">{{ contact.name }}</div>
       <div class="form-group">{{ contact.address }}</div>
@@ -45,7 +45,7 @@
       </div>
       <!-- payment method -->
       <div class="form-group">
-        payment method: {{ payment.method }}
+        {% trans "payment method:" %} {{ payment.method }}
       </div>
       <div class="form-group">
         {% if payment.method == 'SEPADirectDebit' %}
