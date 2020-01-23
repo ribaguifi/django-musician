@@ -4,7 +4,7 @@
 {% block content %}
 
 <h1 class="service-name">{% trans "Billing" %}</h1>
-<p class="service-description">Little description of what to be expected...</p>
+<p class="service-description">{% trans "Little description of what billing section is." %}</p>
 
 <table class="table service-list">
   <colgroup>
@@ -16,11 +16,11 @@
 </colgroup>
 <thead class="thead-dark">
   <tr>
-    <th scope="col">Number</th>
-    <th scope="col">Bill date</th>
-    <th scope="col">Type</th>
-    <th scope="col">Total</th>
-    <th scope="col">Download PDF</th>
+    <th scope="col">{% trans "Number" %}</th>
+    <th scope="col">{% trans "Bill date" %}</th>
+    <th scope="col">{% trans "Type" %}</th>
+    <th scope="col">{% trans "Total" %}</th>
+    <th scope="col">{% trans "Download PDF" %}</th>
   </tr>
 </thead>
 <tbody>
