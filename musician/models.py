@@ -267,6 +267,17 @@ class SaasService(OrchestraModel):
     }
 
 
+    @property
+    def manager_url(self):
+        URLS = {
+            'gitlab': musician_settings.URL_SAAS_GITLAB,
+            'owncloud': musician_settings.URL_SAAS_OWNCLOUD,
+            'wordpress': musician_settings.URL_SAAS_WORDPRESS,
+        }
+
+        return URLS.get(self.service, '#none')
+
+
 class WebSite(OrchestraModel):
     api_name = 'website'
     param_defaults = {
