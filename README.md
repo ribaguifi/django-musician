@@ -41,3 +41,29 @@ python manage.py runserver
 6. Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.
 
 7. If everything works, follow [Django deployment instructions](https://docs.djangoproject.com/en/2.2/howto/deployment/).
+
+## How to generate/update translations
+
+1. Go to musician folder and run:
+```bash
+cd django-musician/musician
+../manage.py makemessages
+```
+
+```bash
+processing locale ca
+processing locale es
+```
+
+2. Edit generated `.po` files and save it when you have finished.
+```
+musician/locale/ca/LC_MESSAGES/django.po  # catalan
+musician/locale/es/LC_MESSAGES/django.po  # spanish
+```
+
+3. To able to use a `.po` file in an application, it needs to be compiled to the binary `.mo` file format.
+```bash
+../manage.py compilemessages
+```
+
+More detailed instrucions on [Django Translation docs](https://docs.djangoproject.com/en/2.2/topics/i18n/translation/)

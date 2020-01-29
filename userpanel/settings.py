@@ -130,6 +130,7 @@ SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
+# Fallback language
 LANGUAGE_CODE = config('LANGUAGE_CODE', 'en-us')
 
 LANGUAGES = [
@@ -138,7 +139,7 @@ LANGUAGES = [
     ('es', _('Spanish')),
 ]
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 
@@ -146,6 +147,12 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+LANGUAGES = (
+    ('ca', _('Catalan')),
+    ('es', _('Spanish')),
+    ('en', _('English')),
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

@@ -136,6 +136,7 @@ class DatabaseUser(OrchestraModel):
 class DatabaseService(OrchestraModel):
     api_name = 'database'
     verbose_name = _('Databases')
+    description = _('Description details for databases page.')
     fields = ('name', 'type', 'users')
     param_defaults = {
         "id": None,
@@ -197,7 +198,7 @@ class DomainRecord(OrchestraModel):
 class MailService(OrchestraModel):
     api_name = 'address'
     verbose_name = _('Mail addresses')
-    description = _('Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.')
+    description = _('Description details for mail addresses page.')
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
     param_defaults = {}
 
@@ -240,7 +241,7 @@ class MailService(OrchestraModel):
 class MailinglistService(OrchestraModel):
     api_name = 'mailinglist'
     verbose_name = _('Mailing list')
-    description = _('Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.')
+    description = _('Description details for mailinglist page.')
     fields = ('name', 'status', 'address_name', 'admin_email', 'configure')
     param_defaults = {
         'name': None,
@@ -264,7 +265,7 @@ class MailinglistService(OrchestraModel):
 class SaasService(OrchestraModel):
     api_name = 'saas'
     verbose_name = _('Software as a Service (SaaS)')
-    description = _('Litle description of what to be expected in this section to aid the user. Even a link to more help if there is one available.')
+    description = _('Description details for SaaS page.')
     param_defaults = {
         'name': None,
         'service': None,

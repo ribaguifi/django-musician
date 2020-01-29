@@ -33,7 +33,7 @@
 
 
 <h1 class="service-name">{% trans "Your domains and websites" %}</h1>
-<p class="service-description">Little description of what to be expected...</p>
+<p class="service-description">{% trans "Dashboard page description." %}</p>
 
 {% for domain in domains %}
 <div class="card service-card">
@@ -68,7 +68,7 @@
             {{ domain.mails|length }} {% trans "mail addresses created" %}
             {% if domain.addresses_left.alert_level %}
             <br/>
-            <span class="text-{{ domain.addresses_left.alert_level }}">{{ domain.addresses_left.count }} mail address left</span>
+            <span class="text-{{ domain.addresses_left.alert_level }}">{{ domain.addresses_left.count }} {% trans "mail address left" %}</span>
             {% endif %}
           </p>
           <a class="stretched-link" href="{% url 'musician:mails' %}?domain={{ domain.id }}"></a>
@@ -81,7 +81,7 @@
       <div class="col-md-2 border-right">
           <h4>{% trans "Software as a Service" %}</h4>
           <p class="card-text"><i class="fas fa-fire fa-3x"></i></p>
-          <p class="card-text text-dark">Nothing installed</p>
+          <p class="card-text text-dark">{% trans "Nothing installed" %}</p>
           <a class="stretched-link" href="{% url 'musician:saas' %}?domain={{ domain.id }}"></a>
       </div>
       <div class="col-md-1"></div>
@@ -103,7 +103,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-secondary" id="configDetailsModalLabel">Configuration details</h5>
+          <h5 class="modal-title text-secondary" id="configDetailsModalLabel">{% trans "Configuration details" %}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -122,8 +122,8 @@
           <div class="domain-website pt-4">
             <div id="no-website"><h6 class="pl-4">{% trans "No website configured." %}</h6></div>
             <div id="config-website">
-              <label>Root directory:</label> <span id="config-root-path" class="font-weight-bold">root directory</span>
-              <label>Type:</label><span id="config-webapp-type" class="font-weight-bold">type</span>
+              <label>{% trans "Root directory:" %}</label> <span id="config-root-path" class="font-weight-bold">root directory</span>
+              <label>{% trans "Type:" %}</label><span id="config-webapp-type" class="font-weight-bold">type</span>
             </div>
           </div>
         </div>
