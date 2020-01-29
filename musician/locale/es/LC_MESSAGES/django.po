@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-23 17:49+0100\n"
-"PO-Revision-Date: 2019-12-20 11:30+0100\n"
+"PO-Revision-Date: 2020-01-28 17:27+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -47,7 +47,7 @@ msgstr "SaaS"
 #: models.py:139
 #, fuzzy
 msgid "Description details for databases page."
-msgstr "Detalles descriptivos de la página de bases de datos."
+msgstr "Consulta la configuración de tus bases de datos."
 
 #. Translators: This message appears on the page title
 #: models.py:200 views.py:169
@@ -57,7 +57,7 @@ msgstr "Direcciones de correo"
 #: models.py:201
 #, fuzzy
 msgid "Description details for mail addresses page."
-msgstr "Detalles descriptivos de la página de direcciones de correo."
+msgstr "Consulta aquí todas las direcciones de correo que tienes activas."
 
 #: models.py:243
 msgid "Mailing list"
@@ -66,7 +66,7 @@ msgstr "Lista de correo"
 #: models.py:244
 #, fuzzy
 msgid "Description details for mailinglist page."
-msgstr "Detalles descriptivos de la página de listas de correo."
+msgstr "Consulta aquí los detalles de tus listas de correo."
 
 #: models.py:267
 msgid "Software as a Service (SaaS)"
@@ -75,7 +75,9 @@ msgstr "Software as a Service (SaaS)"
 #: models.py:268
 #, fuzzy
 msgid "Description details for SaaS page."
-msgstr "Detalles descriptivos de la página SaaS."
+msgstr ""
+"Si tienes algún servicio SaaS (Software as a Service) contratado, aquí "
+"encontrarás sus detalles de configuración."
 
 #: templates/auth/login.html:59
 msgid "Log in"
@@ -117,16 +119,17 @@ msgid "Log out"
 msgstr "Desconéctate"
 
 #: templates/musician/billing.html:7
+#, fuzzy
 msgid "Billing page description."
-msgstr ""
+msgstr "Consulta y descarga tus facturas."
 
 #: templates/musician/billing.html:19
 msgid "Number"
-msgstr ""
+msgstr "Número"
 
 #: templates/musician/billing.html:20
 msgid "Bill date"
-msgstr ""
+msgstr "Fecha de la factura"
 
 #: templates/musician/billing.html:21 templates/musician/databases.html:17
 #: templates/musician/domain_detail.html:17 templates/musician/mail.html:22
@@ -135,15 +138,15 @@ msgstr "Tipo"
 
 #: templates/musician/billing.html:22
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: templates/musician/billing.html:23
 msgid "Download PDF"
-msgstr ""
+msgstr "Descarga en PDF"
 
 #: templates/musician/components/table_paginator.html:15
 msgid "Previous"
-msgstr "Previo"
+msgstr "Previa"
 
 #: templates/musician/components/table_paginator.html:29
 msgid "Next"
@@ -160,7 +163,7 @@ msgstr "La última vez que accediste fue el día: %(last_login)s"
 
 #: templates/musician/dashboard.html:10
 msgid "It's the first time you log into the system, welcome on board!"
-msgstr ""
+msgstr "Es la primera vez que accedes: ¡te damos la bienvenida!"
 
 #: templates/musician/dashboard.html:24
 msgid "Notifications"
@@ -175,8 +178,11 @@ msgid "Your domains and websites"
 msgstr "Tus dominios y sitios web"
 
 #: templates/musician/dashboard.html:36
+#, fuzzy
 msgid "Dashboard page description."
 msgstr ""
+"Este es tu panel de gestión, desde donde podrás consultar la configuración "
+"de los servicios que Pangea te ofrece."
 
 #: templates/musician/dashboard.html:51
 msgid "view configuration"
@@ -204,13 +210,12 @@ msgstr "Lista de correo"
 
 #. Translators: This message appears on the page title
 #: templates/musician/dashboard.html:82 views.py:264
-#, fuzzy
 msgid "Software as a Service"
 msgstr "Software as a Service"
 
 #: templates/musician/dashboard.html:84
 msgid "Nothing installed"
-msgstr "Nada instalado"
+msgstr "No tienes nada instalado"
 
 #: templates/musician/dashboard.html:89 views.py:42
 msgid "Disk usage"
@@ -228,29 +233,28 @@ msgstr "Acceso FTP:"
 #: templates/musician/dashboard.html:115
 msgid "Contact with the support team to get details concerning FTP access."
 msgstr ""
+"Contactadnos a <a href=“mailto:%(support_email)s”>%(support_email)s</a> "
+"para saber cómo acceder al FTP."
 
 #: templates/musician/dashboard.html:124
 msgid "No website configured."
-msgstr ""
+msgstr "No hay ninguna web configurada."
 
 #: templates/musician/dashboard.html:126
 msgid "Root directory:"
 msgstr "Directorio raíz:"
 
 #: templates/musician/dashboard.html:127
-#, fuzzy
-#| msgid "Type"
 msgid "Type:"
-msgstr "Tipo"
+msgstr "Tipo:"
 
 #: templates/musician/dashboard.html:132
 msgid "View DNS records"
 msgstr "Ver registros DNS"
 
 #: templates/musician/databases.html:21
-#, fuzzy
 msgid "associated to"
-msgstr "asociado a"
+msgstr "asociada a"
 
 #: templates/musician/databases.html:34
 msgid "No users for this database."
@@ -264,7 +268,7 @@ msgstr "Abre el gestor de bases de datos"
 #. Translators: saas page when there isn't any saas.
 #: templates/musician/databases.html:58 templates/musician/saas.html:49
 msgid "Ooops! Looks like there is nothing here!"
-msgstr ""
+msgstr "Mmmh… ¡parece que aquí no hay nada!"
 
 #: templates/musician/domain_detail.html:5
 msgid "Go back"
@@ -275,20 +279,19 @@ msgid "DNS settings for"
 msgstr "Configuración DNS para"
 
 #: templates/musician/domain_detail.html:8
+#, fuzzy
 msgid "DNS settings page description."
-msgstr ""
+msgstr "Consulta aquí tu configuración DNS."
 
 #: templates/musician/domain_detail.html:18
 msgid "Value"
 msgstr "Valor"
 
 #: templates/musician/mail.html:6 templates/musician/mailinglists.html:6
-#, fuzzy
 msgid "Go to global"
-msgstr "Ir a global"
+msgstr "Todas las direcciones"
 
 #: templates/musician/mail.html:9 templates/musician/mailinglists.html:9
-#, fuzzy
 msgid "for"
 msgstr "para"
 
@@ -301,58 +304,53 @@ msgid "Aliases"
 msgstr "Alias"
 
 #: templates/musician/mail.html:23
-#, fuzzy
 msgid "Type details"
-msgstr "Detalles del tipo"
+msgstr "Detalles de cada tipo"
 
 #: templates/musician/mailinglists.html:34
 msgid "Active"
 msgstr "Activo"
 
 #: templates/musician/mailinglists.html:36
-#, fuzzy
-#| msgid "Active"
 msgid "Inactive"
-msgstr "Activo"
+msgstr "Inactivo"
 
 #: templates/musician/profile.html:7
+#, fuzzy
 msgid "Little description on profile page."
-msgstr ""
+msgstr "Cambia tus datos de acceso y opciones de perfil desde aquí."
 
 #: templates/musician/profile.html:11
 msgid "User information"
-msgstr ""
+msgstr "Información de usuario/a"
 
 #: templates/musician/profile.html:21
 msgid "Preferred language:"
-msgstr ""
+msgstr "Lenguaje preferido:"
 
 #: templates/musician/profile.html:35
 msgid "Billing information"
-msgstr ""
+msgstr "Datos de facturación"
 
 #: templates/musician/profile.html:49
 msgid "payment method:"
-msgstr ""
+msgstr "método de pago:"
 
 #: templates/musician/profile.html:60
 msgid "Check your last bills"
-msgstr ""
+msgstr "Consulta tus últimas facturas"
 
 #: templates/musician/saas.html:18
 msgid "Installed on"
 msgstr "Instalado en"
 
 #: templates/musician/saas.html:29
-#, fuzzy
 msgid "Service info"
 msgstr "Información del servicio"
 
 #: templates/musician/saas.html:30
-#, fuzzy
-#| msgid "Active"
 msgid "active"
-msgstr "Activo"
+msgstr "activo"
 
 #: templates/musician/saas.html:37
 msgid "Open service admin panel"
@@ -361,7 +359,7 @@ msgstr "Abre el panel de administración del servicio"
 #. Translators: This message appears on the page title
 #: views.py:32
 msgid "Dashboard"
-msgstr ""
+msgstr "Panel de gestión"
 
 #: views.py:49
 msgid "Traffic"
@@ -373,27 +371,23 @@ msgstr "Uso de espacio en tu buzón de correo"
 
 #. Translators: This message appears on the page title
 #: views.py:96
-#, fuzzy
-#| msgid "Profile"
 msgid "User profile"
-msgstr "Perfil"
+msgstr "Tu perfil"
 
 #. Translators: This message appears on the page title
 #: views.py:154
 msgid "Download bill"
-msgstr ""
+msgstr "Descarga la factura"
 
 #. Translators: This message appears on the page title
 #: views.py:272
-#, fuzzy
-#| msgid "Configuration details"
 msgid "Domain details"
-msgstr "Detalles de configuración"
+msgstr "Detalles del dominio"
 
 #. Translators: This message appears on the page title
 #: views.py:298
 msgid "Login"
-msgstr ""
+msgstr "Accede"
 
 #~ msgid "databases created"
 #~ msgstr "bases de datos creadas"
