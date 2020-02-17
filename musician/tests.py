@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from .models import UserAccount
+from .utils import get_bootstraped_percent
 
 
 class DomainsTestCase(TestCase):
@@ -37,3 +38,32 @@ class UserAccountTest(TestCase):
         }
         account = UserAccount.new_from_json(data)
         self.assertIsNone(account.last_login)
+
+
+class GetBootstrapedPercentTest(TestCase):
+    BS_WIDTH = [0, 25, 50, 100]
+
+    def test_exact_value(self):
+        value = get_bootstraped_percent(25, 100)
+        self.assertIn(value, self.BS_WIDTH)
+        self.assertEqual(value, 25)
+
+    def test_round_to_lower(self):
+        value = get_bootstraped_percent(26, 100)
+        self.assertIn(value, self.BS_WIDTH)
+        self.assertEqual(value, 25)
+
+    def test_round_to_higher(self):
+        value = get_bootstraped_percent(48, 100)
+        self.assertIn(value, self.BS_WIDTH)
+        self.assertEqual(value, 50)
+
+    def test_max_boundary(self):
+        value = get_bootstraped_percent(200, 100)
+        self.assertIn(value, self.BS_WIDTH)
+        self.assertEqual(value, 100)
+
+    def test_min_boundary(self):
+        value = get_bootstraped_percent(-10, 100)
+        self.assertIn(value, self.BS_WIDTH)
+        self.assertEqual(value, 0)

@@ -1,6 +1,7 @@
 import requests
 import urllib.parse
 
+from itertools import groupby
 from django.conf import settings
 from django.http import Http404
 from django.urls.exceptions import NoReverseMatch
@@ -108,6 +109,52 @@ class Orchestra(object):
             raise Http404(_("No domain found matching the query"))
         return bill_pdf
 
+    def retrieve_mail_address_list(self, querystring=None):
+        def get_mailbox_id(value):
+            mailboxes = value.get('mailboxes')
+
+            # forwarded address should not grouped
+            if len(mailboxes) == 0:
+                return value.get('name')
+
+            return mailboxes[0]['id']
+
+        # retrieve mails applying filters (if any)
+        raw_data = self.retrieve_service_list(
+            MailService.api_name,
+            querystring=querystring,
+        )
+
+        # group addresses with the same mailbox
+        addresses = []
+        for key, group in groupby(raw_data, get_mailbox_id):
+            aliases = []
+            data = {}
+            for thing in group:
+                aliases.append(thing.pop('name'))
+                data = thing
+
+            data['names'] = aliases
+            addresses.append(MailService.new_from_json(data))
+
+        # PATCH to include Pangea addresses not shown by orchestra
+        # described on issue #4
+        raw_mailboxes = self.retrieve_service_list('mailbox')
+        for mailbox in raw_mailboxes:
+            if mailbox['addresses'] == []:
+                address_data = {
+                    'names': [mailbox['name']],
+                    'forward': '',
+                    'domain': {
+                        'name': 'pangea.org.',
+                    },
+                    'mailboxes': [mailbox],
+                }
+                pangea_address = MailService.new_from_json(address_data)
+                addresses.append(pangea_address)
+
+        return addresses
+
     def retrieve_domain(self, pk):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})
 
@@ -133,16 +180,12 @@ class Orchestra(object):
             # retrieve websites (as they cannot be filtered by domain on the API we should do it here)
             domain_json['websites'] = self.filter_websites_by_domain(websites, domain_json['id'])
 
-            # TODO(@slamora): databases and sass are not related to a domain, so cannot be filtered
-            # domain_json['databases'] = self.retrieve_service_list(DatabaseService.api_name, querystring)
-            # domain_json['saas'] = self.retrieve_service_list(SaasService.api_name, querystring)
-
             # TODO(@slamora): update when backend provides resource disk usage data
             domain_json['usage'] = {
-                'usage': 300,
-                'total': 650,
-                'unit': 'MB',
-                'percent': 50,
+                # 'usage': 300,
+                # 'total': 650,
+                # 'unit': 'MB',
+                # 'percent': 50,
             }
 
             # append to list a Domain object

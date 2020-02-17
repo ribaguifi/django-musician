@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from . import settings as musician_settings
+from .utils import get_bootstraped_percent
 
 
 logger = logging.getLogger(__name__)
@@ -229,13 +230,30 @@ class MailService(OrchestraModel):
     def type_detail(self):
         if self.type == self.FORWARD:
             return self.data['forward']
-        # TODO(@slamora) retrieve mailbox usage
-        return {
-            'usage': 250,
-            'total': 500,
-            'unit': 'MB',
-            'percent': 50,
-        }
+
+        # retrieve mailbox usage
+        try:
+            resource = self.data['mailboxes'][0]['resources']
+            resource_disk = {}
+            for r in resource:
+                if r['name'] == 'disk':
+                    resource_disk = r
+                    break
+
+            mailbox_details = {
+                'usage': float(resource_disk['used']),
+                'total': resource_disk['allocated'],
+                'unit': resource_disk['unit'],
+            }
+
+            percent = get_bootstraped_percent(
+                mailbox_details['used'],
+                mailbox_details['total']
+            )
+            mailbox_details['percent'] = percent
+        except (IndexError, KeyError):
+            mailbox_details = {}
+        return mailbox_details
 
 
 class MailinglistService(OrchestraModel):
