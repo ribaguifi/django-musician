@@ -184,6 +184,10 @@ class DatabaseService(OrchestraModel):
 
         return details
 
+    @property
+    def manager_url(self):
+        return musician_settings.URL_DB_PHPMYADMIN
+
 
 class Domain(OrchestraModel):
     api_name = 'domain'
