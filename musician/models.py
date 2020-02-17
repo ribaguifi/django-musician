@@ -229,13 +229,29 @@ class MailService(OrchestraModel):
     def type_detail(self):
         if self.type == self.FORWARD:
             return self.data['forward']
-        # TODO(@slamora) retrieve mailbox usage
-        return {
-            'usage': 250,
-            'total': 500,
-            'unit': 'MB',
-            'percent': 50,
-        }
+
+        # retrieve mailbox usage
+        try:
+            resource = self.data['mailboxes'][0]['resources']
+            resource_disk = {}
+            for r in resource:
+                if r['name'] == 'disk':
+                    resource_disk = r
+                    break
+
+            mailbox_details = {
+                'usage': resource_disk['used'],
+                'total': resource_disk['allocated'],
+                'unit': resource_disk['unit'],
+            }
+
+            # get percent and round to be 0, 25, 50 or 100
+            # to set progress bar width using CSS classes (e.g. w-25)
+            percent = float(resource_disk['used']) / resource_disk['allocated']
+            mailbox_details['percent'] = round(percent * 4) * 100 // 4
+        except (IndexError, KeyError):
+            mailbox_details = {}
+        return mailbox_details
 
 
 class MailinglistService(OrchestraModel):
