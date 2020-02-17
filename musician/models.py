@@ -153,15 +153,36 @@ class DatabaseService(OrchestraModel):
         if 'users' in data:
             users = [DatabaseUser.new_from_json(user_data) for user_data in data['users']]
 
-        # TODO(@slamora) retrieve database usage
-        usage = {
-            'usage': 250,
-            'total': 500,
-            'unit': 'MB',
-            'percent': 50,
-        }
+        usage = cls.get_usage(data)
 
         return super().new_from_json(data=data, users=users, usage=usage)
+
+    @classmethod
+    def get_usage(self, data):
+        try:
+            resources = data['resources']
+            resource_disk = {}
+            for r in resources:
+                if r['name'] == 'disk':
+                    resource_disk = r
+                    break
+
+            details = {
+                'usage': float(resource_disk['used']),
+                'total': resource_disk['allocated'],
+                'unit': resource_disk['unit'],
+            }
+        except (IndexError, KeyError):
+            return {}
+
+
+        percent = get_bootstraped_percent(
+            details['usage'],
+            details['total']
+        )
+        details['percent'] = percent
+
+        return details
 
 
 class Domain(OrchestraModel):
