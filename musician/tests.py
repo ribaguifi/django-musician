@@ -67,3 +67,6 @@ class GetBootstrapedPercentTest(TestCase):
         value = get_bootstraped_percent(-10, 100)
         self.assertIn(value, self.BS_WIDTH)
         self.assertEqual(value, 0)
+
+    def test_invalid_total_is_zero(self):
+        value = get_bootstraped_percent(25, 0)

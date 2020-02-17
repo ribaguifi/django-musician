@@ -4,8 +4,11 @@ def get_bootstraped_percent(value, total):
 
     Useful to set progress bar width using CSS classes (e.g. w-25)
     """
+    try:
+        percent = value / total
+    except ZeroDivisionError:
+        return 0
 
-    percent = value / total
     bootstraped = round(percent * 4) * 100 // 4
 
     # handle min and max boundaries
