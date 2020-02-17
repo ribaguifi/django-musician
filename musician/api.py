@@ -137,6 +137,22 @@ class Orchestra(object):
             data['names'] = aliases
             addresses.append(MailService.new_from_json(data))
 
+        # PATCH to include Pangea addresses not shown by orchestra
+        # described on issue #4
+        raw_mailboxes = self.retrieve_service_list('mailbox')
+        for mailbox in raw_mailboxes:
+            if mailbox['addresses'] == []:
+                address_data = {
+                    'names': [mailbox['name']],
+                    'forward': '',
+                    'domain': {
+                        'name': 'pangea.org.',
+                    },
+                    'mailboxes': [mailbox],
+                }
+                pangea_address = MailService.new_from_json(address_data)
+                addresses.append(pangea_address)
+
         return addresses
 
     def retrieve_domain(self, pk):
