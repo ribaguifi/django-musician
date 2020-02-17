@@ -21,6 +21,7 @@ from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
 from .models import (Bill, DatabaseService, MailinglistService, MailService,
                      PaymentSource, SaasService, UserAccount)
 from .settings import ALLOWED_RESOURCES
+from .utils import get_bootstraped_percent
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -34,38 +35,14 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         domains = self.orchestra.retrieve_domain_list()
 
-        # TODO(@slamora) update when backend provides resource usage data
-        resource_usage = {
-            'disk': {
-                'verbose_name': _('Disk usage'),
-                'usage': 534,
-                'total': 1024,
-                'unit': 'MB',
-                'percent': 50,
-            },
-            'traffic': {
-                'verbose_name': _('Traffic'),
-                'usage': 300,
-                'total': 2048,
-                'unit': 'MB/month',
-                'percent': 25,
-            },
-            'mailbox': {
-                'verbose_name': _('Mailbox usage'),
-                'usage': 1,
-                'total': 2,
-                'unit': 'accounts',
-                'percent': 50,
-            },
-        }
-
         # TODO(@slamora) update when backend supports notifications
         notifications = []
 
         # show resource usage based on plan definition
-        # TODO(@slamora): validate concept of limits with Pangea
         profile_type = context['profile'].type
+        total_mailboxes = 0
         for domain in domains:
+            total_mailboxes += len(domain.mails)
             addresses_left = ALLOWED_RESOURCES[profile_type]['mailbox'] - len(domain.mails)
             alert_level = None
             if addresses_left == 1:
@@ -77,6 +54,37 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
                 'count': addresses_left,
                 'alert_level': alert_level,
             }
+
+        # TODO(@slamora) update when backend provides resource usage data
+        resource_usage = {
+            'disk': {
+                'verbose_name': _('Disk usage'),
+                'data': {
+                    # 'usage': 534,
+                    # 'total': 1024,
+                    # 'unit': 'MB',
+                    # 'percent': 50,
+                },
+            },
+            'traffic': {
+                'verbose_name': _('Traffic'),
+                'data': {
+                    # 'usage': 300,
+                    # 'total': 2048,
+                    # 'unit': 'MB/month',
+                    # 'percent': 25,
+                },
+            },
+            'mailbox': {
+                'verbose_name': _('Mailbox usage'),
+                'data': {
+                    'usage': total_mailboxes,
+                    'total': ALLOWED_RESOURCES[profile_type]['mailbox'],
+                    'unit': 'accounts',
+                    'percent': get_bootstraped_percent(total_mailboxes, ALLOWED_RESOURCES[profile_type]['mailbox']),
+                },
+            },
+        }
 
         context.update({
             'domains': domains,

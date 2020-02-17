@@ -15,7 +15,7 @@
   <div class="card resource-usage resource-{{ resource }}">
     <div class="card-body">
       <h5 class="card-title">{{ usage.verbose_name }}</h5>
-      {% include "musician/components/usage_progress_bar.html" with detail=usage %}
+      {% include "musician/components/usage_progress_bar.html" with detail=usage.data %}
     </div>
   </div>
   {% endfor %}
