@@ -180,16 +180,12 @@ class Orchestra(object):
             # retrieve websites (as they cannot be filtered by domain on the API we should do it here)
             domain_json['websites'] = self.filter_websites_by_domain(websites, domain_json['id'])
 
-            # TODO(@slamora): databases and sass are not related to a domain, so cannot be filtered
-            # domain_json['databases'] = self.retrieve_service_list(DatabaseService.api_name, querystring)
-            # domain_json['saas'] = self.retrieve_service_list(SaasService.api_name, querystring)
-
             # TODO(@slamora): update when backend provides resource disk usage data
             domain_json['usage'] = {
-                'usage': 300,
-                'total': 650,
-                'unit': 'MB',
-                'percent': 50,
+                # 'usage': 300,
+                # 'total': 650,
+                # 'unit': 'MB',
+                # 'percent': 50,
             }
 
             # append to list a Domain object
