@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from . import settings as musician_settings
+from .utils import get_bootstraped_percent
 
 
 logger = logging.getLogger(__name__)
@@ -240,15 +241,16 @@ class MailService(OrchestraModel):
                     break
 
             mailbox_details = {
-                'usage': resource_disk['used'],
+                'usage': float(resource_disk['used']),
                 'total': resource_disk['allocated'],
                 'unit': resource_disk['unit'],
             }
 
-            # get percent and round to be 0, 25, 50 or 100
-            # to set progress bar width using CSS classes (e.g. w-25)
-            percent = float(resource_disk['used']) / resource_disk['allocated']
-            mailbox_details['percent'] = round(percent * 4) * 100 // 4
+            percent = get_bootstraped_percent(
+                mailbox_details['used'],
+                mailbox_details['total']
+            )
+            mailbox_details['percent'] = percent
         except (IndexError, KeyError):
             mailbox_details = {}
         return mailbox_details
