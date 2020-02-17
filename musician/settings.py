@@ -21,11 +21,11 @@ DEFAULTS = {
             'mailbox': 10,
         }
     },
-    "URL_DB_PHPMYADMIN": "https://www.phpmyadmin.net/",
+    "URL_DB_PHPMYADMIN": "https://phpmyadmin.pangea.org/",
     "URL_MAILTRAIN": "https://mailtrain.org/",
-    "URL_SAAS_GITLAB": "https://gitlab.org/",
-    "URL_SAAS_OWNCLOUD": "https://owncloud.org/",
-    "URL_SAAS_WORDPRESS": "https://wordpress.org/",
+    "URL_SAAS_GITLAB": "https://gitlab.pangea.org/",
+    "URL_SAAS_OWNCLOUD": "https://nextcloud.pangea.org/",
+    "URL_SAAS_WORDPRESS": "https://blog.pangea.org/",
 }
 
 ALLOWED_RESOURCES = getsetting("ALLOWED_RESOURCES")
