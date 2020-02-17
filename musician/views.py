@@ -1,5 +1,3 @@
-from itertools import groupby
-
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponse, HttpResponseRedirect
@@ -170,34 +168,11 @@ class MailView(ServiceListView):
     }
 
     def get_queryset(self):
-        def retrieve_mailbox(value):
-            mailboxes = value.get('mailboxes')
-
-            # forwarded address should not grouped
-            if len(mailboxes) == 0:
-                return value.get('name')
-
-            return mailboxes[0]['id']
-
         # retrieve mails applying filters (if any)
         queryfilter = self.get_queryfilter()
-        raw_data = self.orchestra.retrieve_service_list(
-            self.service_class.api_name,
-            querystring=queryfilter,
+        addresses = self.orchestra.retrieve_mail_address_list(
+            querystring=queryfilter
         )
-
-        # group addresses with the same mailbox
-        addresses = []
-        for key, group in groupby(raw_data, retrieve_mailbox):
-            aliases = []
-            data = {}
-            for thing in group:
-                aliases.append(thing.pop('name'))
-                data = thing
-
-            data['names'] = aliases
-            addresses.append(self.service_class.new_from_json(data))
-
         return addresses
 
     def get_queryfilter(self):

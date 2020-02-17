@@ -1,6 +1,7 @@
 import requests
 import urllib.parse
 
+from itertools import groupby
 from django.conf import settings
 from django.http import Http404
 from django.urls.exceptions import NoReverseMatch
@@ -107,6 +108,36 @@ class Orchestra(object):
         if status == 404:
             raise Http404(_("No domain found matching the query"))
         return bill_pdf
+
+    def retrieve_mail_address_list(self, querystring=None):
+        def get_mailbox_id(value):
+            mailboxes = value.get('mailboxes')
+
+            # forwarded address should not grouped
+            if len(mailboxes) == 0:
+                return value.get('name')
+
+            return mailboxes[0]['id']
+
+        # retrieve mails applying filters (if any)
+        raw_data = self.retrieve_service_list(
+            MailService.api_name,
+            querystring=querystring,
+        )
+
+        # group addresses with the same mailbox
+        addresses = []
+        for key, group in groupby(raw_data, get_mailbox_id):
+            aliases = []
+            data = {}
+            for thing in group:
+                aliases.append(thing.pop('name'))
+                data = thing
+
+            data['names'] = aliases
+            addresses.append(MailService.new_from_json(data))
+
+        return addresses
 
     def retrieve_domain(self, pk):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})
