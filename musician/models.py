@@ -120,8 +120,9 @@ class UserAccount(OrchestraModel):
         if 'language' in data:
             language = data['language'].lower()
 
-        if 'last_login' in data:
-            last_login = parse_datetime(data['last_login'])
+        last_login = data.get('last_login')
+        if last_login is not None:
+            last_login = parse_datetime(last_login)
 
         return super().new_from_json(data=data, billing=billing, language=language, last_login=last_login)
 
