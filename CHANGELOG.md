@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## master
 - [changed] Include @pangea.org mail addresses (#4).
+- [fixed] Error on login when user never has logged into the system (#6).
 
 ## [0.1] - 2020-01-29
 - Login & logout methods using backend as auth method
