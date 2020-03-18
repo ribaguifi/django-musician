@@ -39,6 +39,29 @@ class UserAccountTest(TestCase):
         account = UserAccount.new_from_json(data)
         self.assertIsNone(account.last_login)
 
+    def test_user_never_logged2(self):
+        # issue #6 Error on login when user never has logged into the system
+        data = {
+            'billcontact': {'address': 'bar',
+                            'city': 'Barcelona',
+                            'country': 'ES',
+                            'name': '',
+                            'vat': '12345678Z',
+                            'zipcode': '34561'},
+            'date_joined': '2020-01-14T12:38:31Z',
+            'full_name': 'Pep',
+            'id': 2,
+            'is_active': True,
+            'language': 'CA',
+            'last_login': None,
+            'short_name': '',
+            'type': 'INDIVIDUAL',
+            'url': 'http://127.0.0.1:9090/api/accounts/2/',
+            'username': 'pepe'
+        }
+        account = UserAccount.new_from_json(data)
+        self.assertIsNone(account.last_login)
+
 
 class GetBootstrapedPercentTest(TestCase):
     BS_WIDTH = [0, 25, 50, 100]
