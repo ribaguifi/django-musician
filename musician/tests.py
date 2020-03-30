@@ -62,6 +62,31 @@ class UserAccountTest(TestCase):
         account = UserAccount.new_from_json(data)
         self.assertIsNone(account.last_login)
 
+    def test_user_without_billcontact(self):
+        data = {
+            'billcontact': None,
+            'date_joined': '2020-03-05T09:49:21Z',
+            'full_name': 'David Rock',
+            'id': 2,
+            'is_active': True,
+            'language': 'CA',
+            'last_login': '2020-03-19T10:21:49.504266Z',
+            'resources': [{'allocated': None,
+                           'name': 'disk',
+                           'unit': 'GiB',
+                           'used': '0.000'},
+                          {'allocated': None,
+                           'name': 'traffic',
+                           'unit': 'GiB',
+                           'used': '0.000'}],
+            'short_name': '',
+            'type': 'STAFF',
+            'url': 'https://example.org/api/accounts/2/',
+            'username': 'drock'
+        }
+        account = UserAccount.new_from_json(data)
+        self.assertIsNotNone(account.billing)
+
 
 class GetBootstrapedPercentTest(TestCase):
     BS_WIDTH = [0, 25, 50, 100]

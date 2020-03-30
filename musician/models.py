@@ -34,6 +34,8 @@ class OrchestraModel:
         Args:
             data: A JSON dict, as converted from the JSON in the orchestra API.
         """
+        if data is None:
+            return cls()
 
         json_data = data.copy()
         if kwargs:
