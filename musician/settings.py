@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.conf import settings
 
 
@@ -5,22 +6,28 @@ def getsetting(name):
     value = getattr(settings, name, None)
     return value or DEFAULTS.get(name)
 
+# provide a default value allowing to overwrite it for each type of account
+def allowed_resources_default_factory():
+    return {'mailbox': 2}
 
 DEFAULTS = {
     # allowed resources limit hardcoded because cannot be retrieved from the API.
-    "ALLOWED_RESOURCES": {
-        'INDIVIDUAL':
+    "ALLOWED_RESOURCES": defaultdict(
+        allowed_resources_default_factory,
         {
-            # 'disk': 1024,
-            # 'traffic': 2048,
-            'mailbox': 2,
-        },
-        'ASSOCIATION': {
-            # 'disk': 5 * 1024,
-            # 'traffic': 20 * 1024,
-            'mailbox': 10,
+            'INDIVIDUAL':
+            {
+                # 'disk': 1024,
+                # 'traffic': 2048,
+                'mailbox': 2,
+            },
+            'ASSOCIATION': {
+                # 'disk': 5 * 1024,
+                # 'traffic': 20 * 1024,
+                'mailbox': 10,
+            }
         }
-    },
+    ),
     "URL_DB_PHPMYADMIN": "https://phpmyadmin.pangea.org/",
     "URL_MAILTRAIN": "https://mailtrain.org/",
     "URL_SAAS_GITLAB": "https://gitlab.pangea.org/",
