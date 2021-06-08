@@ -301,7 +301,10 @@ class MailinglistService(OrchestraModel):
 
     @property
     def address_name(self):
-        return "{}@{}".format(self.data['address_name'], self.data['address_domain']['name'])
+        address_domain = self.data['address_domain']
+        if address_domain is None:
+            return self.data['address_name']
+        return "{}@{}".format(self.data['address_name'], address_domain['name'])
 
     @property
     def manager_url(self):
