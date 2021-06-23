@@ -62,7 +62,7 @@ class Orchestra(object):
 
         return response.json().get("token", None)
 
-    def request(self, verb, resource=None, url=None, render_as="json", querystring=None, raise_exception=True):
+    def request(self, verb, resource=None, url=None, data=None, render_as="json", querystring=None, raise_exception=True):
         assert verb in ["HEAD", "GET", "POST", "PATCH", "PUT", "DELETE"]
         if resource is not None:
             url = self.build_absolute_uri(resource)
@@ -73,8 +73,11 @@ class Orchestra(object):
             url = "{}?{}".format(url, querystring)
 
         verb = getattr(self.session, verb.lower())
-        response = verb(url, headers={"Authorization": "Token {}".format(
-            self.auth_token)}, allow_redirects=False)
+        headers = {
+            "Authorization": "Token {}".format(self.auth_token),
+            "Content-Type": "application/json",
+        }
+        response = verb(url, json=data, headers=headers, allow_redirects=False)
 
         if raise_exception:
             response.raise_for_status()
@@ -109,6 +112,15 @@ class Orchestra(object):
             raise Http404(_("No domain found matching the query"))
         return bill_pdf
 
+    def create_mail_address(self, data):
+        resource = '{}-list'.format(MailService.api_name)
+
+        # transform form data to expected format
+        data["domain"] = {"url": data["domain"]}
+        data["mailboxes"] = [{"url": mbox} for mbox in data["mailboxes"]]
+
+        return self.request("POST", resource=resource, data=data)
+
     def retrieve_mail_address_list(self, querystring=None):
         def get_mailbox_id(value):
             mailboxes = value.get('mailboxes')
@@ -139,7 +151,7 @@ class Orchestra(object):
 
         # PATCH to include Pangea addresses not shown by orchestra
         # described on issue #4
-        raw_mailboxes = self.retrieve_service_list('mailbox')
+        raw_mailboxes = self.retrieve_mailbox_list()
         for mailbox in raw_mailboxes:
             if mailbox['addresses'] == []:
                 address_data = {
@@ -154,6 +166,11 @@ class Orchestra(object):
                 addresses.append(pangea_address)
 
         return addresses
+
+    def retrieve_mailbox_list(self):
+        # TODO(@slamora) encapsulate as a Service class
+        raw_mailboxes = self.retrieve_service_list('mailbox')
+        return raw_mailboxes
 
     def retrieve_domain(self, pk):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})

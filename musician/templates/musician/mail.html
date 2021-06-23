@@ -41,4 +41,5 @@
     </tbody>
     {% include "musician/components/table_paginator.html" %}
 </table>
+<a class="btn btn-primary mt-4 mb-4" href="{% url 'musician:mail-create' %}">{% trans "New mail address" %}</a>
 {% endblock %}

@@ -11,11 +11,12 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
+from requests.exceptions import HTTPError
 
 from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
-from .forms import LoginForm
+from .forms import LoginForm, MailForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
 from .models import (Bill, DatabaseService, MailinglistService, MailService,
@@ -199,6 +200,29 @@ class MailView(ServiceListView):
                 'active_domain': self.orchestra.retrieve_domain(domain_id)
             })
         return context
+
+
+class MailCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    service_class = MailService
+    template_name = "musician/mail_form.html"
+    form_class = MailForm
+    success_url = reverse_lazy("musician:mails")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['domains'] = self.orchestra.retrieve_domain_list()
+        kwargs['mailboxes'] = self.orchestra.retrieve_mailbox_list()
+        return kwargs
+
+    def form_valid(self, form):
+        # handle request errors e.g. 400 validation
+        try:
+            self.orchestra.create_mail_address(form.cleaned_data)
+        except HTTPError as e:
+            form.add_error(field='__all__', error=e)
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
 
 
 class MailingListsView(ServiceListView):

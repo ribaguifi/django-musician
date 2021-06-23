@@ -161,7 +161,7 @@ class DatabaseService(OrchestraModel):
         return super().new_from_json(data=data, users=users, usage=usage)
 
     @classmethod
-    def get_usage(self, data):
+    def get_usage(cls, data):
         try:
             resources = data['resources']
             resource_disk = {}
@@ -201,6 +201,7 @@ class Domain(OrchestraModel):
         "mails": [],
         "usage": {},
         "websites": [],
+        "url": None,
     }
 
     @classmethod
