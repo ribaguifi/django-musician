@@ -207,6 +207,7 @@ class MailCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
     template_name = "musician/mail_form.html"
     form_class = MailForm
     success_url = reverse_lazy("musician:mails")
+    extra_context = {'service': service_class}
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -231,6 +232,7 @@ class MailUpdateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
     template_name = "musician/mail_form.html"
     form_class = MailForm
     success_url = reverse_lazy("musician:mails")
+    extra_context = {'service': service_class}
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
