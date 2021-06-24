@@ -26,7 +26,7 @@
     <tbody>
         {% for obj in object_list %}
         <tr>
-            <td>{{ obj.mail_address }}</td>
+            <td><a href="{% url 'musician:mail-update' obj.id %}">{{ obj.mail_address }}</a></td>
             <td>{{ obj.aliases|join:" , " }}</td>
             <td>{{ obj.type|capfirst }}</td>
             <td>

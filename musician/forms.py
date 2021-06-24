@@ -31,8 +31,13 @@ class MailForm(forms.Form):
     forward = forms.EmailField(required=False)
 
     def __init__(self, *args, **kwargs):
+        instance = kwargs.pop('instance', None)
+        if instance is not None:
+            kwargs['initial'] = instance.deserialize()
+
         domains = kwargs.pop('domains')
         mailboxes = kwargs.pop('mailboxes')
+
         super().__init__(*args, **kwargs)
         self.fields['domain'].choices = [(d.url, d.name) for d in domains]
         self.fields['mailboxes'].choices = [(m['url'], m['name']) for m in mailboxes]
@@ -42,3 +47,13 @@ class MailForm(forms.Form):
         if not cleaned_data.get('mailboxes') and not cleaned_data.get('forward'):
             raise ValidationError("A mailbox or forward address should be provided.")
         return cleaned_data
+
+    def serialize(self):
+        assert hasattr(self, 'cleaned_data')
+        serialized_data = {
+            "name": self.cleaned_data["name"],
+            "domain": {"url": self.cleaned_data["domain"]},
+            "mailboxes": [{"url": mbox} for mbox in self.cleaned_data["mailboxes"]],
+            "forward": self.cleaned_data["forward"],
+        }
+        return serialized_data

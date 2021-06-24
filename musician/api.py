@@ -23,6 +23,7 @@ API_PATHS = {
     'domain-list': 'domains/',
     'domain-detail': 'domains/{pk}/',
     'address-list': 'addresses/',
+    'address-detail': 'addresses/{pk}/',
     'mailbox-list': 'mailboxes/',
     'mailinglist-list': 'lists/',
     'saas-list': 'saas/',
@@ -114,12 +115,21 @@ class Orchestra(object):
 
     def create_mail_address(self, data):
         resource = '{}-list'.format(MailService.api_name)
-
-        # transform form data to expected format
-        data["domain"] = {"url": data["domain"]}
-        data["mailboxes"] = [{"url": mbox} for mbox in data["mailboxes"]]
-
         return self.request("POST", resource=resource, data=data)
+
+    def retrieve_mail_address(self, pk):
+        path = API_PATHS.get('address-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, data = self.request("GET", url=url, raise_exception=False)
+        if status == 404:
+            raise Http404(_("No object found matching the query"))
+
+        return MailService.new_from_json(data)
+
+    def update_mail_address(self, pk, data):
+        path = API_PATHS.get('address-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        return self.request("PUT", url=url, data=data)
 
     def retrieve_mail_address_list(self, querystring=None):
         def get_mailbox_id(value):

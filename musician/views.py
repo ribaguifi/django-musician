@@ -217,7 +217,38 @@ class MailCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
     def form_valid(self, form):
         # handle request errors e.g. 400 validation
         try:
-            self.orchestra.create_mail_address(form.cleaned_data)
+            serialized_data = form.serialize()
+            self.orchestra.create_mail_address(serialized_data)
+        except HTTPError as e:
+            form.add_error(field='__all__', error=e)
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
+
+
+class MailUpdateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    service_class = MailService
+    template_name = "musician/mail_form.html"
+    form_class = MailForm
+    success_url = reverse_lazy("musician:mails")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        instance = self.orchestra.retrieve_mail_address(self.kwargs['pk'])
+
+        kwargs.update({
+            'instance': instance,
+            'domains': self.orchestra.retrieve_domain_list(),
+            'mailboxes': self.orchestra.retrieve_mailbox_list(),
+        })
+
+        return kwargs
+
+    def form_valid(self, form):
+        # handle request errors e.g. 400 validation
+        try:
+            serialized_data = form.serialize()
+            self.orchestra.update_mail_address(self.kwargs['pk'], serialized_data)
         except HTTPError as e:
             form.add_error(field='__all__', error=e)
             return self.form_invalid(form)

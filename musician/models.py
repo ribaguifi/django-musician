@@ -225,12 +225,13 @@ class DomainRecord(OrchestraModel):
         return '<%s: %s>' % (self.type, self.value)
 
 
+# TODO(@slamora) rename to Address
 class MailService(OrchestraModel):
     api_name = 'address'
     verbose_name = _('Mail addresses')
     description = _('Description details for mail addresses page.')
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
-    param_defaults = {}
+    param_defaults = {"id": None,}
 
     FORWARD = 'forward'
     MAILBOX = 'mailbox'
@@ -238,6 +239,15 @@ class MailService(OrchestraModel):
     def __init__(self, **kwargs):
         self.data = kwargs
         super().__init__(**kwargs)
+
+    def deserialize(self):
+        data = {
+            'name': self.data['name'],
+            'domain': self.data['domain']['url'],
+            'mailboxes': [mbox['url'] for mbox in self.data['mailboxes']],
+            'forward': self.data['forward'],
+        }
+        return data
 
     @property
     def aliases(self):
