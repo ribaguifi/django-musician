@@ -161,19 +161,21 @@ class Orchestra(object):
 
         # PATCH to include Pangea addresses not shown by orchestra
         # described on issue #4
-        raw_mailboxes = self.retrieve_mailbox_list()
-        for mailbox in raw_mailboxes:
-            if mailbox['addresses'] == []:
-                address_data = {
-                    'names': [mailbox['name']],
-                    'forward': '',
-                    'domain': {
-                        'name': 'pangea.org.',
-                    },
-                    'mailboxes': [mailbox],
-                }
-                pangea_address = MailService.new_from_json(address_data)
-                addresses.append(pangea_address)
+        # TODO(@slamora) disabled hacky patch because breaks another funtionalities
+        #   XXX Fix it on orchestra instead of here???
+        # raw_mailboxes = self.retrieve_mailbox_list()
+        # for mailbox in raw_mailboxes:
+        #     if mailbox['addresses'] == []:
+        #         address_data = {
+        #             'names': [mailbox['name']],
+        #             'forward': '',
+        #             'domain': {
+        #                 'name': 'pangea.org.',
+        #             },
+        #             'mailboxes': [mailbox],
+        #         }
+        #         pangea_address = MailService.new_from_json(address_data)
+        #         addresses.append(pangea_address)
 
         return addresses
 
