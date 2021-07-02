@@ -225,8 +225,7 @@ class DomainRecord(OrchestraModel):
         return '<%s: %s>' % (self.type, self.value)
 
 
-# TODO(@slamora) rename to Address
-class MailService(OrchestraModel):
+class Address(OrchestraModel):
     api_name = 'address'
     verbose_name = _('Mail addresses')
     description = _('Description details for mail addresses page.')

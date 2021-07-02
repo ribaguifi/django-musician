@@ -19,7 +19,7 @@ from .auth import logout as auth_logout
 from .forms import LoginForm, MailForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
-from .models import (Bill, DatabaseService, MailinglistService, MailService,
+from .models import (Address, Bill, DatabaseService, MailinglistService,
                      PaymentSource, SaasService, UserAccount)
 from .settings import ALLOWED_RESOURCES
 from .utils import get_bootstraped_percent
@@ -169,7 +169,7 @@ class BillDownloadView(CustomContextMixin, UserTokenRequiredMixin, View):
 
 
 class MailView(ServiceListView):
-    service_class = MailService
+    service_class = Address
     template_name = "musician/mail.html"
     extra_context = {
         # Translators: This message appears on the page title
@@ -203,7 +203,7 @@ class MailView(ServiceListView):
 
 
 class MailCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
-    service_class = MailService
+    service_class = Address
     template_name = "musician/mail_form.html"
     form_class = MailForm
     success_url = reverse_lazy("musician:mails")
@@ -228,7 +228,7 @@ class MailCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
 
 
 class MailUpdateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
-    service_class = MailService
+    service_class = Address
     template_name = "musician/mail_form.html"
     form_class = MailForm
     success_url = reverse_lazy("musician:mails")

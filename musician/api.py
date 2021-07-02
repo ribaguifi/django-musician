@@ -1,14 +1,13 @@
-import requests
 import urllib.parse
-
 from itertools import groupby
+
+import requests
 from django.conf import settings
 from django.http import Http404
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
-from .models import Domain, DatabaseService, MailService, SaasService, UserAccount, WebSite
-
+from .models import Address, DatabaseService, Domain, SaasService, UserAccount, WebSite
 
 DOMAINS_PATH = 'domains/'
 TOKEN_PATH = '/api-token-auth/'
@@ -114,7 +113,7 @@ class Orchestra(object):
         return bill_pdf
 
     def create_mail_address(self, data):
-        resource = '{}-list'.format(MailService.api_name)
+        resource = '{}-list'.format(Address.api_name)
         return self.request("POST", resource=resource, data=data)
 
     def retrieve_mail_address(self, pk):
@@ -124,7 +123,7 @@ class Orchestra(object):
         if status == 404:
             raise Http404(_("No object found matching the query"))
 
-        return MailService.new_from_json(data)
+        return Address.new_from_json(data)
 
     def update_mail_address(self, pk, data):
         path = API_PATHS.get('address-detail').format_map({'pk': pk})
@@ -143,7 +142,7 @@ class Orchestra(object):
 
         # retrieve mails applying filters (if any)
         raw_data = self.retrieve_service_list(
-            MailService.api_name,
+            Address.api_name,
             querystring=querystring,
         )
 
@@ -157,7 +156,7 @@ class Orchestra(object):
                 data = thing
 
             data['names'] = aliases
-            addresses.append(MailService.new_from_json(data))
+            addresses.append(Address.new_from_json(data))
 
         # PATCH to include Pangea addresses not shown by orchestra
         # described on issue #4
@@ -174,7 +173,7 @@ class Orchestra(object):
         #             },
         #             'mailboxes': [mailbox],
         #         }
-        #         pangea_address = MailService.new_from_json(address_data)
+        #         pangea_address = Address.new_from_json(address_data)
         #         addresses.append(pangea_address)
 
         return addresses
@@ -204,7 +203,7 @@ class Orchestra(object):
 
             # retrieve services associated to a domain
             domain_json['mails'] = self.retrieve_service_list(
-                MailService.api_name, querystring)
+                Address.api_name, querystring)
 
             # retrieve websites (as they cannot be filtered by domain on the API we should do it here)
             domain_json['websites'] = self.filter_websites_by_domain(websites, domain_json['id'])
