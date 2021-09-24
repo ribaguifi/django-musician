@@ -22,6 +22,7 @@ urlpatterns = [
     path('mails/', views.MailView.as_view(), name='mails'),
     path('mails/new/', views.MailCreateView.as_view(), name='mail-create'),
     path('mails/<int:pk>/', views.MailUpdateView.as_view(), name='mail-update'),
+    path('mailboxes/', views.MailboxesView.as_view(), name='mailboxes'),
     path('mailing-lists/', views.MailingListsView.as_view(), name='mailing-lists'),
     path('databases/', views.DatabasesView.as_view(), name='databases'),
     path('software-as-a-service/', views.SaasView.as_view(), name='saas'),

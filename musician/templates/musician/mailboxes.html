@@ -1,0 +1,34 @@
+{% extends "musician/mail_base.html" %}
+{% load i18n %}
+
+{% block tabcontent %}
+<div class="tab-pane fade show active" id="mailboxes" role="tabpanel" aria-labelledby="mailboxes-tab">
+  <table class="table service-list">
+    <colgroup>
+      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 10%;">
+      <col span="1" style="width: 60%;">
+      <col span="1" style="width: 10%;">
+    </colgroup>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">{% trans "Name" %}</th>
+        <th scope="col">{% trans "Filtering" %}</th>
+        <th scope="col">{% trans "Addresses" %}</th>
+        <th scope="col">{% trans "Active" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mailbox in mailboxes %}
+      <tr>
+        <td>{{ mailbox.name }}</td>
+        <td>{{ mailbox.filtering }}</td>
+        <td>{{ mailbox.addresses }}</td>
+        <td class="pl-4 text-{{ mailbox.is_active|yesno:'success,danger' }}"><i class="fas fa-{{ mailbox.is_active|yesno:'check,times' }}"></i></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    {% include "musician/components/table_paginator.html" %}
+</div>
+</div>
+{% endblock %}

@@ -170,7 +170,7 @@ class BillDownloadView(CustomContextMixin, UserTokenRequiredMixin, View):
 
 class MailView(ServiceListView):
     service_class = Address
-    template_name = "musician/mail.html"
+    template_name = "musician/addresses.html"
     extra_context = {
         # Translators: This message appears on the page title
         'title': _('Mail addresses'),
@@ -199,6 +199,7 @@ class MailView(ServiceListView):
             context.update({
                 'active_domain': self.orchestra.retrieve_domain(domain_id)
             })
+        context['mailboxes'] = self.orchestra.retrieve_mailbox_list()
         return context
 
 
@@ -285,6 +286,26 @@ class MailingListsView(ServiceListView):
             return "domain={}".format(domain_id)
 
         return ''
+
+
+class MailboxesView(ServiceListView):
+    # TODO (@slamora) refactor after encapsulating Mailbox as a service
+    # service_class = Mailbox
+    template_name = "musician/mailboxes.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Mailboxes'),
+    }
+
+    def get_queryset(self):
+        # TODO (@slamora) refactor after encapsulating Mailbox as a service
+        return self.orchestra.retrieve_mailbox_list()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # TODO (@slamora) refactor after encapsulating Mailbox as a service
+        context['mailboxes'] = context['object_list']
+        return context
 
 
 class DatabasesView(ServiceListView):
