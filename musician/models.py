@@ -231,7 +231,12 @@ class Address(OrchestraModel):
     verbose_name = _('Mail addresses')
     description = _('Description details for mail addresses page.')
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
-    param_defaults = {"id": None,}
+    param_defaults = {
+        "id": None,
+        "domain": None,
+        "mailboxes": [],
+        "forward": None,
+    }
 
     FORWARD = 'forward'
     MAILBOX = 'mailbox'

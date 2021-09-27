@@ -6,31 +6,29 @@
   <table class="table service-list">
     <colgroup>
       <col span="1" style="width: 25%;">
-      <col span="1" style="width: 50%;">
-      <col span="1" style="width: 5%;">
-      <col span="1" style="width: 20%;">
+      <col span="1" style="width: 25%;">
+      <col span="1" style="width: 25%;">
+      <col span="1" style="width: 25%;">
     </colgroup>
     <thead class="thead-dark">
       <tr>
-        <th scope="col">{% trans "Mail address" %}</th>
-        <th scope="col">{% trans "Aliases" %}</th>
-        <th scope="col">{% trans "Type" %}</th>
-        <th scope="col">{% trans "Type details" %}</th>
+        <th scope="col">{% trans "Email" %}</th>
+        <th scope="col">{% trans "Domain" %}</th>
+        <th scope="col">{% trans "Mailboxes" %}</th>
+        <th scope="col">{% trans "Forward" %}</th>
       </tr>
     </thead>
     <tbody>
       {% for obj in object_list %}
       <tr>
         <td><a href="{% url 'musician:mail-update' obj.id %}">{{ obj.mail_address }}</a></td>
-        <td>{{ obj.aliases|join:" , " }}</td>
-        <td>{{ obj.type|capfirst }}</td>
+        <td>{{ obj.domain.name }}</td>
         <td>
-          {% if obj.type == 'mailbox' %}
-          {% include "musician/components/usage_progress_bar.html" with detail=obj.type_detail %}
-          {% else %}
-          {{ obj.type_detail }}
-          {% endif %}
+          {% for mailbox in obj.mailboxes %}
+            <a href="#TODO-mailbox-detail-{{ mailbox.id }}">{{ mailbox.name }}</a>
+          {% endfor %}
         </td>
+        <td>{{ obj.forward }}</td>
       </tr>
       {% endfor %}
     </tbody>
