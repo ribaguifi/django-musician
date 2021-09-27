@@ -21,7 +21,7 @@
     <tbody>
       {% for obj in object_list %}
       <tr>
-        <td><a href="{% url 'musician:mail-update' obj.id %}">{{ obj.mail_address }}</a></td>
+        <td><a href="{% url 'musician:address-update' obj.id %}">{{ obj.mail_address }}</a></td>
         <td>{{ obj.domain.name }}</td>
         <td>
           {% for mailbox in obj.mailboxes %}
@@ -34,7 +34,7 @@
     </tbody>
     {% include "musician/components/table_paginator.html" %}
   </table>
-  <a class="btn btn-primary mt-4 mb-4" href="{% url 'musician:mail-create' %}">{% trans "New mail address" %}</a>
+  <a class="btn btn-primary mt-4 mb-4" href="{% url 'musician:address-create' %}">{% trans "New mail address" %}</a>
 
 </div>
 {% endblock %}

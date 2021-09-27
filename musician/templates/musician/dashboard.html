@@ -71,7 +71,7 @@
             <span class="text-{{ domain.addresses_left.alert_level }}">{{ domain.addresses_left.count }} {% trans "mail address left" %}</span>
             {% endif %}
           </p>
-          <a class="stretched-link" href="{% url 'musician:mails' %}?domain={{ domain.id }}"></a>
+          <a class="stretched-link" href="{% url 'musician:address-list' %}?domain={{ domain.id }}"></a>
       </div>
       <div class="col-md-2 border-right">
           <h4>{% trans "Mail list" %}</h4>
@@ -82,7 +82,7 @@
           <h4>{% trans "Software as a Service" %}</h4>
           <p class="card-text"><i class="fas fa-fire fa-3x"></i></p>
           <p class="card-text text-dark">{% trans "Nothing installed" %}</p>
-          <a class="stretched-link" href="{% url 'musician:saas' %}?domain={{ domain.id }}"></a>
+          <a class="stretched-link" href="{% url 'musician:saas-list' %}?domain={{ domain.id }}"></a>
       </div>
       <div class="col-md-1"></div>
       <div class="col-md-4">

@@ -12,10 +12,10 @@ class CustomContextMixin(ContextMixin):
         # generate services menu items
         services_menu = [
             {'icon': 'globe-europe', 'pattern_name': 'musician:dashboard', 'title': _('Domains & websites')},
-            {'icon': 'envelope', 'pattern_name': 'musician:mails', 'title': _('Mails')},
+            {'icon': 'envelope', 'pattern_name': 'musician:address-list', 'title': _('Mails')},
             {'icon': 'mail-bulk', 'pattern_name': 'musician:mailing-lists', 'title': _('Mailing lists')},
-            {'icon': 'database', 'pattern_name': 'musician:databases', 'title': _('Databases')},
-            {'icon': 'fire', 'pattern_name': 'musician:saas', 'title': _('SaaS')},
+            {'icon': 'database', 'pattern_name': 'musician:database-list', 'title': _('Databases')},
+            {'icon': 'fire', 'pattern_name': 'musician:saas-list', 'title': _('SaaS')},
         ]
         context.update({
             'services_menu': services_menu,
