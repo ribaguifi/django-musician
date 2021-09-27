@@ -19,11 +19,17 @@
       </tr>
     </thead>
     <tbody>
-      {% for mailbox in mailboxes %}
+      {% for mailbox in object_list %}
       <tr>
         <td>{{ mailbox.name }}</td>
         <td>{{ mailbox.filtering }}</td>
-        <td>{{ mailbox.addresses }}</td>
+        <td>
+          {% for addr in mailbox.addresses %}
+            <a href="{% url 'musician:mail-update' addr.data.id %}">
+              {{ addr.data.name }}@{{ addr.data.domain.name }}
+            </a><br/>
+          {% endfor %}
+        </td>
         <td class="pl-4 text-{{ mailbox.is_active|yesno:'success,danger' }}"><i class="fas fa-{{ mailbox.is_active|yesno:'check,times' }}"></i></td>
       </tr>
       {% endfor %}

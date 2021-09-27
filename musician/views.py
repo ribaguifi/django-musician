@@ -19,7 +19,7 @@ from .auth import logout as auth_logout
 from .forms import LoginForm, MailForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
-from .models import (Address, Bill, DatabaseService, MailinglistService,
+from .models import (Address, Bill, DatabaseService, Mailbox, MailinglistService,
                      PaymentSource, SaasService, UserAccount)
 from .settings import ALLOWED_RESOURCES
 from .utils import get_bootstraped_percent
@@ -289,23 +289,12 @@ class MailingListsView(ServiceListView):
 
 
 class MailboxesView(ServiceListView):
-    # TODO (@slamora) refactor after encapsulating Mailbox as a service
-    # service_class = Mailbox
+    service_class = Mailbox
     template_name = "musician/mailboxes.html"
     extra_context = {
         # Translators: This message appears on the page title
         'title': _('Mailboxes'),
     }
-
-    def get_queryset(self):
-        # TODO (@slamora) refactor after encapsulating Mailbox as a service
-        return self.orchestra.retrieve_mailbox_list()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # TODO (@slamora) refactor after encapsulating Mailbox as a service
-        context['mailboxes'] = context['object_list']
-        return context
 
 
 class DatabasesView(ServiceListView):

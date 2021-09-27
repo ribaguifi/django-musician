@@ -16,8 +16,8 @@
     <a class="nav-link {% if url_name == 'mails' %}active{% endif %}" href="{% url 'musician:mails' %}" role="tab"
       aria-selected="true">{% trans "Addresses" %}</a>
   </li>
-  <li class="nav-item {% if url_name == 'mailboxes' %}active{% endif %}">
-    <a class="nav-link" href="{% url 'musician:mailboxes' %}" role="tab" aria-selected="false">{% trans "Mailboxes" %}</a>
+  <li class="nav-item">
+    <a class="nav-link {% if url_name == 'mailboxes' %}active{% endif %}" href="{% url 'musician:mailboxes' %}" role="tab" aria-selected="false">{% trans "Mailboxes" %}</a>
   </li>
 </ul>
 

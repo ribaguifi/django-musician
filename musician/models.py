@@ -17,6 +17,7 @@ class OrchestraModel:
     api_name = None
     verbose_name = None
     fields = ()
+    param_defaults = {}
     id = None
 
     def __init__(self, **kwargs):
@@ -292,6 +293,24 @@ class Address(OrchestraModel):
         except (IndexError, KeyError):
             mailbox_details = {}
         return mailbox_details
+
+
+class Mailbox(OrchestraModel):
+    api_name = 'mailbox'
+    verbose_name = _('Mailbox')
+    description = _('Description details for mailbox page.')
+    fields = ('name', 'filtering', 'addresses', 'active')
+    param_defaults = {
+        'name': None,
+        'filtering': None,
+        'is_active': True,
+        'addresses': [],
+    }
+
+    @classmethod
+    def new_from_json(cls, data, **kwargs):
+        addresses = [Address.new_from_json(addr) for addr in data.get('addresses', [])]
+        return super().new_from_json(data=data, addresses=addresses)
 
 
 class MailinglistService(OrchestraModel):

@@ -7,7 +7,7 @@ from django.http import Http404
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
-from .models import Address, DatabaseService, Domain, SaasService, UserAccount, WebSite
+from .models import Address, DatabaseService, Domain, Mailbox, SaasService, UserAccount, WebSite
 
 DOMAINS_PATH = 'domains/'
 TOKEN_PATH = '/api-token-auth/'
@@ -179,9 +179,8 @@ class Orchestra(object):
         return addresses
 
     def retrieve_mailbox_list(self):
-        # TODO(@slamora) encapsulate as a Service class
-        raw_mailboxes = self.retrieve_service_list('mailbox')
-        return raw_mailboxes
+        mailboxes = self.retrieve_service_list(Mailbox.api_name)
+        return [Mailbox.new_from_json(mailbox_data) for mailbox_data in mailboxes]
 
     def retrieve_domain(self, pk):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})
