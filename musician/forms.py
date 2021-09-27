@@ -40,7 +40,7 @@ class MailForm(forms.Form):
 
         super().__init__(*args, **kwargs)
         self.fields['domain'].choices = [(d.url, d.name) for d in domains]
-        self.fields['mailboxes'].choices = [(m['url'], m['name']) for m in mailboxes]
+        self.fields['mailboxes'].choices = [(m.url, m.name) for m in mailboxes]
 
     def clean(self):
         cleaned_data = super().clean()

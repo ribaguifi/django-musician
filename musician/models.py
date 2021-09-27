@@ -301,10 +301,12 @@ class Mailbox(OrchestraModel):
     description = _('Description details for mailbox page.')
     fields = ('name', 'filtering', 'addresses', 'active')
     param_defaults = {
+        'id': None,
         'name': None,
         'filtering': None,
         'is_active': True,
         'addresses': [],
+        'url': None,
     }
 
     @classmethod
