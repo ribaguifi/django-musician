@@ -22,6 +22,7 @@ urlpatterns = [
     path('address/', views.MailView.as_view(), name='address-list'),
     path('address/new/', views.MailCreateView.as_view(), name='address-create'),
     path('address/<int:pk>/', views.MailUpdateView.as_view(), name='address-update'),
+    path('address/<int:pk>/delete/', views.AddressDeleteView.as_view(), name='address-delete'),
     path('mailboxes/', views.MailboxesView.as_view(), name='mailbox-list'),
     path('mailing-lists/', views.MailingListsView.as_view(), name='mailing-lists'),
     path('databases/', views.DatabasesView.as_view(), name='database-list'),

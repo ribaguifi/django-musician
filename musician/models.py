@@ -233,6 +233,7 @@ class Address(OrchestraModel):
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
     param_defaults = {
         "id": None,
+        "name": None,
         "domain": None,
         "mailboxes": [],
         "forward": None,
@@ -259,6 +260,10 @@ class Address(OrchestraModel):
         return [
             name + '@' + self.data['domain']['name'] for name in self.data['names'][1:]
         ]
+
+    @property
+    def full_address_name(self):
+        return "{}@{}".format(self.name, self.domain['name'])
 
     @property
     def mail_address(self):

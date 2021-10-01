@@ -31,9 +31,9 @@ class MailForm(forms.Form):
     forward = forms.EmailField(required=False)
 
     def __init__(self, *args, **kwargs):
-        instance = kwargs.pop('instance', None)
-        if instance is not None:
-            kwargs['initial'] = instance.deserialize()
+        self.instance = kwargs.pop('instance', None)
+        if self.instance is not None:
+            kwargs['initial'] = self.instance.deserialize()
 
         domains = kwargs.pop('domains')
         mailboxes = kwargs.pop('mailboxes')

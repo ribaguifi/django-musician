@@ -178,6 +178,11 @@ class Orchestra(object):
 
         return addresses
 
+    def delete_mail_address(self, pk):
+        path = API_PATHS.get('address-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        return self.request("DELETE", url=url, render_as=None)
+
     def retrieve_mailbox_list(self):
         mailboxes = self.retrieve_service_list(Mailbox.api_name)
         return [Mailbox.new_from_json(mailbox_data) for mailbox_data in mailboxes]

@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import DeleteView, FormView
 from django.views.generic.list import ListView
 from requests.exceptions import HTTPError
 
@@ -205,7 +205,7 @@ class MailView(ServiceListView):
 
 class MailCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
     service_class = Address
-    template_name = "musician/mail_form.html"
+    template_name = "musician/address_form.html"
     form_class = MailForm
     success_url = reverse_lazy("musician:address-list")
     extra_context = {'service': service_class}
@@ -230,7 +230,7 @@ class MailCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
 
 class MailUpdateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
     service_class = Address
-    template_name = "musician/mail_form.html"
+    template_name = "musician/address_form.html"
     form_class = MailForm
     success_url = reverse_lazy("musician:address-list")
     extra_context = {'service': service_class}
@@ -257,6 +257,24 @@ class MailUpdateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
             return self.form_invalid(form)
 
         return super().form_valid(form)
+
+
+class AddressDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
+    template_name = "musician/address_check_delete.html"
+    success_url = reverse_lazy("musician:address-list")
+
+    def get_object(self, queryset=None):
+        obj = self.orchestra.retrieve_mail_address(self.kwargs['pk'])
+        return obj
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.orchestra.delete_mail_address(self.object.id)
+        except HTTPError as e:
+            print(e)
+
+        return HttpResponseRedirect(self.success_url)
 
 
 class MailingListsView(ServiceListView):
