@@ -131,32 +131,13 @@ class Orchestra(object):
         return self.request("PUT", url=url, data=data)
 
     def retrieve_mail_address_list(self, querystring=None):
-        def get_mailbox_id(value):
-            mailboxes = value.get('mailboxes')
-
-            # forwarded address should not grouped
-            if len(mailboxes) == 0:
-                return value.get('name')
-
-            return mailboxes[0]['id']
-
         # retrieve mails applying filters (if any)
         raw_data = self.retrieve_service_list(
             Address.api_name,
             querystring=querystring,
         )
 
-        # group addresses with the same mailbox
-        addresses = []
-        for key, group in groupby(raw_data, get_mailbox_id):
-            aliases = []
-            data = {}
-            for thing in group:
-                aliases.append(thing.pop('name'))
-                data = thing
-
-            data['names'] = aliases
-            addresses.append(Address.new_from_json(data))
+        addresses = [Address.new_from_json(data) for data in raw_data]
 
         # PATCH to include Pangea addresses not shown by orchestra
         # described on issue #4

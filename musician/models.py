@@ -266,10 +266,6 @@ class Address(OrchestraModel):
         return "{}@{}".format(self.name, self.domain['name'])
 
     @property
-    def mail_address(self):
-        return self.data['names'][0] + '@' + self.data['domain']['name']
-
-    @property
     def type(self):
         if self.data['forward']:
             return self.FORWARD

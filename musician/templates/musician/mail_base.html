@@ -6,8 +6,9 @@
 <a class="btn-arrow-left" href="{% url 'musician:address-list' %}">{% trans "Go to global" %}</a>
 {% endif %}
 
-<h1 class="service-name">{{ service.verbose_name }}{% if active_domain %} <span class="font-weight-light">{% trans "for"
-    %} {{ active_domain.name }}</span>{% endif %}</h1>
+<h1 class="service-name">{{ service.verbose_name }}
+  {% if active_domain %}<span class="font-weight-light">{% trans "for" %} {{ active_domain.name }}</span>{% endif %}
+</h1>
 <p class="service-description">{{ service.description }}</p>
 
 {% with request.resolver_match.url_name as url_name %}
