@@ -129,6 +129,10 @@ class UserAccount(OrchestraModel):
 
         return super().new_from_json(data=data, billing=billing, language=language, last_login=last_login)
 
+    def allowed_resources(self, resource):
+        allowed_by_type = musician_settings.ALLOWED_RESOURCES[self.type]
+        return allowed_by_type[resource]
+
 
 class DatabaseUser(OrchestraModel):
     api_name = 'databaseusers'

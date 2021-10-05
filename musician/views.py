@@ -325,7 +325,18 @@ class MailboxCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
     template_name = "musician/mailbox_form.html"
     form_class = MailboxCreateForm
     success_url = reverse_lazy("musician:mailbox-list")
-    extra_context = {'service': service_class}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'extra_mailbox': self.is_extra_mailbox(context['profile']),
+            'service': self.service_class,
+        })
+        return context
+
+    def is_extra_mailbox(self, profile):
+        number_of_mailboxes = len(self.orchestra.retrieve_mailbox_list())
+        return number_of_mailboxes >= profile.allowed_resources('mailbox')
 
     def form_valid(self, form):
         serialized_data = form.serialize()
