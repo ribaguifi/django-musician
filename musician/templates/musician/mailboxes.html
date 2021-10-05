@@ -35,6 +35,8 @@
       {% endfor %}
     </tbody>
     {% include "musician/components/table_paginator.html" %}
-</div>
+  </table>
+  <a class="btn btn-primary mt-4 mb-4" href="{% url 'musician:mailbox-create' %}">{% trans "New mailbox" %}</a>
+
 </div>
 {% endblock %}

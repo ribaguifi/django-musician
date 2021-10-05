@@ -24,6 +24,7 @@ urlpatterns = [
     path('address/<int:pk>/', views.MailUpdateView.as_view(), name='address-update'),
     path('address/<int:pk>/delete/', views.AddressDeleteView.as_view(), name='address-delete'),
     path('mailboxes/', views.MailboxesView.as_view(), name='mailbox-list'),
+    path('mailboxes/new/', views.MailboxCreateView.as_view(), name='mailbox-create'),
     path('mailing-lists/', views.MailingListsView.as_view(), name='mailing-lists'),
     path('databases/', views.DatabasesView.as_view(), name='database-list'),
     path('saas/', views.SaasView.as_view(), name='saas-list'),

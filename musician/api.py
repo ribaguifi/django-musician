@@ -83,7 +83,7 @@ class Orchestra(object):
             response.raise_for_status()
 
         status = response.status_code
-        if render_as == "json":
+        if status < 500 and render_as == "json":
             output = response.json()
         else:
             output = response.content
@@ -163,6 +163,10 @@ class Orchestra(object):
         path = API_PATHS.get('address-detail').format_map({'pk': pk})
         url = urllib.parse.urljoin(self.base_url, path)
         return self.request("DELETE", url=url, render_as=None)
+
+    def create_mailbox(self, data):
+        resource = '{}-list'.format(Mailbox.api_name)
+        return self.request("POST", resource=resource, data=data, raise_exception=False)
 
     def retrieve_mailbox_list(self):
         mailboxes = self.retrieve_service_list(Mailbox.api_name)
