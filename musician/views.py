@@ -277,7 +277,8 @@ class AddressDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
         try:
             self.orchestra.delete_mail_address(self.object.id)
         except HTTPError as e:
-            print(e)
+            # TODO(@slamora): show error message to user
+            logger.error(e)
 
         return HttpResponseRedirect(self.success_url)
 
@@ -353,6 +354,25 @@ class MailboxCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
                 form.add_error(field='__all__', error=msg)
 
         return super().form_valid(form)
+
+
+class MailboxDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
+    template_name = "musician/mailbox_check_delete.html"
+    success_url = reverse_lazy("musician:mailbox-list")
+
+    def get_object(self, queryset=None):
+        obj = self.orchestra.retrieve_mailbox(self.kwargs['pk'])
+        return obj
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.orchestra.delete_mailbox(self.object.id)
+        except HTTPError as e:
+            # TODO(@slamora): show error message to user
+            logger.error(e)
+
+        return HttpResponseRedirect(self.success_url)
 
 
 class DatabasesView(ServiceListView):

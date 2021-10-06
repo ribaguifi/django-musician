@@ -15,11 +15,13 @@
         <th scope="col">{% trans "Name" %}</th>
         <th scope="col">{% trans "Filtering" %}</th>
         <th scope="col">{% trans "Addresses" %}</th>
-        <th scope="col">{% trans "Active" %}</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       {% for mailbox in object_list %}
+      {# <!-- Exclude (don't render) inactive mailboxes -->#}
+      {% if mailbox.is_active %}
       <tr>
         <td>{{ mailbox.name }}</td>
         <td>{{ mailbox.filtering }}</td>
@@ -30,8 +32,12 @@
             </a><br/>
           {% endfor %}
         </td>
-        <td class="pl-4 text-{{ mailbox.is_active|yesno:'success,danger' }}"><i class="fas fa-{{ mailbox.is_active|yesno:'check,times' }}"></i></td>
+        <td>
+
+          <a class="btn btn-outline-danger" href="{% url 'musician:mailbox-delete' mailbox.id %}" title="{% trans 'Delete' %}"><i class="fas fa-trash"></i></a>
+        </td>
       </tr>
+      {% endif %}{# <!-- /is_active --> #}
       {% endfor %}
     </tbody>
     {% include "musician/components/table_paginator.html" %}

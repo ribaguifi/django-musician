@@ -24,6 +24,7 @@ API_PATHS = {
     'address-list': 'addresses/',
     'address-detail': 'addresses/{pk}/',
     'mailbox-list': 'mailboxes/',
+    'mailbox-detail': 'mailboxes/{pk}/',
     'mailinglist-list': 'lists/',
     'saas-list': 'saas/',
     'website-list': 'websites/',
@@ -168,9 +169,25 @@ class Orchestra(object):
         resource = '{}-list'.format(Mailbox.api_name)
         return self.request("POST", resource=resource, data=data, raise_exception=False)
 
+    def retrieve_mailbox(self, pk):
+        path = API_PATHS.get('mailbox-detail').format_map({'pk': pk})
+
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, data_json = self.request("GET", url=url, raise_exception=False)
+        if status == 404:
+            raise Http404(_("No mailbox found matching the query"))
+        return Mailbox.new_from_json(data_json)
+
     def retrieve_mailbox_list(self):
         mailboxes = self.retrieve_service_list(Mailbox.api_name)
         return [Mailbox.new_from_json(mailbox_data) for mailbox_data in mailboxes]
+
+    def delete_mailbox(self, pk):
+        path = API_PATHS.get('mailbox-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        # Mark as inactive instead of deleting
+        # return self.request("DELETE", url=url, render_as=None)
+        return self.request("PATCH", url=url, data={"is_active": False})
 
     def retrieve_domain(self, pk):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})
