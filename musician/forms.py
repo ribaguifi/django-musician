@@ -76,6 +76,12 @@ class MailboxCreateForm(forms.Form):
         strip=False,
         help_text=_("Enter the same password as before, for verification."),
     )
+    addresses = forms.MultipleChoiceField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        addresses = kwargs.pop('addresses')
+        super().__init__(*args, **kwargs)
+        self.fields['addresses'].choices = [(addr.url, addr.full_address_name) for addr in addresses]
 
     def clean_password2(self):
         password = self.cleaned_data.get("password")
@@ -92,6 +98,7 @@ class MailboxCreateForm(forms.Form):
         serialized_data = {
             "name": self.cleaned_data["name"],
             "password": self.cleaned_data["password2"],
+            "addresses": self.cleaned_data["addresses"],
         }
         return serialized_data
 

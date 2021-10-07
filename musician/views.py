@@ -339,6 +339,14 @@ class MailboxCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
         number_of_mailboxes = len(self.orchestra.retrieve_mailbox_list())
         return number_of_mailboxes >= profile.allowed_resources('mailbox')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'addresses': self.orchestra.retrieve_mail_address_list(),
+        })
+
+        return kwargs
+
     def form_valid(self, form):
         serialized_data = form.serialize()
         status, response = self.orchestra.create_mailbox(serialized_data)
@@ -347,11 +355,11 @@ class MailboxCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
             if status == 400:
                 # handle errors & add to form (they will be rendered)
                 form.add_error(field=None, error=response)
-                return self.form_invalid(form)
             else:
                 logger.error("{}: {}".format(status, response[:120]))
                 msg = "Sorry, an error occurred while processing your request ({})".format(status)
                 form.add_error(field='__all__', error=msg)
+            return self.form_invalid(form)
 
         return super().form_valid(form)
 
