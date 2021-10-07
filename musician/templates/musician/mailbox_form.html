@@ -21,7 +21,7 @@
   <button type="submit" class="btn btn-secondary">{% trans "Save" %}</button>
   {% if form.instance %}
   <div class="float-right">
-    <a class="btn btn-danger" href="{# TODO url 'musician:mailbox-delete' view.kwargs.pk #}">{% trans "Delete" %}</a>
+    <a class="btn btn-danger" href="{% url 'musician:mailbox-delete' view.kwargs.pk %}">{% trans "Delete" %}</a>
   </div>
   {% endif %}
   {% endbuttons %}

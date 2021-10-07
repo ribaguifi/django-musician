@@ -18,7 +18,7 @@ from requests.exceptions import HTTPError
 from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
-from .forms import LoginForm, MailForm, MailboxCreateForm
+from .forms import LoginForm, MailForm, MailboxCreateForm, MailboxUpdateForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
 from .models import (Address, Bill, DatabaseService, Mailbox, MailinglistService,
@@ -352,6 +352,42 @@ class MailboxCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
                 logger.error("{}: {}".format(status, response[:120]))
                 msg = "Sorry, an error occurred while processing your request ({})".format(status)
                 form.add_error(field='__all__', error=msg)
+
+        return super().form_valid(form)
+
+
+class MailboxUpdateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    service_class = Mailbox
+    template_name = "musician/mailbox_form.html"
+    form_class = MailboxUpdateForm
+    success_url = reverse_lazy("musician:mailbox-list")
+    extra_context = {'service': service_class}
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        instance = self.orchestra.retrieve_mailbox(self.kwargs['pk'])
+
+        kwargs.update({
+            'instance': instance,
+            'addresses': self.orchestra.retrieve_mail_address_list(),
+        })
+
+        return kwargs
+
+    def form_valid(self, form):
+        serialized_data = form.serialize()
+        status, response = self.orchestra.update_mailbox(self.kwargs['pk'], serialized_data)
+
+        if status >= 400:
+            if status == 400:
+                # handle errors & add to form (they will be rendered)
+                form.add_error(field=None, error=response)
+            else:
+                logger.error("{}: {}".format(status, response[:120]))
+                msg = "Sorry, an error occurred while processing your request ({})".format(status)
+                form.add_error(field='__all__', error=msg)
+
+            return self.form_invalid(form)
 
         return super().form_valid(form)
 

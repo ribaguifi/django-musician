@@ -94,3 +94,23 @@ class MailboxCreateForm(forms.Form):
             "password": self.cleaned_data["password2"],
         }
         return serialized_data
+
+
+class MailboxUpdateForm(forms.Form):
+    addresses = forms.MultipleChoiceField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.pop('instance', None)
+        if self.instance is not None:
+            kwargs['initial'] = self.instance.deserialize()
+
+        addresses = kwargs.pop('addresses')
+        super().__init__(*args, **kwargs)
+        self.fields['addresses'].choices = [(addr.url, addr.full_address_name) for addr in addresses]
+
+    def serialize(self):
+        assert self.is_valid()
+        serialized_data = {
+            "addresses": self.cleaned_data["addresses"],
+        }
+        return serialized_data

@@ -1,5 +1,4 @@
 import urllib.parse
-from itertools import groupby
 
 import requests
 from django.conf import settings
@@ -177,6 +176,12 @@ class Orchestra(object):
         if status == 404:
             raise Http404(_("No mailbox found matching the query"))
         return Mailbox.new_from_json(data_json)
+
+    def update_mailbox(self, pk, data):
+        path = API_PATHS.get('mailbox-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, response = self.request("PATCH", url=url, data=data, raise_exception=False)
+        return status, response
 
     def retrieve_mailbox_list(self):
         mailboxes = self.retrieve_service_list(Mailbox.api_name)

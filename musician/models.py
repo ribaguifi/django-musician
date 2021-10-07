@@ -241,6 +241,7 @@ class Address(OrchestraModel):
         "domain": None,
         "mailboxes": [],
         "forward": None,
+        'url': None,
     }
 
     FORWARD = 'forward'
@@ -323,6 +324,12 @@ class Mailbox(OrchestraModel):
     def new_from_json(cls, data, **kwargs):
         addresses = [Address.new_from_json(addr) for addr in data.get('addresses', [])]
         return super().new_from_json(data=data, addresses=addresses)
+
+    def deserialize(self):
+        data = {
+            'addresses': [addr.url for addr in self.addresses],
+        }
+        return data
 
 
 class MailinglistService(OrchestraModel):
