@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-08 11:14+0200\n"
+"POT-Creation-Date: 2021-10-08 11:49+0200\n"
 "PO-Revision-Date: 2020-01-28 17:27+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,7 +39,6 @@ msgid "Password"
 msgstr "Contrasenya"
 
 #: forms.py:74
-#| msgid "view configuration"
 msgid "Password confirmation"
 msgstr "Verificació de la contrasenya"
 
@@ -88,9 +87,8 @@ msgstr "Bústia de correu"
 
 #: models.py:312
 msgid "Description details for mailbox page."
-msgstr "Aquí trobaràs les teves bústies de correu i els seus detalls de "
-"configuració."
-
+msgstr ""
+"Aquí trobaràs les teves bústies de correu i els seus detalls de configuració."
 
 #: models.py:337
 msgid "Mailing list"
@@ -134,23 +132,24 @@ msgstr ""
 #: templates/musician/address_check_delete.html:7
 #, python-format
 msgid "Are you sure that you want remove the address: \"%(address_name)s\"?"
-msgstr "Estàs segur de que vols esborrar la adreça de correu: \"%(address_name)s\"?"
+msgstr ""
+"Estàs segur de que vols esborrar la adreça de correu: \"%(address_name)s\"?"
 
 #: templates/musician/address_check_delete.html:8
-#: templates/musician/mailbox_check_delete.html:8
-msgid "NOTE: This action cannot be undone."
-msgstr "NOTA: Aquesta acció es irreversible."
+#: templates/musician/mailbox_check_delete.html:11
+msgid "WARNING: This action cannot be undone."
+msgstr "AVÍS: Aquesta acció es irreversible."
 
 #: templates/musician/address_check_delete.html:9
 #: templates/musician/address_form.html:15
-#: templates/musician/mailbox_check_delete.html:9
+#: templates/musician/mailbox_check_delete.html:12
 #: templates/musician/mailbox_form.html:24
 msgid "Delete"
 msgstr "Esborrar"
 
 #: templates/musician/address_check_delete.html:10
 #: templates/musician/address_form.html:11
-#: templates/musician/mailbox_check_delete.html:10
+#: templates/musician/mailbox_check_delete.html:13
 #: templates/musician/mailbox_form.html:20
 msgid "Cancel"
 msgstr "Cancel·lar"
@@ -375,7 +374,6 @@ msgid "for"
 msgstr "per a"
 
 #: templates/musician/mail_base.html:18 templates/musician/mailboxes.html:16
-#| msgid "Mail addresses"
 msgid "Addresses"
 msgstr "Adreces de correu"
 
@@ -383,6 +381,13 @@ msgstr "Adreces de correu"
 #, python-format
 msgid "Are you sure that you want remove the mailbox: \"%(name)s\"?"
 msgstr "Estàs segur de que vols esborrar la bústia de correu: \"%(name)s\"?"
+
+#: templates/musician/mailbox_check_delete.html:9
+msgid ""
+"All mailbox's messages will be <strong>deleted and cannot be recovered"
+"</strong>."
+msgstr ""
+"Tots els missatges <strong>s'esborraran i no es podran recuperar</strong>"
 
 #: templates/musician/mailbox_form.html:9
 msgid "Warning!"
@@ -393,8 +398,8 @@ msgid ""
 "You have reached the limit of mailboxes of your subscription so "
 "<strong>extra fees</strong> may apply."
 msgstr ""
-"Has assolit el llímit de bústies de correu de la teva suscripció, "
-"les noves bústies poden implicar <strong>costos adicionals</strong>."
+"Has assolit el llímit de bústies de correu de la teva suscripció, les noves "
+"bústies poden implicar <strong>costos adicionals</strong>."
 
 #: templates/musician/mailbox_form.html:10
 msgid "Close"

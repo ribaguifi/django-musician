@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-08 11:14+0200\n"
+"POT-Creation-Date: 2021-10-08 11:49+0200\n"
 "PO-Revision-Date: 2020-01-28 17:27+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -133,24 +133,24 @@ msgstr ""
 #, python-format
 msgid "Are you sure that you want remove the address: \"%(address_name)s\"?"
 msgstr ""
-"¿Estás seguro de que quieres borrar la dirección de correo "
-"\"%(address_name)s\"?"
+"¿Estás seguro de que quieres borrar la dirección de correo \"%(address_name)s"
+"\"?"
 
 #: templates/musician/address_check_delete.html:8
-#: templates/musician/mailbox_check_delete.html:8
-msgid "NOTE: This action cannot be undone."
-msgstr "NOTA: Esta acción es irreversible."
+#: templates/musician/mailbox_check_delete.html:11
+msgid "WARNING: This action cannot be undone."
+msgstr "AVISO: Esta acción es irreversible."
 
 #: templates/musician/address_check_delete.html:9
 #: templates/musician/address_form.html:15
-#: templates/musician/mailbox_check_delete.html:9
+#: templates/musician/mailbox_check_delete.html:12
 #: templates/musician/mailbox_form.html:24
 msgid "Delete"
 msgstr "Borrar"
 
 #: templates/musician/address_check_delete.html:10
 #: templates/musician/address_form.html:11
-#: templates/musician/mailbox_check_delete.html:10
+#: templates/musician/mailbox_check_delete.html:13
 #: templates/musician/mailbox_form.html:20
 msgid "Cancel"
 msgstr "Cancelar"
@@ -375,15 +375,20 @@ msgid "for"
 msgstr "para"
 
 #: templates/musician/mail_base.html:18 templates/musician/mailboxes.html:16
-#| msgid "Mail addresses"
 msgid "Addresses"
 msgstr "Direcciones de correo"
 
 #: templates/musician/mailbox_check_delete.html:7
 #, python-format
 msgid "Are you sure that you want remove the mailbox: \"%(name)s\"?"
+msgstr "¿Estás seguro de que quieres borrar el buzón de correo \"%(name)s\"?"
+
+#: templates/musician/mailbox_check_delete.html:9
+msgid ""
+"All mailbox's messages will be <strong>deleted and cannot be recovered</"
+"strong>."
 msgstr ""
-"¿Estás seguro de que quieres borrar el buzón de correo \"%(name)s\"?"
+"Todos los mensajes <strong>se borrarán y no se podrán recuperar</strong>"
 
 #: templates/musician/mailbox_form.html:9
 msgid "Warning!"
