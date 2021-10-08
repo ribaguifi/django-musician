@@ -41,6 +41,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 
 EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
 
@@ -149,12 +151,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-LANGUAGES = (
-    ('ca', _('Catalan')),
-    ('es', _('Spanish')),
-    ('en', _('English')),
-)
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -177,3 +173,8 @@ URL_SAAS_GITLAB = config('URL_SAAS_GITLAB', None)
 URL_SAAS_OWNCLOUD = config('URL_SAAS_OWNCLOUD', None)
 
 URL_SAAS_WORDPRESS = config('URL_SAAS_WORDPRESS', None)
+
+
+# Managers: who should get notifications about services changes that
+# may require human actions (e.g. deleted mailboxes)
+MANAGERS = []

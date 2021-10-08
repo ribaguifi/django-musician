@@ -1,7 +1,9 @@
 import logging
+import smtplib
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.core.mail import mail_managers
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -18,14 +20,13 @@ from requests.exceptions import HTTPError
 from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
-from .forms import LoginForm, MailForm, MailboxCreateForm, MailboxUpdateForm
+from .forms import LoginForm, MailboxCreateForm, MailboxUpdateForm, MailForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
-from .models import (Address, Bill, DatabaseService, Mailbox, MailinglistService,
-                     PaymentSource, SaasService, UserAccount)
+from .models import (Address, Bill, DatabaseService, Mailbox,
+                     MailinglistService, PaymentSource, SaasService)
 from .settings import ALLOWED_RESOURCES
 from .utils import get_bootstraped_percent
-
 
 logger = logging.getLogger(__name__)
 
@@ -416,7 +417,22 @@ class MailboxDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
             # TODO(@slamora): show error message to user
             logger.error(e)
 
+        self.notify_managers(self.object)
+
         return HttpResponseRedirect(self.success_url)
+
+    def notify_managers(self, mailbox):
+        user = self.get_context_data()['profile']
+        subject = 'Mailbox {} ({}) deleted | Musician'.format(mailbox.id, mailbox.name)
+        content = (
+            "User {} ({}) has deleted its mailbox {} ({}) via musician.\n"
+            "The mailbox has been marked as inactive but has not been removed."
+        ).format(user.username, user.full_name, mailbox.id, mailbox.name)
+
+        try:
+            mail_managers(subject, content, fail_silently=False)
+        except (smtplib.SMTPException, ConnectionRefusedError):
+            logger.error("Error sending email to managers", exc_info=True)
 
 
 class DatabasesView(ServiceListView):
