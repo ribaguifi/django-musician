@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-23 17:49+0100\n"
+"POT-Creation-Date: 2021-10-08 11:14+0200\n"
 "PO-Revision-Date: 2020-01-28 17:27+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,9 +18,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.2.4\n"
 
-#: api.py:108 api.py:117
+#: api.py:112 api.py:203
 msgid "No domain found matching the query"
 msgstr "No trobem cap domini que coincideixi amb la teva consulta"
+
+#: api.py:124
+msgid "No object found matching the query"
+msgstr "No trobem cap objecte que coincideixi amb la teva consulta"
+
+#: api.py:177
+msgid "No mailbox found matching the query"
+msgstr "No trobem cap bústia que coincideixi amb la teva consulta"
+
+#: forms.py:65
+msgid "The two password fields didn’t match."
+msgstr "Les contrasenyes introduides no coincideixen."
+
+#: forms.py:69
+msgid "Password"
+msgstr "Contrasenya"
+
+#: forms.py:74
+#| msgid "view configuration"
+msgid "Password confirmation"
+msgstr "Verificació de la contrasenya"
+
+#: forms.py:77
+msgid "Enter the same password as before, for verification."
+msgstr "Introdueix la mateixa contrasenya per verificar."
 
 #: mixins.py:14
 msgid "Domains & websites"
@@ -31,12 +56,12 @@ msgid "Mails"
 msgstr "Correus"
 
 #. Translators: This message appears on the page title
-#: mixins.py:16 views.py:226
+#: mixins.py:16 views.py:291
 msgid "Mailing lists"
 msgstr "Llistes de correu"
 
 #. Translators: This message appears on the page title
-#: mixins.py:17 models.py:138 views.py:255
+#: mixins.py:17 models.py:147 views.py:427
 msgid "Databases"
 msgstr "Bases de dades"
 
@@ -44,36 +69,42 @@ msgstr "Bases de dades"
 msgid "SaaS"
 msgstr "SaaS"
 
-#: models.py:139
-#, fuzzy
+#: models.py:148
 msgid "Description details for databases page."
 msgstr "Consulta la configuració de les teves bases de dades."
 
 #. Translators: This message appears on the page title
-#: models.py:200 views.py:169
+#: models.py:235 views.py:181
 msgid "Mail addresses"
 msgstr "Adreces de correu"
 
-#: models.py:201
-#, fuzzy
+#: models.py:236
 msgid "Description details for mail addresses page."
 msgstr "Consulta aquí totes les adreces de correu que tens actives."
 
-#: models.py:243
+#: models.py:311
+msgid "Mailbox"
+msgstr "Bústia de correu"
+
+#: models.py:312
+msgid "Description details for mailbox page."
+msgstr "Aquí trobaràs les teves bústies de correu i els seus detalls de "
+"configuració."
+
+
+#: models.py:337
 msgid "Mailing list"
 msgstr "Llista de correu"
 
-#: models.py:244
-#, fuzzy
+#: models.py:338
 msgid "Description details for mailinglist page."
 msgstr "Consulta aquí els detalls de les teves llistes de correu."
 
-#: models.py:267
+#: models.py:364
 msgid "Software as a Service (SaaS)"
 msgstr "Software as a Service (SaaS)"
 
-#: models.py:268
-#, fuzzy
+#: models.py:365
 msgid "Description details for SaaS page."
 msgstr ""
 "Si tens algun servei SaaS (Software as a Service) contractat, aquí trobaràs "
@@ -100,6 +131,57 @@ msgstr ""
 "Envia un correu a <a href=\"mailto:%(support_email)s\">%(support_email)s</a> "
 "indicant el teu nom d’usuari/a i t’explicarem què fer."
 
+#: templates/musician/address_check_delete.html:7
+#, python-format
+msgid "Are you sure that you want remove the address: \"%(address_name)s\"?"
+msgstr "Estàs segur de que vols esborrar la adreça de correu: \"%(address_name)s\"?"
+
+#: templates/musician/address_check_delete.html:8
+#: templates/musician/mailbox_check_delete.html:8
+msgid "NOTE: This action cannot be undone."
+msgstr "NOTA: Aquesta acció es irreversible."
+
+#: templates/musician/address_check_delete.html:9
+#: templates/musician/address_form.html:15
+#: templates/musician/mailbox_check_delete.html:9
+#: templates/musician/mailbox_form.html:24
+msgid "Delete"
+msgstr "Esborrar"
+
+#: templates/musician/address_check_delete.html:10
+#: templates/musician/address_form.html:11
+#: templates/musician/mailbox_check_delete.html:10
+#: templates/musician/mailbox_form.html:20
+msgid "Cancel"
+msgstr "Cancel·lar"
+
+#: templates/musician/address_form.html:12
+#: templates/musician/mailbox_form.html:21
+msgid "Save"
+msgstr "Desar"
+
+#: templates/musician/addresses.html:15
+msgid "Email"
+msgstr "E-mail"
+
+#: templates/musician/addresses.html:16
+msgid "Domain"
+msgstr "Domini"
+
+#. Translators: This message appears on the page title
+#: templates/musician/addresses.html:17 templates/musician/mail_base.html:22
+#: views.py:320
+msgid "Mailboxes"
+msgstr "Bústia de correu"
+
+#: templates/musician/addresses.html:18
+msgid "Forward"
+msgstr "Redirecció"
+
+#: templates/musician/addresses.html:38
+msgid "New mail address"
+msgstr "Nova adreça de correu"
+
 #: templates/musician/base.html:60
 msgid "Settings"
 msgstr "Configuració"
@@ -110,7 +192,7 @@ msgstr "Perfil"
 
 #. Translators: This message appears on the page title
 #: templates/musician/base.html:64 templates/musician/billing.html:6
-#: views.py:147
+#: views.py:159
 msgid "Billing"
 msgstr "Factures"
 
@@ -119,7 +201,6 @@ msgid "Log out"
 msgstr "Surt"
 
 #: templates/musician/billing.html:7
-#, fuzzy
 msgid "Billing page description."
 msgstr "Consulta i descarrega les teves factures."
 
@@ -132,7 +213,7 @@ msgid "Bill date"
 msgstr "Data de la factura"
 
 #: templates/musician/billing.html:21 templates/musician/databases.html:17
-#: templates/musician/domain_detail.html:17 templates/musician/mail.html:22
+#: templates/musician/domain_detail.html:17
 msgid "Type"
 msgstr "Tipus"
 
@@ -178,7 +259,6 @@ msgid "Your domains and websites"
 msgstr "Els teus dominis i llocs web"
 
 #: templates/musician/dashboard.html:36
-#, fuzzy
 msgid "Dashboard page description."
 msgstr ""
 "Aquest és el teu panell de gestió, des d’on podràs consultar la configuració "
@@ -209,7 +289,7 @@ msgid "Mail list"
 msgstr "Llista de correu"
 
 #. Translators: This message appears on the page title
-#: templates/musician/dashboard.html:82 views.py:264
+#: templates/musician/dashboard.html:82 views.py:436
 msgid "Software as a Service"
 msgstr "Software as a Service"
 
@@ -217,7 +297,7 @@ msgstr "Software as a Service"
 msgid "Nothing installed"
 msgstr "No tens res instal·lat"
 
-#: templates/musician/dashboard.html:89 views.py:42
+#: templates/musician/dashboard.html:89 views.py:67
 msgid "Disk usage"
 msgstr "Ús del disc"
 
@@ -279,7 +359,6 @@ msgid "DNS settings for"
 msgstr "Configuració DNS per a"
 
 #: templates/musician/domain_detail.html:8
-#, fuzzy
 msgid "DNS settings page description."
 msgstr "Consulta aquí la teva configuració DNS."
 
@@ -287,25 +366,51 @@ msgstr "Consulta aquí la teva configuració DNS."
 msgid "Value"
 msgstr "Valor"
 
-#: templates/musician/mail.html:6 templates/musician/mailinglists.html:6
+#: templates/musician/mail_base.html:6 templates/musician/mailinglists.html:6
 msgid "Go to global"
 msgstr "Totes les adreces"
 
-#: templates/musician/mail.html:9 templates/musician/mailinglists.html:9
+#: templates/musician/mail_base.html:10 templates/musician/mailinglists.html:9
 msgid "for"
 msgstr "per a"
 
-#: templates/musician/mail.html:20
-msgid "Mail address"
-msgstr "Adreça de correu"
+#: templates/musician/mail_base.html:18 templates/musician/mailboxes.html:16
+#| msgid "Mail addresses"
+msgid "Addresses"
+msgstr "Adreces de correu"
 
-#: templates/musician/mail.html:21
-msgid "Aliases"
-msgstr "Àlies"
+#: templates/musician/mailbox_check_delete.html:7
+#, python-format
+msgid "Are you sure that you want remove the mailbox: \"%(name)s\"?"
+msgstr "Estàs segur de que vols esborrar la bústia de correu: \"%(name)s\"?"
 
-#: templates/musician/mail.html:23
-msgid "Type details"
-msgstr "Detalls de cada tipus"
+#: templates/musician/mailbox_form.html:9
+msgid "Warning!"
+msgstr "Atenció!"
+
+#: templates/musician/mailbox_form.html:9
+msgid ""
+"You have reached the limit of mailboxes of your subscription so "
+"<strong>extra fees</strong> may apply."
+msgstr ""
+"Has assolit el llímit de bústies de correu de la teva suscripció, "
+"les noves bústies poden implicar <strong>costos adicionals</strong>."
+
+#: templates/musician/mailbox_form.html:10
+msgid "Close"
+msgstr "Tancar"
+
+#: templates/musician/mailboxes.html:14
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/musician/mailboxes.html:15
+msgid "Filtering"
+msgstr "Filtrat"
+
+#: templates/musician/mailboxes.html:39
+msgid "New mailbox"
+msgstr "Nova bústia de correu"
 
 #: templates/musician/mailinglists.html:34
 msgid "Active"
@@ -316,7 +421,6 @@ msgid "Inactive"
 msgstr "Inactiu"
 
 #: templates/musician/profile.html:7
-#, fuzzy
 msgid "Little description on profile page."
 msgstr "Canvia les teves dades d’accés i opcions de perfil des d’aquí."
 
@@ -357,43 +461,46 @@ msgid "Open service admin panel"
 msgstr "Obre el panell d’administració del servei"
 
 #. Translators: This message appears on the page title
-#: views.py:32
+#: views.py:37
 msgid "Dashboard"
 msgstr "Panell de gestió"
 
-#: views.py:49
+#: views.py:76
 msgid "Traffic"
 msgstr "Tràfic"
 
-#: views.py:56
+#: views.py:85
 msgid "Mailbox usage"
 msgstr "Ús d’espai a la bústia de correu"
 
 #. Translators: This message appears on the page title
-#: views.py:96
+#: views.py:108
 msgid "User profile"
 msgstr "El teu perfil"
 
 #. Translators: This message appears on the page title
-#: views.py:154
+#: views.py:166
 msgid "Download bill"
 msgstr "Descarrega la factura"
 
 #. Translators: This message appears on the page title
-#: views.py:272
+#: views.py:444
 msgid "Domain details"
 msgstr "Detalls del domini"
 
 #. Translators: This message appears on the page title
-#: views.py:298
+#: views.py:470
 msgid "Login"
 msgstr "Accés"
+
+#~ msgid "Aliases"
+#~ msgstr "Àlies"
+
+#~ msgid "Type details"
+#~ msgstr "Detalls de cada tipus"
 
 #~ msgid "databases created"
 #~ msgstr "bases de dades creades"
 
 #~ msgid "Username"
 #~ msgstr "Nom d’usuari/a"
-
-#~ msgid "Password:"
-#~ msgstr "Contrasenya:"
