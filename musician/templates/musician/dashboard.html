@@ -16,6 +16,11 @@
     <div class="card-body">
       <h5 class="card-title">{{ usage.verbose_name }}</h5>
       {% include "musician/components/usage_progress_bar.html" with detail=usage.data %}
+      {% if usage.data.alert %}
+        <div class="text-center mt-4">
+          {{ usage.data.alert }}
+        </div>
+      {% endif %}
     </div>
   </div>
   {% endfor %}
@@ -65,11 +70,7 @@
           <h4>{% trans "Mail" %}</h4>
           <p class="card-text"><i class="fas fa-envelope fa-3x"></i></p>
           <p class="card-text text-dark">
-            {{ domain.mails|length }} {% trans "mail addresses created" %}
-            {% if domain.addresses_left.alert_level %}
-            <br/>
-            <span class="text-{{ domain.addresses_left.alert_level }}">{{ domain.addresses_left.count }} {% trans "mail address left" %}</span>
-            {% endif %}
+            {{ domain.addresses|length }} {% trans "mail addresses created" %}
           </p>
           <a class="stretched-link" href="{% url 'musician:address-list' %}?domain={{ domain.id }}"></a>
       </div>

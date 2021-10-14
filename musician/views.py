@@ -10,6 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import translation
+from django.utils.html import format_html
 from django.utils.http import is_safe_url
 from django.utils.translation import gettext_lazy as _
 from django.views import View
@@ -49,20 +50,6 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
         # show resource usage based on plan definition
         profile_type = context['profile'].type
-        total_mailboxes = 0
-        for domain in domains:
-            total_mailboxes += len(domain.mails)
-            addresses_left = ALLOWED_RESOURCES[profile_type]['mailbox'] - len(domain.mails)
-            alert_level = None
-            if addresses_left == 1:
-                alert_level = 'warning'
-            elif addresses_left < 1:
-                alert_level = 'danger'
-
-            domain.addresses_left = {
-                'count': addresses_left,
-                'alert_level': alert_level,
-            }
 
         # TODO(@slamora) update when backend provides resource usage data
         resource_usage = {
@@ -84,15 +71,7 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
                     # 'percent': 25,
                 },
             },
-            'mailbox': {
-                'verbose_name': _('Mailbox usage'),
-                'data': {
-                    'usage': total_mailboxes,
-                    'total': ALLOWED_RESOURCES[profile_type]['mailbox'],
-                    'unit': 'accounts',
-                    'percent': get_bootstraped_percent(total_mailboxes, ALLOWED_RESOURCES[profile_type]['mailbox']),
-                },
-            },
+            'mailbox': self.get_mailbox_usage(profile_type),
         }
 
         context.update({
@@ -102,6 +81,28 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         })
 
         return context
+
+    def get_mailbox_usage(self, profile_type):
+        allowed_mailboxes = ALLOWED_RESOURCES[profile_type]['mailbox']
+        total_mailboxes = len(self.orchestra.retrieve_mailbox_list())
+        mailboxes_left =  allowed_mailboxes - total_mailboxes
+
+        alert = ''
+        if mailboxes_left < 0:
+            alert = format_html("<span class='text-danger'>{} extra mailboxes</span>", mailboxes_left * -1)
+        elif mailboxes_left <= 1:
+            alert = format_html("<span class='text-warning'>{} mailbox left</span>", mailboxes_left)
+
+        return {
+            'verbose_name': _('Mailbox usage'),
+            'data': {
+                'usage': total_mailboxes,
+                'total': allowed_mailboxes,
+                'alert': alert,
+                'unit': 'mailboxes',
+                'percent': get_bootstraped_percent(total_mailboxes, allowed_mailboxes),
+            },
+        }
 
 
 class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):

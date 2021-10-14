@@ -221,7 +221,7 @@ class Orchestra(object):
             querystring = "domain={}".format(domain_json['id'])
 
             # retrieve services associated to a domain
-            domain_json['mails'] = self.retrieve_service_list(
+            domain_json['addresses'] = self.retrieve_service_list(
                 Address.api_name, querystring)
 
             # retrieve websites (as they cannot be filtered by domain on the API we should do it here)

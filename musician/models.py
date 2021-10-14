@@ -203,7 +203,7 @@ class Domain(OrchestraModel):
         "id": None,
         "name": None,
         "records": [],
-        "mails": [],
+        "addresses": [],
         "usage": {},
         "websites": [],
         "url": None,
