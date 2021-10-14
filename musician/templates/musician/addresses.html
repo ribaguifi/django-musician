@@ -25,7 +25,7 @@
         <td>{{ obj.domain.name }}</td>
         <td>
           {% for mailbox in obj.mailboxes %}
-            <a href="#TODO-mailbox-detail-{{ mailbox.id }}">{{ mailbox.name }}</a>
+            <a href="{% url 'musician:mailbox-update' mailbox.id %}">{{ mailbox.name }}</a>
             {% if not forloop.last %}<br/> {% endif %}
           {% endfor %}
         </td>
