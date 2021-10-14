@@ -279,8 +279,9 @@ class AddressDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
         self.object = self.get_object()
         try:
             self.orchestra.delete_mail_address(self.object.id)
+            messages.success(self.request,  _('Address deleted!'))
         except HTTPError as e:
-            # TODO(@slamora): show error message to user
+            messages.error(self.request, _('Cannot process your request, please try again later.'))
             logger.error(e)
 
         return HttpResponseRedirect(self.success_url)
@@ -415,8 +416,9 @@ class MailboxDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
         self.object = self.get_object()
         try:
             self.orchestra.delete_mailbox(self.object.id)
+            messages.success(self.request,  _('Mailbox deleted!'))
         except HTTPError as e:
-            # TODO(@slamora): show error message to user
+            messages.error(self.request, _('Cannot process your request, please try again later.'))
             logger.error(e)
 
         self.notify_managers(self.object)
@@ -461,10 +463,9 @@ class MailboxChangePasswordView(CustomContextMixin, UserTokenRequiredMixin, Form
         status, response = self.orchestra.set_password_mailbox(self.kwargs['pk'], data)
 
         if status < 400:
-            messages.add_message(self.request, messages.SUCCESS, _('Password updated!'))
+            messages.success(self.request,  _('Password updated!'))
         else:
-            messages.add_message(self.request, messages.ERROR, _(
-                'Cannot process your request, please try again later.'))
+            messages.error(self.request, _('Cannot process your request, please try again later.'))
             logger.error("{}: {}".format(status, str(response)[:100]))
 
         return super().form_valid(form)
