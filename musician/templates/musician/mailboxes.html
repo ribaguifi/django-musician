@@ -21,7 +21,11 @@
       {# <!-- Exclude (don't render) inactive mailboxes -->#}
       {% if mailbox.is_active %}
       <tr>
-        <td><a href="{% url 'musician:mailbox-update' mailbox.id %}">{{ mailbox.name }}</a></td>
+        <td>
+          <a href="{% url 'musician:mailbox-update' mailbox.id %}">{{ mailbox.name }}</a>
+          <a class="roll-hover btn btn-outline-warning" href="{% url 'musician:mailbox-password' mailbox.id %}">
+            <i class="fas fa-key"></i> {% trans "Update password" %}</a>
+        </td>
         <td>{{ mailbox.filtering }}</td>
         <td>
           {% for addr in mailbox.addresses %}

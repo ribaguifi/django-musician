@@ -20,7 +20,7 @@ from requests.exceptions import HTTPError
 from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
-from .forms import LoginForm, MailboxCreateForm, MailboxUpdateForm, MailForm
+from .forms import LoginForm, MailboxChangePasswordForm, MailboxCreateForm, MailboxUpdateForm, MailForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
 from .models import (Address, Bill, DatabaseService, Mailbox,
@@ -433,6 +433,31 @@ class MailboxDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
             mail_managers(subject, content, fail_silently=False)
         except (smtplib.SMTPException, ConnectionRefusedError):
             logger.error("Error sending email to managers", exc_info=True)
+
+
+class MailboxChangePasswordView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    template_name = "musician/mailbox_change_password.html"
+    form_class = MailboxChangePasswordForm
+    success_url = reverse_lazy("musician:mailbox-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.object = self.get_object()
+        context.update({
+            'object': self.object,
+        })
+        return context
+
+    def get_object(self, queryset=None):
+        obj = self.orchestra.retrieve_mailbox(self.kwargs['pk'])
+        return obj
+
+    def form_valid(self, form):
+        data = {
+            'password': form.cleaned_data['password2']
+        }
+        status, response = self.orchestra.set_password_mailbox(self.kwargs['pk'], data)
+        return super().form_valid(form)
 
 
 class DatabasesView(ServiceListView):

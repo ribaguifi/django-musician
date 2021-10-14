@@ -24,6 +24,7 @@ API_PATHS = {
     'address-detail': 'addresses/{pk}/',
     'mailbox-list': 'mailboxes/',
     'mailbox-detail': 'mailboxes/{pk}/',
+    'mailbox-password': 'mailboxes/{pk}/set_password/',
     'mailinglist-list': 'lists/',
     'saas-list': 'saas/',
     'website-list': 'websites/',
@@ -193,6 +194,13 @@ class Orchestra(object):
         # Mark as inactive instead of deleting
         # return self.request("DELETE", url=url, render_as=None)
         return self.request("PATCH", url=url, data={"is_active": False})
+
+    def set_password_mailbox(self, pk, data):
+        path = API_PATHS.get('mailbox-password').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, response = self.request("POST", url=url, data=data, raise_exception=False)
+        return status, response
+
 
     def retrieve_domain(self, pk):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})
