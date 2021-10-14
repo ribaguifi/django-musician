@@ -1,7 +1,9 @@
 import logging
+from os import stat
 import smtplib
 
 from django.conf import settings
+from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import mail_managers
 from django.http import HttpResponse, HttpResponseRedirect
@@ -457,6 +459,14 @@ class MailboxChangePasswordView(CustomContextMixin, UserTokenRequiredMixin, Form
             'password': form.cleaned_data['password2']
         }
         status, response = self.orchestra.set_password_mailbox(self.kwargs['pk'], data)
+
+        if status < 400:
+            messages.add_message(self.request, messages.SUCCESS, _('Password updated!'))
+        else:
+            messages.add_message(self.request, messages.ERROR, _(
+                'Cannot process your request, please try again later.'))
+            logger.error("{}: {}".format(status, str(response)[:100]))
+
         return super().form_valid(form)
 
 

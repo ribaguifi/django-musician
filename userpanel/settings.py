@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 from decouple import config, Csv
+from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
 from dj_database_url import parse as db_url
 
@@ -178,3 +179,13 @@ URL_SAAS_WORDPRESS = config('URL_SAAS_WORDPRESS', None)
 # Managers: who should get notifications about services changes that
 # may require human actions (e.g. deleted mailboxes)
 MANAGERS = []
+
+
+# redefine MESSAGE_TAGS for a better integration with bootstrap
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
