@@ -6,7 +6,7 @@ def get_bootstraped_percent(value, total):
     """
     try:
         percent = value / total
-    except ZeroDivisionError:
+    except (TypeError, ZeroDivisionError):
         return 0
 
     bootstraped = round(percent * 4) * 100 // 4
