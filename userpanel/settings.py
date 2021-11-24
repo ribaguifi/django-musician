@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 from decouple import config, Csv
+from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
 from dj_database_url import parse as db_url
 
@@ -41,6 +42,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 
 EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
 
@@ -53,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'bootstrap4',
     'musician',
 ]
 
@@ -148,12 +152,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-LANGUAGES = (
-    ('ca', _('Catalan')),
-    ('es', _('Spanish')),
-    ('en', _('English')),
-)
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -176,3 +174,18 @@ URL_SAAS_GITLAB = config('URL_SAAS_GITLAB', None)
 URL_SAAS_OWNCLOUD = config('URL_SAAS_OWNCLOUD', None)
 
 URL_SAAS_WORDPRESS = config('URL_SAAS_WORDPRESS', None)
+
+
+# Managers: who should get notifications about services changes that
+# may require human actions (e.g. deleted mailboxes)
+MANAGERS = []
+
+
+# redefine MESSAGE_TAGS for a better integration with bootstrap
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}

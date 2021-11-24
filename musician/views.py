@@ -1,27 +1,37 @@
+import logging
+from os import stat
+import smtplib
+
 from django.conf import settings
+from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
+from django.core.mail import mail_managers
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import translation
+from django.utils.html import format_html
 from django.utils.http import is_safe_url
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import DeleteView, FormView
 from django.views.generic.list import ListView
+from requests.exceptions import HTTPError
 
 from . import api, get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
-from .forms import LoginForm
+from .forms import LoginForm, MailboxChangePasswordForm, MailboxCreateForm, MailboxUpdateForm, MailForm
 from .mixins import (CustomContextMixin, ExtendedPaginationMixin,
                      UserTokenRequiredMixin)
-from .models import (Bill, DatabaseService, MailinglistService, MailService,
-                     PaymentSource, SaasService, UserAccount)
+from .models import (Address, Bill, DatabaseService, Mailbox,
+                     MailinglistService, PaymentSource, SaasService)
 from .settings import ALLOWED_RESOURCES
 from .utils import get_bootstraped_percent
+
+logger = logging.getLogger(__name__)
 
 
 class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -40,20 +50,6 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
         # show resource usage based on plan definition
         profile_type = context['profile'].type
-        total_mailboxes = 0
-        for domain in domains:
-            total_mailboxes += len(domain.mails)
-            addresses_left = ALLOWED_RESOURCES[profile_type]['mailbox'] - len(domain.mails)
-            alert_level = None
-            if addresses_left == 1:
-                alert_level = 'warning'
-            elif addresses_left < 1:
-                alert_level = 'danger'
-
-            domain.addresses_left = {
-                'count': addresses_left,
-                'alert_level': alert_level,
-            }
 
         # TODO(@slamora) update when backend provides resource usage data
         resource_usage = {
@@ -75,15 +71,7 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
                     # 'percent': 25,
                 },
             },
-            'mailbox': {
-                'verbose_name': _('Mailbox usage'),
-                'data': {
-                    'usage': total_mailboxes,
-                    'total': ALLOWED_RESOURCES[profile_type]['mailbox'],
-                    'unit': 'accounts',
-                    'percent': get_bootstraped_percent(total_mailboxes, ALLOWED_RESOURCES[profile_type]['mailbox']),
-                },
-            },
+            'mailbox': self.get_mailbox_usage(profile_type),
         }
 
         context.update({
@@ -93,6 +81,28 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         })
 
         return context
+
+    def get_mailbox_usage(self, profile_type):
+        allowed_mailboxes = ALLOWED_RESOURCES[profile_type]['mailbox']
+        total_mailboxes = len(self.orchestra.retrieve_mailbox_list())
+        mailboxes_left =  allowed_mailboxes - total_mailboxes
+
+        alert = ''
+        if mailboxes_left < 0:
+            alert = format_html("<span class='text-danger'>{} extra mailboxes</span>", mailboxes_left * -1)
+        elif mailboxes_left <= 1:
+            alert = format_html("<span class='text-warning'>{} mailbox left</span>", mailboxes_left)
+
+        return {
+            'verbose_name': _('Mailbox usage'),
+            'data': {
+                'usage': total_mailboxes,
+                'total': allowed_mailboxes,
+                'alert': alert,
+                'unit': 'mailboxes',
+                'percent': get_bootstraped_percent(total_mailboxes, allowed_mailboxes),
+            },
+        }
 
 
 class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
@@ -168,8 +178,8 @@ class BillDownloadView(CustomContextMixin, UserTokenRequiredMixin, View):
 
 
 class MailView(ServiceListView):
-    service_class = MailService
-    template_name = "musician/mail.html"
+    service_class = Address
+    template_name = "musician/addresses.html"
     extra_context = {
         # Translators: This message appears on the page title
         'title': _('Mail addresses'),
@@ -198,7 +208,84 @@ class MailView(ServiceListView):
             context.update({
                 'active_domain': self.orchestra.retrieve_domain(domain_id)
             })
+        context['mailboxes'] = self.orchestra.retrieve_mailbox_list()
         return context
+
+
+class MailCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    service_class = Address
+    template_name = "musician/address_form.html"
+    form_class = MailForm
+    success_url = reverse_lazy("musician:address-list")
+    extra_context = {'service': service_class}
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['domains'] = self.orchestra.retrieve_domain_list()
+        kwargs['mailboxes'] = self.orchestra.retrieve_mailbox_list()
+        return kwargs
+
+    def form_valid(self, form):
+        # handle request errors e.g. 400 validation
+        try:
+            serialized_data = form.serialize()
+            self.orchestra.create_mail_address(serialized_data)
+        except HTTPError as e:
+            form.add_error(field='__all__', error=e)
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
+
+
+class MailUpdateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    service_class = Address
+    template_name = "musician/address_form.html"
+    form_class = MailForm
+    success_url = reverse_lazy("musician:address-list")
+    extra_context = {'service': service_class}
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        instance = self.orchestra.retrieve_mail_address(self.kwargs['pk'])
+
+        kwargs.update({
+            'instance': instance,
+            'domains': self.orchestra.retrieve_domain_list(),
+            'mailboxes': self.orchestra.retrieve_mailbox_list(),
+        })
+
+        return kwargs
+
+    def form_valid(self, form):
+        # handle request errors e.g. 400 validation
+        try:
+            serialized_data = form.serialize()
+            self.orchestra.update_mail_address(self.kwargs['pk'], serialized_data)
+        except HTTPError as e:
+            form.add_error(field='__all__', error=e)
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
+
+
+class AddressDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
+    template_name = "musician/address_check_delete.html"
+    success_url = reverse_lazy("musician:address-list")
+
+    def get_object(self, queryset=None):
+        obj = self.orchestra.retrieve_mail_address(self.kwargs['pk'])
+        return obj
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.orchestra.delete_mail_address(self.object.id)
+            messages.success(self.request,  _('Address deleted!'))
+        except HTTPError as e:
+            messages.error(self.request, _('Cannot process your request, please try again later.'))
+            logger.error(e)
+
+        return HttpResponseRedirect(self.success_url)
 
 
 class MailingListsView(ServiceListView):
@@ -228,6 +315,161 @@ class MailingListsView(ServiceListView):
             return "domain={}".format(domain_id)
 
         return ''
+
+
+class MailboxesView(ServiceListView):
+    service_class = Mailbox
+    template_name = "musician/mailboxes.html"
+    extra_context = {
+        # Translators: This message appears on the page title
+        'title': _('Mailboxes'),
+    }
+
+
+class MailboxCreateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    service_class = Mailbox
+    template_name = "musician/mailbox_form.html"
+    form_class = MailboxCreateForm
+    success_url = reverse_lazy("musician:mailbox-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'extra_mailbox': self.is_extra_mailbox(context['profile']),
+            'service': self.service_class,
+        })
+        return context
+
+    def is_extra_mailbox(self, profile):
+        number_of_mailboxes = len(self.orchestra.retrieve_mailbox_list())
+        return number_of_mailboxes >= profile.allowed_resources('mailbox')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'addresses': self.orchestra.retrieve_mail_address_list(),
+        })
+
+        return kwargs
+
+    def form_valid(self, form):
+        serialized_data = form.serialize()
+        status, response = self.orchestra.create_mailbox(serialized_data)
+
+        if status >= 400:
+            if status == 400:
+                # handle errors & add to form (they will be rendered)
+                form.add_error(field=None, error=response)
+            else:
+                logger.error("{}: {}".format(status, response[:120]))
+                msg = "Sorry, an error occurred while processing your request ({})".format(status)
+                form.add_error(field='__all__', error=msg)
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
+
+
+class MailboxUpdateView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    service_class = Mailbox
+    template_name = "musician/mailbox_form.html"
+    form_class = MailboxUpdateForm
+    success_url = reverse_lazy("musician:mailbox-list")
+    extra_context = {'service': service_class}
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        instance = self.orchestra.retrieve_mailbox(self.kwargs['pk'])
+
+        kwargs.update({
+            'instance': instance,
+            'addresses': self.orchestra.retrieve_mail_address_list(),
+        })
+
+        return kwargs
+
+    def form_valid(self, form):
+        serialized_data = form.serialize()
+        status, response = self.orchestra.update_mailbox(self.kwargs['pk'], serialized_data)
+
+        if status >= 400:
+            if status == 400:
+                # handle errors & add to form (they will be rendered)
+                form.add_error(field=None, error=response)
+            else:
+                logger.error("{}: {}".format(status, response[:120]))
+                msg = "Sorry, an error occurred while processing your request ({})".format(status)
+                form.add_error(field='__all__', error=msg)
+
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
+
+
+class MailboxDeleteView(CustomContextMixin, UserTokenRequiredMixin, DeleteView):
+    template_name = "musician/mailbox_check_delete.html"
+    success_url = reverse_lazy("musician:mailbox-list")
+
+    def get_object(self, queryset=None):
+        obj = self.orchestra.retrieve_mailbox(self.kwargs['pk'])
+        return obj
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.orchestra.delete_mailbox(self.object.id)
+            messages.success(self.request,  _('Mailbox deleted!'))
+        except HTTPError as e:
+            messages.error(self.request, _('Cannot process your request, please try again later.'))
+            logger.error(e)
+
+        self.notify_managers(self.object)
+
+        return HttpResponseRedirect(self.success_url)
+
+    def notify_managers(self, mailbox):
+        user = self.get_context_data()['profile']
+        subject = 'Mailbox {} ({}) deleted | Musician'.format(mailbox.id, mailbox.name)
+        content = (
+            "User {} ({}) has deleted its mailbox {} ({}) via musician.\n"
+            "The mailbox has been marked as inactive but has not been removed."
+        ).format(user.username, user.full_name, mailbox.id, mailbox.name)
+
+        try:
+            mail_managers(subject, content, fail_silently=False)
+        except (smtplib.SMTPException, ConnectionRefusedError):
+            logger.error("Error sending email to managers", exc_info=True)
+
+
+class MailboxChangePasswordView(CustomContextMixin, UserTokenRequiredMixin, FormView):
+    template_name = "musician/mailbox_change_password.html"
+    form_class = MailboxChangePasswordForm
+    success_url = reverse_lazy("musician:mailbox-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.object = self.get_object()
+        context.update({
+            'object': self.object,
+        })
+        return context
+
+    def get_object(self, queryset=None):
+        obj = self.orchestra.retrieve_mailbox(self.kwargs['pk'])
+        return obj
+
+    def form_valid(self, form):
+        data = {
+            'password': form.cleaned_data['password2']
+        }
+        status, response = self.orchestra.set_password_mailbox(self.kwargs['pk'], data)
+
+        if status < 400:
+            messages.success(self.request,  _('Password updated!'))
+        else:
+            messages.error(self.request, _('Cannot process your request, please try again later.'))
+            logger.error("{}: {}".format(status, str(response)[:100]))
+
+        return super().form_valid(form)
 
 
 class DatabasesView(ServiceListView):

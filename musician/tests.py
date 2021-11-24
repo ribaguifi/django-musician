@@ -1,7 +1,35 @@
 from django.test import TestCase
 
-from .models import UserAccount
+from .models import DatabaseService, UserAccount
 from .utils import get_bootstraped_percent
+
+
+class DatabaseTest(TestCase):
+    def test_database_from_json(self):
+        data = {
+            "url": "https://example.org/api/databases/1/",
+            "id": 1,
+            "name": "bluebird",
+            "type": "mysql",
+            "users": [
+                    {
+                        "url": "https://example.org/api/databaseusers/2/",
+                        "id": 2,
+                        "username": "bluebird"
+                    }
+            ],
+            "resources": [
+                {
+                    "name": "disk",
+                    "used": "1.798",
+                    "allocated": None,
+                    "unit": "MiB"
+                }
+            ]
+        }
+
+        database = DatabaseService.new_from_json(data)
+        self.assertEqual(0, database.usage['percent'])
 
 
 class DomainsTestCase(TestCase):
@@ -118,3 +146,8 @@ class GetBootstrapedPercentTest(TestCase):
 
     def test_invalid_total_is_zero(self):
         value = get_bootstraped_percent(25, 0)
+        self.assertEqual(value, 0)
+
+    def test_invalid_total_is_none(self):
+        value = get_bootstraped_percent(25, None)
+        self.assertEqual(value, 0)

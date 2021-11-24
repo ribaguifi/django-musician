@@ -17,6 +17,7 @@ class OrchestraModel:
     api_name = None
     verbose_name = None
     fields = ()
+    param_defaults = {}
     id = None
 
     def __init__(self, **kwargs):
@@ -128,6 +129,10 @@ class UserAccount(OrchestraModel):
 
         return super().new_from_json(data=data, billing=billing, language=language, last_login=last_login)
 
+    def allowed_resources(self, resource):
+        allowed_by_type = musician_settings.ALLOWED_RESOURCES[self.type]
+        return allowed_by_type[resource]
+
 
 class DatabaseUser(OrchestraModel):
     api_name = 'databaseusers'
@@ -161,7 +166,7 @@ class DatabaseService(OrchestraModel):
         return super().new_from_json(data=data, users=users, usage=usage)
 
     @classmethod
-    def get_usage(self, data):
+    def get_usage(cls, data):
         try:
             resources = data['resources']
             resource_disk = {}
@@ -198,9 +203,10 @@ class Domain(OrchestraModel):
         "id": None,
         "name": None,
         "records": [],
-        "mails": [],
+        "addresses": [],
         "usage": {},
         "websites": [],
+        "url": None,
     }
 
     @classmethod
@@ -224,12 +230,19 @@ class DomainRecord(OrchestraModel):
         return '<%s: %s>' % (self.type, self.value)
 
 
-class MailService(OrchestraModel):
+class Address(OrchestraModel):
     api_name = 'address'
     verbose_name = _('Mail addresses')
     description = _('Description details for mail addresses page.')
     fields = ('mail_address', 'aliases', 'type', 'type_detail')
-    param_defaults = {}
+    param_defaults = {
+        "id": None,
+        "name": None,
+        "domain": None,
+        "mailboxes": [],
+        "forward": None,
+        'url': None,
+    }
 
     FORWARD = 'forward'
     MAILBOX = 'mailbox'
@@ -238,6 +251,15 @@ class MailService(OrchestraModel):
         self.data = kwargs
         super().__init__(**kwargs)
 
+    def deserialize(self):
+        data = {
+            'name': self.data['name'],
+            'domain': self.data['domain']['url'],
+            'mailboxes': [mbox['url'] for mbox in self.data['mailboxes']],
+            'forward': self.data['forward'],
+        }
+        return data
+
     @property
     def aliases(self):
         return [
@@ -245,8 +267,8 @@ class MailService(OrchestraModel):
         ]
 
     @property
-    def mail_address(self):
-        return self.data['names'][0] + '@' + self.data['domain']['name']
+    def full_address_name(self):
+        return "{}@{}".format(self.name, self.domain['name'])
 
     @property
     def type(self):
@@ -284,6 +306,32 @@ class MailService(OrchestraModel):
         return mailbox_details
 
 
+class Mailbox(OrchestraModel):
+    api_name = 'mailbox'
+    verbose_name = _('Mailbox')
+    description = _('Description details for mailbox page.')
+    fields = ('name', 'filtering', 'addresses', 'active')
+    param_defaults = {
+        'id': None,
+        'name': None,
+        'filtering': None,
+        'is_active': True,
+        'addresses': [],
+        'url': None,
+    }
+
+    @classmethod
+    def new_from_json(cls, data, **kwargs):
+        addresses = [Address.new_from_json(addr) for addr in data.get('addresses', [])]
+        return super().new_from_json(data=data, addresses=addresses)
+
+    def deserialize(self):
+        data = {
+            'addresses': [addr.url for addr in self.addresses],
+        }
+        return data
+
+
 class MailinglistService(OrchestraModel):
     api_name = 'mailinglist'
     verbose_name = _('Mailing list')
@@ -301,7 +349,10 @@ class MailinglistService(OrchestraModel):
 
     @property
     def address_name(self):
-        return "{}@{}".format(self.data['address_name'], self.data['address_domain']['name'])
+        address_domain = self.data['address_domain']
+        if address_domain is None:
+            return self.data['address_name']
+        return "{}@{}".format(self.data['address_name'], address_domain['name'])
 
     @property
     def manager_url(self):

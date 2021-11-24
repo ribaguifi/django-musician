@@ -1,14 +1,12 @@
-import requests
 import urllib.parse
 
-from itertools import groupby
+import requests
 from django.conf import settings
 from django.http import Http404
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
-from .models import Domain, DatabaseService, MailService, SaasService, UserAccount, WebSite
-
+from .models import Address, DatabaseService, Domain, Mailbox, SaasService, UserAccount, WebSite
 
 DOMAINS_PATH = 'domains/'
 TOKEN_PATH = '/api-token-auth/'
@@ -23,7 +21,10 @@ API_PATHS = {
     'domain-list': 'domains/',
     'domain-detail': 'domains/{pk}/',
     'address-list': 'addresses/',
+    'address-detail': 'addresses/{pk}/',
     'mailbox-list': 'mailboxes/',
+    'mailbox-detail': 'mailboxes/{pk}/',
+    'mailbox-password': 'mailboxes/{pk}/set_password/',
     'mailinglist-list': 'lists/',
     'saas-list': 'saas/',
     'website-list': 'websites/',
@@ -62,7 +63,7 @@ class Orchestra(object):
 
         return response.json().get("token", None)
 
-    def request(self, verb, resource=None, url=None, render_as="json", querystring=None, raise_exception=True):
+    def request(self, verb, resource=None, url=None, data=None, render_as="json", querystring=None, raise_exception=True):
         assert verb in ["HEAD", "GET", "POST", "PATCH", "PUT", "DELETE"]
         if resource is not None:
             url = self.build_absolute_uri(resource)
@@ -73,14 +74,17 @@ class Orchestra(object):
             url = "{}?{}".format(url, querystring)
 
         verb = getattr(self.session, verb.lower())
-        response = verb(url, headers={"Authorization": "Token {}".format(
-            self.auth_token)}, allow_redirects=False)
+        headers = {
+            "Authorization": "Token {}".format(self.auth_token),
+            "Content-Type": "application/json",
+        }
+        response = verb(url, json=data, headers=headers, allow_redirects=False)
 
         if raise_exception:
             response.raise_for_status()
 
         status = response.status_code
-        if render_as == "json":
+        if status < 500 and render_as == "json":
             output = response.json()
         else:
             output = response.content
@@ -109,51 +113,94 @@ class Orchestra(object):
             raise Http404(_("No domain found matching the query"))
         return bill_pdf
 
+    def create_mail_address(self, data):
+        resource = '{}-list'.format(Address.api_name)
+        return self.request("POST", resource=resource, data=data)
+
+    def retrieve_mail_address(self, pk):
+        path = API_PATHS.get('address-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, data = self.request("GET", url=url, raise_exception=False)
+        if status == 404:
+            raise Http404(_("No object found matching the query"))
+
+        return Address.new_from_json(data)
+
+    def update_mail_address(self, pk, data):
+        path = API_PATHS.get('address-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        return self.request("PUT", url=url, data=data)
+
     def retrieve_mail_address_list(self, querystring=None):
-        def get_mailbox_id(value):
-            mailboxes = value.get('mailboxes')
-
-            # forwarded address should not grouped
-            if len(mailboxes) == 0:
-                return value.get('name')
-
-            return mailboxes[0]['id']
-
         # retrieve mails applying filters (if any)
         raw_data = self.retrieve_service_list(
-            MailService.api_name,
+            Address.api_name,
             querystring=querystring,
         )
 
-        # group addresses with the same mailbox
-        addresses = []
-        for key, group in groupby(raw_data, get_mailbox_id):
-            aliases = []
-            data = {}
-            for thing in group:
-                aliases.append(thing.pop('name'))
-                data = thing
-
-            data['names'] = aliases
-            addresses.append(MailService.new_from_json(data))
+        addresses = [Address.new_from_json(data) for data in raw_data]
 
         # PATCH to include Pangea addresses not shown by orchestra
         # described on issue #4
-        raw_mailboxes = self.retrieve_service_list('mailbox')
-        for mailbox in raw_mailboxes:
-            if mailbox['addresses'] == []:
-                address_data = {
-                    'names': [mailbox['name']],
-                    'forward': '',
-                    'domain': {
-                        'name': 'pangea.org.',
-                    },
-                    'mailboxes': [mailbox],
-                }
-                pangea_address = MailService.new_from_json(address_data)
-                addresses.append(pangea_address)
+        # TODO(@slamora) disabled hacky patch because breaks another funtionalities
+        #   XXX Fix it on orchestra instead of here???
+        # raw_mailboxes = self.retrieve_mailbox_list()
+        # for mailbox in raw_mailboxes:
+        #     if mailbox['addresses'] == []:
+        #         address_data = {
+        #             'names': [mailbox['name']],
+        #             'forward': '',
+        #             'domain': {
+        #                 'name': 'pangea.org.',
+        #             },
+        #             'mailboxes': [mailbox],
+        #         }
+        #         pangea_address = Address.new_from_json(address_data)
+        #         addresses.append(pangea_address)
 
         return addresses
+
+    def delete_mail_address(self, pk):
+        path = API_PATHS.get('address-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        return self.request("DELETE", url=url, render_as=None)
+
+    def create_mailbox(self, data):
+        resource = '{}-list'.format(Mailbox.api_name)
+        return self.request("POST", resource=resource, data=data, raise_exception=False)
+
+    def retrieve_mailbox(self, pk):
+        path = API_PATHS.get('mailbox-detail').format_map({'pk': pk})
+
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, data_json = self.request("GET", url=url, raise_exception=False)
+        if status == 404:
+            raise Http404(_("No mailbox found matching the query"))
+        return Mailbox.new_from_json(data_json)
+
+    def update_mailbox(self, pk, data):
+        path = API_PATHS.get('mailbox-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, response = self.request("PATCH", url=url, data=data, raise_exception=False)
+        return status, response
+
+    def retrieve_mailbox_list(self):
+        mailboxes = self.retrieve_service_list(Mailbox.api_name)
+        return [Mailbox.new_from_json(mailbox_data) for mailbox_data in mailboxes]
+
+    def delete_mailbox(self, pk):
+        path = API_PATHS.get('mailbox-detail').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        # Mark as inactive instead of deleting
+        # return self.request("DELETE", url=url, render_as=None)
+        return self.request("PATCH", url=url, data={"is_active": False})
+
+    def set_password_mailbox(self, pk, data):
+        path = API_PATHS.get('mailbox-password').format_map({'pk': pk})
+        url = urllib.parse.urljoin(self.base_url, path)
+        status, response = self.request("POST", url=url, data=data, raise_exception=False)
+        return status, response
+
 
     def retrieve_domain(self, pk):
         path = API_PATHS.get('domain-detail').format_map({'pk': pk})
@@ -174,8 +221,8 @@ class Orchestra(object):
             querystring = "domain={}".format(domain_json['id'])
 
             # retrieve services associated to a domain
-            domain_json['mails'] = self.retrieve_service_list(
-                MailService.api_name, querystring)
+            domain_json['addresses'] = self.retrieve_service_list(
+                Address.api_name, querystring)
 
             # retrieve websites (as they cannot be filtered by domain on the API we should do it here)
             domain_json['websites'] = self.filter_websites_by_domain(websites, domain_json['id'])

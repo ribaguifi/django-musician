@@ -1,5 +1,6 @@
 django==2.2.24
 python-decouple==3.1
+django-bootstrap4
 django-extensions
 dj_database_url==0.5.0
 requests==2.22.0
