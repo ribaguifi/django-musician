@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-24 11:04+0100\n"
-"PO-Revision-Date: 2020-01-28 17:27+0100\n"
+"PO-Revision-Date: 2021-11-25 12:53+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 3.0\n"
 
 #: api.py:113 api.py:211
 msgid "No domain found matching the query"
@@ -32,7 +32,7 @@ msgstr "No trobem cap bústia que coincideixi amb la teva consulta"
 
 #: forms.py:65 forms.py:99
 msgid "The two password fields didn’t match."
-msgstr "Les contrasenyes introduides no coincideixen."
+msgstr "Les contrasenyes introduïdes no coincideixen."
 
 #: forms.py:68 forms.py:103
 msgid "Password"
@@ -40,11 +40,11 @@ msgstr "Contrasenya"
 
 #: forms.py:73 forms.py:108
 msgid "Password confirmation"
-msgstr "Verificació de la contrasenya"
+msgstr "Confirma la contrasenya"
 
 #: forms.py:76 forms.py:111
 msgid "Enter the same password as before, for verification."
-msgstr "Introdueix la mateixa contrasenya per verificar."
+msgstr "Introdueix la mateixa contrasenya per verificar-la."
 
 #: mixins.py:14
 msgid "Domains & websites"
@@ -87,8 +87,7 @@ msgstr "Bústia de correu"
 
 #: models.py:312
 msgid "Description details for mailbox page."
-msgstr ""
-"Aquí trobaràs les teves bústies de correu i els seus detalls de configuració."
+msgstr "Aquí trobaràs el detall de les bústies de correu que tens actives."
 
 #: models.py:337
 msgid "Mailing list"
@@ -133,7 +132,7 @@ msgstr ""
 #, python-format
 msgid "Are you sure that you want remove the address: \"%(address_name)s\"?"
 msgstr ""
-"Estàs segur de que vols esborrar la adreça de correu: \"%(address_name)s\"?"
+"Estàs segur/a que vols esborrar l’adreça de correu: \"%(address_name)s\"?"
 
 #: templates/musician/address_check_delete.html:8
 #: templates/musician/mailbox_check_delete.html:11
@@ -163,7 +162,7 @@ msgstr "Desar"
 
 #: templates/musician/addresses.html:15
 msgid "Email"
-msgstr "E-mail"
+msgstr "Correu electrònic"
 
 #: templates/musician/addresses.html:16
 msgid "Domain"
@@ -173,7 +172,7 @@ msgstr "Domini"
 #: templates/musician/addresses.html:17 templates/musician/mail_base.html:22
 #: views.py:325
 msgid "Mailboxes"
-msgstr "Bústia de correu"
+msgstr "Bústies de correu"
 
 #: templates/musician/addresses.html:18
 msgid "Forward"
@@ -224,7 +223,7 @@ msgstr "Total"
 
 #: templates/musician/billing.html:23
 msgid "Download PDF"
-msgstr "Descarrega un PDF"
+msgstr "Descarrega el PDF"
 
 #: templates/musician/components/table_paginator.html:15
 msgid "Previous"
@@ -310,7 +309,7 @@ msgstr "Accés FTP:"
 #: templates/musician/dashboard.html:116
 msgid "Contact with the support team to get details concerning FTP access."
 msgstr ""
-"Contacteu-nos a <a href=“mailto:%(support_email)s”>%(support_email)s</a> per "
+"Escriu-nos a <a href=“mailto:%(support_email)s”>%(support_email)s</a> per "
 "saber com accedir al FTP."
 
 #: templates/musician/dashboard.html:125
@@ -377,22 +376,20 @@ msgstr "Adreces de correu"
 
 #: templates/musician/mailbox_change_password.html:5
 #: templates/musician/mailbox_form.html:24
-#, fuzzy
-#| msgid "Password"
 msgid "Change password"
-msgstr "Contrasenya"
+msgstr "Canvia la contrasenya"
 
 #: templates/musician/mailbox_check_delete.html:7
 #, python-format
 msgid "Are you sure that you want remove the mailbox: \"%(name)s\"?"
-msgstr "Estàs segur de que vols esborrar la bústia de correu: \"%(name)s\"?"
+msgstr "Estàs segur/a que vols esborrar la bústia de correu: \"%(name)s\"?"
 
 #: templates/musician/mailbox_check_delete.html:9
 msgid ""
 "All mailbox's messages will be <strong>deleted and cannot be recovered</"
 "strong>."
 msgstr ""
-"Tots els missatges <strong>s'esborraran i no es podran recuperar</strong>"
+"Tots els missatges <strong>s'esborraran i no es podran recuperar</strong>."
 
 #: templates/musician/mailbox_form.html:9
 msgid "Warning!"
@@ -403,8 +400,8 @@ msgid ""
 "You have reached the limit of mailboxes of your subscription so "
 "<strong>extra fees</strong> may apply."
 msgstr ""
-"Has assolit el llímit de bústies de correu de la teva suscripció, les noves "
-"bústies poden implicar <strong>costos adicionals</strong>."
+"Has assolit el límit de bústies de correu de la teva subscripció, les noves "
+"bústies poden implicar <strong>costos addicionals</strong>."
 
 #: templates/musician/mailbox_form.html:10
 msgid "Close"
@@ -412,17 +409,15 @@ msgstr "Tancar"
 
 #: templates/musician/mailboxes.html:14
 msgid "Name"
-msgstr "Nombre"
+msgstr "Nom"
 
 #: templates/musician/mailboxes.html:15
 msgid "Filtering"
 msgstr "Filtrat"
 
 #: templates/musician/mailboxes.html:27
-#, fuzzy
-#| msgid "Password"
 msgid "Update password"
-msgstr "Contrasenya"
+msgstr "Actualitza la contrasenya"
 
 #: templates/musician/mailboxes.html:43
 msgid "New mailbox"
@@ -500,26 +495,22 @@ msgid "Download bill"
 msgstr "Descarrega la factura"
 
 #: views.py:283
-#, fuzzy
-#| msgid "Addresses"
 msgid "Address deleted!"
-msgstr "Adreces de correu"
+msgstr "S’ha suprimit l’adreça de correu"
 
 #: views.py:285 views.py:422 views.py:469
 msgid "Cannot process your request, please try again later."
 msgstr ""
+"Ara no podem processar la teva petició, torna a intentar-ho una mica més "
+"tard sisplau"
 
 #: views.py:420
-#, fuzzy
-#| msgid "Mailboxes"
 msgid "Mailbox deleted!"
-msgstr "Bústia de correu"
+msgstr "S’ha suprimit la bústia de correu"
 
 #: views.py:467
-#, fuzzy
-#| msgid "Password"
 msgid "Password updated!"
-msgstr "Contrasenya"
+msgstr "S’ha actualitzat la contrasenya"
 
 #. Translators: This message appears on the page title
 #: views.py:497

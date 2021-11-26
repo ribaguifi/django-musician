@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-24 11:04+0100\n"
-"PO-Revision-Date: 2020-01-28 17:27+0100\n"
+"PO-Revision-Date: 2021-11-25 12:53+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 3.0\n"
 
 #: api.py:113 api.py:211
 msgid "No domain found matching the query"
@@ -133,8 +133,8 @@ msgstr ""
 #, python-format
 msgid "Are you sure that you want remove the address: \"%(address_name)s\"?"
 msgstr ""
-"¿Estás seguro de que quieres borrar la dirección de correo \"%(address_name)s"
-"\"?"
+"¿Estás seguro/a de que quieres borrar la dirección de correo "
+"\"%(address_name)s\"?"
 
 #: templates/musician/address_check_delete.html:8
 #: templates/musician/mailbox_check_delete.html:11
@@ -164,7 +164,7 @@ msgstr "Guardar"
 
 #: templates/musician/addresses.html:15
 msgid "Email"
-msgstr "E-mail"
+msgstr "Correo electrónico"
 
 #: templates/musician/addresses.html:16
 msgid "Domain"
@@ -311,7 +311,7 @@ msgstr "Acceso FTP:"
 #: templates/musician/dashboard.html:116
 msgid "Contact with the support team to get details concerning FTP access."
 msgstr ""
-"Contactadnos a <a href=“mailto:%(support_email)s”>%(support_email)s</a> para "
+"Escríbenos a <a href=“mailto:%(support_email)s”>%(support_email)s</a> para "
 "saber cómo acceder al FTP."
 
 #: templates/musician/dashboard.html:125
@@ -378,22 +378,20 @@ msgstr "Direcciones de correo"
 
 #: templates/musician/mailbox_change_password.html:5
 #: templates/musician/mailbox_form.html:24
-#, fuzzy
-#| msgid "Password"
 msgid "Change password"
-msgstr "Contraseña"
+msgstr "Cambia la contraseña"
 
 #: templates/musician/mailbox_check_delete.html:7
 #, python-format
 msgid "Are you sure that you want remove the mailbox: \"%(name)s\"?"
-msgstr "¿Estás seguro de que quieres borrar el buzón de correo \"%(name)s\"?"
+msgstr "¿Estás seguro/a de que quieres borrar el buzón de correo \"%(name)s\"?"
 
 #: templates/musician/mailbox_check_delete.html:9
 msgid ""
 "All mailbox's messages will be <strong>deleted and cannot be recovered</"
 "strong>."
 msgstr ""
-"Todos los mensajes <strong>se borrarán y no se podrán recuperar</strong>"
+"Todos los mensajes <strong>se borrarán y no se podrán recuperar</strong>."
 
 #: templates/musician/mailbox_form.html:9
 msgid "Warning!"
@@ -404,6 +402,8 @@ msgid ""
 "You have reached the limit of mailboxes of your subscription so "
 "<strong>extra fees</strong> may apply."
 msgstr ""
+"Has alcanzado el límite de buzones de correo de tu suscripción, los nuevos "
+"buzones pueden suponer <strong>costes adicionales</strong>."
 
 #: templates/musician/mailbox_form.html:10
 msgid "Close"
@@ -418,10 +418,8 @@ msgid "Filtering"
 msgstr "Filtrado"
 
 #: templates/musician/mailboxes.html:27
-#, fuzzy
-#| msgid "Password"
 msgid "Update password"
-msgstr "Contraseña"
+msgstr "Actualiza la contraseña"
 
 #: templates/musician/mailboxes.html:43
 msgid "New mailbox"
@@ -445,7 +443,7 @@ msgstr "Información de usuario/a"
 
 #: templates/musician/profile.html:21
 msgid "Preferred language:"
-msgstr "Lenguaje preferido:"
+msgstr "Idioma preferido:"
 
 #: templates/musician/profile.html:35
 msgid "Billing information"
@@ -499,26 +497,22 @@ msgid "Download bill"
 msgstr "Descarga la factura"
 
 #: views.py:283
-#, fuzzy
-#| msgid "Addresses"
 msgid "Address deleted!"
-msgstr "Direcciones de correo"
+msgstr "Has eliminado la dirección de correo"
 
 #: views.py:285 views.py:422 views.py:469
 msgid "Cannot process your request, please try again later."
 msgstr ""
+"Ahora no podemos procesar tu petición, inténtalo de nuevo un poco más tarde "
+"por favor."
 
 #: views.py:420
-#, fuzzy
-#| msgid "Mailboxes"
 msgid "Mailbox deleted!"
-msgstr "Buzones de correo"
+msgstr "Has eliminado el buzón de correo"
 
 #: views.py:467
-#, fuzzy
-#| msgid "Password"
 msgid "Password updated!"
-msgstr "Contraseña"
+msgstr "Contraseña actualizada"
 
 #. Translators: This message appears on the page title
 #: views.py:497
