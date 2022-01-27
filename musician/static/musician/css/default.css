@@ -349,7 +349,12 @@ td:hover .roll-hover {
 }
 
 @media (max-width: 800px){
-    
+    #sidebar {
+        left: -277px;
+    }
+    #content {
+        margin-left: 0;
+    }
     #sidebar-toggle:checked {
         width: 277px;
     }
@@ -358,15 +363,5 @@ td:hover .roll-hover {
     }
     #sidebar-toggle:checked ~ #sidebar-btn {
         left: 277px;
-    }
-    #sidebar-btn {
-        display: block;
-        width: fit-content;
-    }
-    #sidebar {
-        left: -277px;
-    }
-    #content {
-        margin-left: 0;
     }
 }
