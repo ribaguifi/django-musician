@@ -9,6 +9,7 @@
   {% block meta %}
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="robots" content="NONE,NOARCHIVE" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% endblock %}
 
   <title>{% block title %}{% if title %}{{ title }} – {% endif %}Django musician{% endblock %}</title>
@@ -32,6 +33,8 @@
 
 <body class="{% block bodyclass %}{% endblock %}">
   <div class="wrapper">
+    <input style="display: none" type="checkbox" id="sidebar-toggle" />
+    <label type="button" for="sidebar-toggle" id="sidebar-btn" class="btn btn-primary fixed-top"><i class="fas fa-bars"></i></label>
     <nav id="sidebar" class="bg-primary border-right pt-4">
       {% block sidebar %}
       <div class="sidebar-branding">
