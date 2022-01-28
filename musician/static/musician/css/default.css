@@ -51,7 +51,7 @@ a:hover {
 }
 
 #sidebar-btn {
-    display: block;
+    display: none;
     width: fit-content;
     transition-duration: 200ms;
     transition-property: left;
@@ -327,24 +327,9 @@ td:hover .roll-hover {
     visibility: visible;
 }
 
-@media (min-width: 576px){
-    .card-deck .card {
-        flex: 1 0 40%;
-        margin: 15px;
-    }
-
-    #sidebar-btn {
-        display: none;
-    }
-}
-
 @media (min-width: 1350px){
     .card-deck .card {
         flex: 1 0 0%;
-    }
-
-    #content {
-        margin-left: 280px;
     }
 }
 
@@ -363,5 +348,15 @@ td:hover .roll-hover {
     }
     #sidebar-toggle:checked ~ #sidebar-btn {
         left: 277px;
+    }
+    #sidebar-btn {
+        display: block;
+    }
+}
+
+@media (min-width: 576px){
+    .card-deck .card {
+        flex: 1 0 40%;
+        margin: 15px;
     }
 }
