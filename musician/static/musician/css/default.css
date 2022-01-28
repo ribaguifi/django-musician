@@ -329,6 +329,7 @@ td:hover .roll-hover {
 
 #sidebar-btn * {
     font-size: 14.4px !important;
+    font-family: "Font Awesome 5 Free";
 }
 
 @media (min-width: 1350px){
@@ -349,6 +350,11 @@ td:hover .roll-hover {
     #sidebar-btn {
         display: block;
     }
+    #sidebar-btn::before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f0c9";
+        font-weight: 900;
+    }
     #content {
         margin-left: 34px;
     }
@@ -363,6 +369,9 @@ td:hover .roll-hover {
     }
     #sidebar-toggle:checked ~ #sidebar-btn {
         left: 243px;
+    }
+    #sidebar-toggle:checked ~ #sidebar-btn::before {
+        content: "\f00d";
     }
     
 }
