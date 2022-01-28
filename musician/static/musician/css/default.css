@@ -327,6 +327,10 @@ td:hover .roll-hover {
     visibility: visible;
 }
 
+#sidebar-btn * {
+    font-size: 14.4px !important;
+}
+
 @media (min-width: 1350px){
     .card-deck .card {
         flex: 1 0 0%;
@@ -335,10 +339,18 @@ td:hover .roll-hover {
 
 @media (max-width: 800px){
     #sidebar {
-        left: -277px;
+        left: calc(-277px + 34px);
+    }
+    #sidebar * {
+        opacity: 0;
+        transition-delay: 150ms;
+        transition-duration: 300ms;
+    }
+    #sidebar-btn {
+        display: block;
     }
     #content {
-        margin-left: 0;
+        margin-left: 34px;
     }
     #sidebar-toggle:checked {
         width: 277px;
@@ -346,12 +358,13 @@ td:hover .roll-hover {
     #sidebar-toggle:checked ~ #sidebar {
         left: 0;
     }
+    #sidebar-toggle:checked ~ #sidebar * {
+        opacity: 100%;
+    }
     #sidebar-toggle:checked ~ #sidebar-btn {
-        left: 277px;
+        left: 243px;
     }
-    #sidebar-btn {
-        display: block;
-    }
+    
 }
 
 @media (min-width: 576px){
