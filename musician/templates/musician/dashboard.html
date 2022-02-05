@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<h2>{% trans "Welcome back" %} <strong>{{ profile.username }}</strong></h2>
+<h2 style="margin-top: 10px;">{% trans "Welcome back" %} <strong>{{ profile.username }}</strong></h2>
 {% if profile.last_login %}
 <p>{% blocktrans with last_login=profile.last_login|date:"SHORT_DATE_FORMAT" %}Last time you logged in was: {{ last_login }}{% endblocktrans %}</p>
 {% else %}
