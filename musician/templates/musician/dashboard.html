@@ -66,7 +66,7 @@
     </div>
   </div><!-- /card-header-->
   <div class="card-body row text-center">
-      <div class="col-md-2 border-right">
+      <div class="col-6 col-md-3 col-lg-2 border-right">
           <h4>{% trans "Mail" %}</h4>
           <p class="card-text"><i class="fas fa-envelope fa-3x"></i></p>
           <p class="card-text text-dark">
@@ -74,26 +74,26 @@
           </p>
           <a class="stretched-link" href="{% url 'musician:address-list' %}?domain={{ domain.id }}"></a>
       </div>
-      <div class="col-md-2 border-right">
+      <div class="col-6 col-md-3 col-lg-2 border-right">
           <h4>{% trans "Mail list" %}</h4>
           <p class="card-text"><i class="fas fa-mail-bulk fa-3x"></i></p>
           <a class="stretched-link" href="{% url 'musician:mailing-lists' %}?domain={{ domain.id }}"></a>
       </div>
-      <div class="col-md-2 border-right">
+      <div class="col-6 col-md-3 col-lg-2 border-right">
           <h4>{% trans "Software as a Service" %}</h4>
           <p class="card-text"><i class="fas fa-fire fa-3x"></i></p>
           <p class="card-text text-dark">{% trans "Nothing installed" %}</p>
           <a class="stretched-link" href="{% url 'musician:saas-list' %}?domain={{ domain.id }}"></a>
       </div>
-      <div class="col-md-1"></div>
-      <div class="col-md-4">
+      <div class="d-none d-lg-block col-lg-1"></div>
+      <div class="col-6 col-md-3 col-lg-4">
           <h4>{% trans "Disk usage" %}</h4>
           <p class="card-text"><i class="fas fa-hdd fa-3x"></i></p>
           <div class="w-75 m-auto">
           {% include "musician/components/usage_progress_bar.html" with detail=domain.usage %}
           </div>
       </div>
-      <div class="col-md-1"></div>
+      <div class="d-none d-lg-block col-lg-1"></div>
   </div>
 </div>
 
