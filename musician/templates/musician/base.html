@@ -69,8 +69,13 @@
       </div>
 
       <div class="sidebar-logout">
-        <ul class="nav flex-column">
-          <li class="nav-item text-right">
+        <ul class="nav flex-row">
+          <li class="nav-item btn btn-primary" data-toggle="modal" data-target="#helpModal">
+            <a class="nav-link text-light" href="#">
+              <i class="far fa-question-circle"></i>
+            </a>
+          </li>
+          <li class="nav-item text-right flex-grow-1">
             <a class="nav-link text-light" href="{% url 'musician:logout' %}">
               {% trans 'Log out' %}
               <i class="fas fa-power-off"></i>
@@ -99,6 +104,20 @@
         {% endblock content %}
     </div><!-- ./content -->
   </div><!-- ./wrapper -->
+
+  <!-- Help Modal -->
+  <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <span class="text-center m-auto">Do you need help? Write to <a href="mailto:suport@pangea.org" target="_blank">suport@pangea.org</a></span>
+          <button type="button" class="close m-0 pb-1" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   {% block script %}
   <script src="{% static "musician/js/jquery-3.3.1.slim.min.js" %}"></script>
