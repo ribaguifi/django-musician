@@ -167,7 +167,7 @@ API_BASE_URL = config('API_BASE_URL')
 # External services URLs
 URL_DB_PHPMYADMIN = config('URL_DB_PHPMYADMIN', None)
 
-URL_MAILTRAIN = config('URL_MAILTRAIN', None)
+URL_MAIL = config('URL_MAIL', None)
 
 URL_SAAS_GITLAB = config('URL_SAAS_GITLAB', None)
 

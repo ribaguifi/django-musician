@@ -29,7 +29,7 @@ DEFAULTS = {
         }
     ),
     "URL_DB_PHPMYADMIN": "https://phpmyadmin.pangea.org/",
-    "URL_MAILTRAIN": "https://mailtrain.org/",
+    "URL_MAIL": "https://grups.pangea.org/",
     "URL_SAAS_GITLAB": "https://gitlab.pangea.org/",
     "URL_SAAS_OWNCLOUD": "https://nextcloud.pangea.org/",
     "URL_SAAS_WORDPRESS": "https://blog.pangea.org/",
@@ -39,7 +39,7 @@ ALLOWED_RESOURCES = getsetting("ALLOWED_RESOURCES")
 
 URL_DB_PHPMYADMIN = getsetting("URL_DB_PHPMYADMIN")
 
-URL_MAILTRAIN = getsetting("URL_MAILTRAIN")
+URL_MAIL = getsetting("URL_MAIL")
 
 URL_SAAS_GITLAB = getsetting("URL_SAAS_GITLAB")
 

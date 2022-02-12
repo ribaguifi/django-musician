@@ -356,7 +356,7 @@ class MailinglistService(OrchestraModel):
 
     @property
     def manager_url(self):
-        return musician_settings.URL_MAILTRAIN
+        return musician_settings.URL_MAIL
 
 
 class SaasService(OrchestraModel):
