@@ -29,7 +29,7 @@ DEFAULTS = {
         }
     ),
     "URL_DB_PHPMYADMIN": "https://phpmyadmin.pangea.org/",
-    "URL_MAILTRAIN": "https://mailtrain.org/",
+    "URL_MAILTRAIN": "https://grups.pangea.org/",
     "URL_SAAS_GITLAB": "https://gitlab.pangea.org/",
     "URL_SAAS_OWNCLOUD": "https://nextcloud.pangea.org/",
     "URL_SAAS_WORDPRESS": "https://blog.pangea.org/",
