@@ -81,9 +81,9 @@
                 <i class="fas fa-globe"></i> {% trans "Language" %}
               </a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#Select-Lang">{% trans 'English'%}</a>
-                <a class="dropdown-item" href="#Select-Lang">{% trans 'Català'%}</a>
-                <a class="dropdown-item" href="#Select-Lang">{% trans 'Español'%}</a>
+                {% for code, language in languages %}
+                    <a class="dropdown-item" href="{% url 'musician:profile-set-lang' code %}">{{ language }}</a>
+                {% endfor %}
               </div>
             </div>
           </button>

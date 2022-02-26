@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import ContextMixin
+from django.conf import settings
 
 from . import api, get_version
 from .auth import SESSION_KEY_TOKEN
@@ -20,6 +21,7 @@ class CustomContextMixin(ContextMixin):
         context.update({
             'services_menu': services_menu,
             'version': get_version(),
+            'languages': settings.LANGUAGES,
         })
 
         return context

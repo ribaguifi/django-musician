@@ -126,12 +126,12 @@ class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
 
         return context
 
-def ProfileSetLang(request, lang):
+def ProfileSetLang(request, code):
     # set user language as active language
     
-    if any(x[0] == lang for x in settings.LANGUAGES):
+    if any(x[0] == code for x in settings.LANGUAGES):
         # http://127.0.0.1:8080/profile/setLang/es
-        user_language = lang
+        user_language = code
         translation.activate(user_language)
 
         response = HttpResponseRedirect('/dashboard')
