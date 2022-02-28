@@ -1,3 +1,4 @@
+from audioop import reverse
 import logging
 from os import stat
 import smtplib
@@ -6,7 +7,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import mail_managers
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import translation
@@ -124,6 +125,22 @@ class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         })
 
         return context
+
+def ProfileSetLang(request, code):
+    # set user language as active language
+    
+    if any(x[0] == code for x in settings.LANGUAGES):
+        # http://127.0.0.1:8080/profile/setLang/es
+        user_language = code
+        translation.activate(user_language)
+
+        response = HttpResponseRedirect('/dashboard')
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+
+        return response
+    else:
+        response = HttpResponseNotFound('Languague not found')
+        return response
 
 
 class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
