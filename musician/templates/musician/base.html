@@ -55,44 +55,20 @@
         {% endfor %}
       </ul>
 
-      
-
       {# <!-- user profile menu --> #}
-      <div id="user-profile-menu" class="mt-5 pt-1">
-        <button type="button" class="btn nav-link text-light w-100">
+      <div id="user-profile-menu" class="mt-5 pt-1 dropdown dropright">
+        <button type="button" class="btn nav-link text-light w-100" data-toggle="dropdown">
           <img id="user-avatar" class="float-right" width="64" height="64" src="{% static "musician/images/default-profile-picture.png" %}" alt="user-profile-picture"/>
-          
-            <strong>{{ profile.username }}</strong><br />
-          
-            <div class="dropdown">
-              <a class="btn p-0 text-light" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <i class="fas fa-cog"></i> {% trans "Settings" %}
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'musician:profile' %}"><i class="fas fa-user-circle"></i> {% trans 'Profile'%}</a>
-                <a class="dropdown-item" href="{% url 'musician:billing' %}"><i class="fas fa-receipt"></i> {% trans 'Billing'%}</a>
-              </div>
-            </div>
-          
-            <div class="dropdown">
-              <a class="btn p-0 text-light" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <i class="fas fa-globe"></i> {% trans "Language" %}
-              </a>
-              <div class="dropdown-menu">
-                {% for code, language in languages %}
-                    <a class="dropdown-item" href="{% url 'musician:profile-set-lang' code %}">{{ language }}</a>
-                {% endfor %}
-              </div>
-            </div>
-          </button>
+            <strong>{{ profile.username }}</strong><br/>
+            <i class="fas fa-cog"></i> {% trans "Settings" %}
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{% url 'musician:profile' %}"><i class="fas fa-user-circle"></i> {% trans 'Profile' %}</a>
+          <a class="dropdown-item" href="{% url 'musician:billing' %}"><i class="fas fa-receipt"></i> {% trans 'Billing' %}</a>
+        </div>
       </div>
-      
 
-      
 
-      
 
       <div class="sidebar-logout">
         <ul class="nav flex-row">
@@ -111,6 +87,17 @@
       </div>
 
       <div class="mt-4 pr-3 pb-2 text-light d-block text-right">
+          <div class="dropdown">
+            <a class="btn p-0 text-light" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              <i class="fas fa-globe"></i> {% trans "Language" %}
+            </a>
+            <div class="dropdown-menu">
+              {% for code, language in languages %}
+                  <a class="dropdown-item" href="{% url 'musician:profile-set-lang' code %}">{{ language }}</a>
+              {% endfor %}
+            </div>
+          </div>
         <small>Panel Version {{ version }}</small>
       </div>
       {% endblock sidebar %}
@@ -126,7 +113,7 @@
             </div>
           {% endfor %}
         {% endblock messages %}
-        {% block content %}   
+        {% block content %}
         {% endblock content %}
     </div><!-- ./content -->
   </div><!-- ./wrapper -->
