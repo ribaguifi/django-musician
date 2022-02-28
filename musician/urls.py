@@ -19,6 +19,7 @@ urlpatterns = [
     path('billing/', views.BillingView.as_view(), name='billing'),
     path('bills/<int:pk>/download/', views.BillDownloadView.as_view(), name='bill-download'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('profile/setLang/<code>', views.profile_set_language, name='profile-set-lang'),
     path('address/', views.MailView.as_view(), name='address-list'),
     path('address/new/', views.MailCreateView.as_view(), name='address-create'),
     path('address/<int:pk>/', views.MailUpdateView.as_view(), name='address-update'),

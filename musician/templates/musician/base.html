@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      
+
 
       <div class="sidebar-logout">
         <ul class="nav flex-row">
@@ -87,6 +87,17 @@
       </div>
 
       <div class="mt-4 pr-3 pb-2 text-light d-block text-right">
+          <div class="dropdown">
+            <a class="btn p-0 text-light" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              <i class="fas fa-globe"></i> {% trans "Language" %}
+            </a>
+            <div class="dropdown-menu">
+              {% for code, language in languages %}
+                  <a class="dropdown-item" href="{% url 'musician:profile-set-lang' code %}">{{ language }}</a>
+              {% endfor %}
+            </div>
+          </div>
         <small>Panel Version {{ version }}</small>
       </div>
       {% endblock sidebar %}
@@ -102,7 +113,7 @@
             </div>
           {% endfor %}
         {% endblock messages %}
-        {% block content %}   
+        {% block content %}
         {% endblock content %}
     </div><!-- ./content -->
   </div><!-- ./wrapper -->

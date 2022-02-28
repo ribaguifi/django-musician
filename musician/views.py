@@ -1,13 +1,11 @@
 import logging
-from os import stat
 import smtplib
 
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import mail_managers
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import translation
 from django.utils.html import format_html
@@ -20,7 +18,7 @@ from django.views.generic.edit import DeleteView, FormView
 from django.views.generic.list import ListView
 from requests.exceptions import HTTPError
 
-from . import api, get_version
+from . import get_version
 from .auth import login as auth_login
 from .auth import logout as auth_logout
 from .forms import LoginForm, MailboxChangePasswordForm, MailboxCreateForm, MailboxUpdateForm, MailForm
@@ -85,7 +83,7 @@ class DashboardView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
     def get_mailbox_usage(self, profile_type):
         allowed_mailboxes = ALLOWED_RESOURCES[profile_type]['mailbox']
         total_mailboxes = len(self.orchestra.retrieve_mailbox_list())
-        mailboxes_left =  allowed_mailboxes - total_mailboxes
+        mailboxes_left = allowed_mailboxes - total_mailboxes
 
         alert = ''
         if mailboxes_left < 0:
@@ -124,6 +122,23 @@ class ProfileView(CustomContextMixin, UserTokenRequiredMixin, TemplateView):
         })
 
         return context
+
+
+def profile_set_language(request, code):
+    # set user language as active language
+
+    if any(x[0] == code for x in settings.LANGUAGES):
+        # http://127.0.0.1:8080/profile/setLang/es
+        user_language = code
+        translation.activate(user_language)
+
+        response = HttpResponseRedirect('/dashboard')
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+
+        return response
+    else:
+        response = HttpResponseNotFound('Languague not found')
+        return response
 
 
 class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequiredMixin, ListView):
@@ -295,7 +310,6 @@ class MailingListsView(ServiceListView):
         # Translators: This message appears on the page title
         'title': _('Mailing lists'),
     }
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
