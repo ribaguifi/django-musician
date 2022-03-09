@@ -158,7 +158,10 @@ class ServiceListView(CustomContextMixin, ExtendedPaginationMixin, UserTokenRequ
             self.service_class.api_name,
             querystring=queryfilter,
         )
-        return [self.service_class.new_from_json(data) for data in json_qs]
+        data_set = [self.service_class.new_from_json(data) for data in json_qs]
+        if data_set.__len__() != 0 and type(data_set[0]).__name__ == "Bill":
+            data_set = sorted([self.service_class.new_from_json(data) for data in json_qs], key=lambda x: x.created_on)
+        return data_set
 
     def get_queryfilter(self):
         """Does nothing by default. Should be implemented on subclasses"""
