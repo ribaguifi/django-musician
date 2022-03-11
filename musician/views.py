@@ -178,6 +178,11 @@ class BillingView(ServiceListView):
         'title': _('Billing'),
     }
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = sorted(qs, key=lambda x: x.created_on, reverse=True)
+        return qs
+
 
 class BillDownloadView(CustomContextMixin, UserTokenRequiredMixin, View):
     extra_context = {
