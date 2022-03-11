@@ -1,5 +1,6 @@
 import logging
 import smtplib
+import datetime
 
 from django.conf import settings
 from django.contrib import messages
@@ -181,6 +182,8 @@ class BillingView(ServiceListView):
     def get_queryset(self):
         qs = super().get_queryset()
         qs = sorted(qs, key=lambda x: x.created_on, reverse=True)
+        for q in qs:
+            q.created_on = datetime.datetime.strptime(q.created_on, "%Y-%m-%d").strftime("%d/%m/%Y")
         return qs
 
 
