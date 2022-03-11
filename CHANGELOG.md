@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## master
+
+## [0.2.0] 2022-03-11
+- [added] Language selector.
+- [added] Help link.
+- [changed] Order bills by creation date DESC.
+
+## [0.2.0-beta1] 2022-02-05
 - [added] Write operations on mails section (addresses, mailboxes and forward).
 - [changed] Include @pangea.org mail addresses (#4).
 - [fixed] Error on login when user never has logged into the system (#6).
