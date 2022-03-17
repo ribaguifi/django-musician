@@ -183,7 +183,7 @@ class BillingView(ServiceListView):
         qs = super().get_queryset()
         qs = sorted(qs, key=lambda x: x.created_on, reverse=True)
         for q in qs:
-            q.created_on = datetime.datetime.strptime(q.created_on, "%Y-%m-%d").strftime("%d/%m/%Y")
+            q.created_on = datetime.datetime.strptime(q.created_on, "%Y-%m-%d")
         return qs
 
 
