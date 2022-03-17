@@ -27,7 +27,7 @@
   {% for bill in object_list %}
   <tr>
     <th scope="row">{{ bill.number }}</th>
-    <td>{{ bill.created_on|date:"d/m/Y" }}</td>
+    <td>{{ bill.created_on|date:"SHORT_DATE_FORMAT" }}</td>
     <td>{{ bill.type }}</td>
     <td>{{ bill.total|floatformat:2|localize }}€</td>
     <td><a class="text-dark" href="{% url 'musician:bill-download' bill.id %}" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf"></i></a></td>
