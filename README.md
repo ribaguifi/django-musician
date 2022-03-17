@@ -1,6 +1,12 @@
 # django musician
 Python code is written following [PEP 8](https://www.python.org/dev/peps/pep-0008/) sytle guide and it is based on [Django framework](https://djangoproject.com).
 
+## Quickstart development
+Start development environment based on docker compose by running:
+```bash
+docker-compose up
+```
+
 ## How do I get set up?
 
 1. Install Python and its packet manager (pip) 
